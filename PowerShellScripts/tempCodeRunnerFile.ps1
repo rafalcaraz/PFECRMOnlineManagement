@@ -1,1 +1,0 @@
-$allEnvironments = Get-AdminPowerAppEnvironment
