@@ -1,0 +1,10 @@
+<environmentvariabledefinition schemaname="msftce_PFECRMOnline_ClientId">
+  <displayname default="PFECRMOnline_ClientId">
+    <label description="PFECRMOnline_ClientId" languagecode="1033" />
+  </displayname>
+  <introducedversion>1.0.0.4</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000000</type>
+</environmentvariabledefinition>

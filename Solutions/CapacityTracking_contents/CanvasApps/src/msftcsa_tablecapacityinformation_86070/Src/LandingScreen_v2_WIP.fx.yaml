@@ -1,0 +1,844 @@
+LandingScreen_v2_WIP As screen:
+
+    Label7_1 As label:
+        Text: ="v18"
+        Width: =57
+        X: =1308
+        Y: =728
+        ZIndex: =18
+
+    Label12 As label:
+        Height: =83
+        Text: ="What Storage type needs attention?"
+        Width: =278
+        X: =16
+        Y: =28
+        ZIndex: =19
+
+    mainInfoIcon As icon.Information:
+        Icon: =Icon.Information
+        OnSelect: =Navigate(InformationScreen)
+        X: =1284
+        Y: =12
+        ZIndex: =20
+
+    databaseContainer As groupContainer.manualLayoutContainer:
+        Height: =618
+        Visible: =storageTypeChosen = "Database"
+        Width: =1068
+        X: =240
+        Y: =99
+        ZIndex: =27
+
+        TextCanvas1 As Text:
+            DisplayMode: =DisplayMode.Edit
+            FontColor: =
+            Height: =28
+            Text: ="Import current database tables csv to find additional details"
+            Width: =398
+            X: =16
+            Y: =16
+            ZIndex: =1
+
+        ReccomendationOutline_1 As rectangle:
+            BorderThickness: =5
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =286
+            Width: =331
+            X: =682
+            Y: =190
+            ZIndex: =2
+
+        ManageKBButton_1 As button:
+            OnSelect: =Navigate(AddToKB)
+            Text: ="Manage KB"
+            Visible: =If(CountRows(Filter(JoinedValues, Reccomendation.'Table Type' = Blank())) = 0, false, true)
+            X: =429
+            Y: =468
+            ZIndex: =3
+
+        TableTypesLabel_1 As label:
+            Text: |-
+                ="Filter By Table Type:"
+            X: =292
+            Y: =60
+            ZIndex: =5
+
+        WorthCleaningLabel_1 As label:
+            Text: ="Worth Cleaningup"
+            X: =290
+            Y: =116
+            ZIndex: =6
+
+        TableTypesFilterDropdown_1 As combobox:
+            Default: =Blank()
+            DisplayFields: =["Value"]
+            Items: =Choices('Table Recommendations'.'Table Type')
+            SearchFields: =["Value"]
+            SearchItems: =Choices('Table Recommendations'.'Table Type',TableTypesFilterDropdown_1.SearchText)
+            X: =460
+            Y: =60
+            ZIndex: =7
+
+        WorthCleaningFilterDropdown_1 As combobox:
+            Default: =Blank()
+            DisplayFields: =["Value"]
+            Items: =Choices('Table Recommendations'.'Worth Cleaning Up')
+            SearchFields: =["Value"]
+            SearchItems: =Choices('Table Recommendations'.'Worth Cleaning Up',WorthCleaningFilterDropdown_1.SearchText)
+            X: =461
+            Y: =116
+            ZIndex: =8
+
+        ReccomendationHTML_1 As htmlViewer:
+            Height: =175
+            HtmlText: =If(IsBlank(Table1.Selected.Reccomendation.Notes), "No Guidance entered on Knowledge Base for this table yet...", Table1.Selected.Reccomendation.Notes) 
+            Width: =320
+            X: =687
+            Y: =236
+            ZIndex: =9
+
+        TempImage_1 As image:
+            Image: =Last(AttachmentControl_1.Attachments).Value
+            Visible: =false
+            X: =968
+            Y: =18
+            ZIndex: =11
+
+        AttachmentControl_1 As attachments:
+            BorderColor: =
+            DisplayMode: =
+            Height: =99
+            IsInDataCard: =true
+            Items: =
+            MaxAttachments: =1
+            OnAddFile: |
+                =
+                Notify("Processing File Uploaded...", NotificationType.Success);
+                Set(binaryRead, JSON(TempImage_1.Image, JSONFormat.IncludeBinaryData));
+                Set(binaryReadBase64, Mid(binaryRead, Find(",", binaryRead) +1, Len(binaryRead) - Find(",", binaryRead) -1));
+                Set(flowResponseObject, ProcessCSVFile.Run("123", binaryReadBase64).outputjson);
+                Set(tablesJson, ParseJSON(flowResponseObject));
+                ClearCollect(topTables, Blank());
+                ForAll(tablesJson.tables, Collect(topTables, { Name: ThisRecord.tableName, tableSize: ThisRecord.tableSize}));
+                
+                
+                ClearCollect(JoinedValues, AddColumns(topTables, "Reccomendation", LookUp(tableRecomendations, Name = topTables[@Name]), "Worth Cleaning", LookUp(tableRecomendations, Name = topTables[@Name]).'Worth Cleaning Up', "Easy To Clean", LookUp(tableRecomendations, Name = topTables[@Name]).'Easy To Clean')); 
+            OnRemoveFile: |+
+                =
+                Set(binaryRead, Blank());
+                Set(binaryReadBase64, Blank());
+                Set(flowResponseObject, Blank());
+                Set(tablesJson, Blank());
+                ClearCollect(topTables, Blank());
+                ClearCollect(JoinedValues, Blank());
+                
+            PaddingBottom: =5
+            PaddingLeft: =If(Self.DisplayMode = DisplayMode.Edit, 5, 0)
+            PaddingRight: =5
+            PaddingTop: =5
+            Tooltip: =
+            Width: =256
+            X: =16
+            Y: =57
+            ZIndex: =12
+
+        NumTablesNotfoundLabel_1 As label:
+            Height: =28
+            Text: |-
+                ="Tables Not Found in Knowledge Base: " & CountRows(Filter(JoinedValues, Reccomendation.'Table Type' = Blank()))
+            Visible: =If(CountRows(Filter(JoinedValues, Reccomendation.'Table Type' = Blank())) = 0, false, true)
+            Width: =398
+            X: =16
+            Y: =480
+            ZIndex: =13
+
+        Table1 As Table.pcfdataset:
+            DisplayMode: =DisplayMode.Edit
+            Height: =270
+            Items: |-
+                =Filter(
+                    JoinedValues,
+                    Reccomendation.'Table Type' in If(
+                        IsBlank(TableTypesFilterDropdown_1.SelectedItems) Or CountRows(TableTypesFilterDropdown_1.SelectedItems) = 0,
+                        Choices('Table Recommendations'.'Table Type'),
+                        TableTypesFilterDropdown_1.SelectedItems
+                    ),
+                    Reccomendation.'Worth Cleaning Up' in If(
+                        IsBlank(WorthCleaningFilterDropdown_1.SelectedItems) Or CountRows(WorthCleaningFilterDropdown_1.SelectedItems) = 0,
+                        Choices('Table Recommendations'.'Worth Cleaning Up'),
+                        WorthCleaningFilterDropdown_1.SelectedItems
+                    )
+                )
+            onCellValueChange: =false
+            onFilter: =false
+            onNavigate: =false
+            onRowSelect: =false
+            onSave: =false
+            Width: =573
+            X: =16
+            Y: =198
+            ZIndex: =14
+
+            Name1 As pcfDataField.textualColumn:
+                FieldDisplayName: ="Name"
+                FieldName: ="Name"
+                FieldType: ="O"
+                FieldVariantName: ="textualColumn"
+                Order: =1
+                ZIndex: =15
+
+            tableSize1 As pcfDataField.textualColumn:
+                FieldDisplayName: ="Table Size (MB)"
+                FieldName: ="tableSize"
+                FieldType: ="O"
+                FieldVariantName: ="textualColumn"
+                Order: =2
+                ZIndex: =16
+
+        Icon7 As icon.QuestionMark:
+            Height: =24
+            Icon: =Icon.QuestionMark
+            OnSelect: =Navigate(HowToScreen)
+            Tooltip: ="Find out how here"
+            Width: =31
+            X: =398
+            Y: =16
+            ZIndex: =15
+
+        Button9 As button:
+            OnSelect: =Navigate(TakeActionScreen)
+            Text: ="Take Action"
+            Visible: =CountRows(JoinedValues) > 0
+            X: =853
+            Y: =538
+            ZIndex: =16
+
+    databaseGroup As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =27
+
+        databseIcon As icon.Database:
+            Icon: =Icon.Database
+            OnSelect: =Set(storageTypeChosen, "Database")
+            X: =28
+            Y: =228
+            ZIndex: =21
+
+        databaseLabel As label:
+            Height: =64
+            OnSelect: =Set(storageTypeChosen, "Database")
+            Text: ="Database"
+            Width: =136
+            X: =104
+            Y: =228
+            ZIndex: =24
+
+    fileGroup As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =27
+
+        fileIcon As icon.Document:
+            Icon: =Icon.Document
+            OnSelect: =Set(storageTypeChosen, "File")
+            X: =28
+            Y: =323
+            ZIndex: =22
+
+        fileLabel As label:
+            Height: =64
+            OnSelect: =Set(storageTypeChosen, "File")
+            Text: ="File"
+            Width: =136
+            X: =104
+            Y: =324
+            ZIndex: =25
+
+    logGroup As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =27
+
+        logIcon As icon.RadarActivityMonitor:
+            Icon: =Icon.RadarActivityMonitor
+            OnSelect: =Set(storageTypeChosen, "Log")
+            X: =28
+            Y: =420
+            ZIndex: =23
+
+        logLabel As label:
+            Height: =64
+            OnSelect: =Set(storageTypeChosen, "Log")
+            Text: ="Log"
+            Width: =136
+            X: =104
+            Y: =420
+            ZIndex: =26
+
+    fileContainer As groupContainer.manualLayoutContainer:
+        Height: =618
+        Visible: =storageTypeChosen = "File"
+        Width: =1068
+        X: =240
+        Y: =99
+        ZIndex: =28
+
+        TextCanvas1_1 As Text:
+            DisplayMode: =DisplayMode.Edit
+            FontColor: =
+            Height: =32
+            Text: ="File"
+            Width: =96
+            X: =35
+            Y: =17
+            ZIndex: =1
+
+        Label1_1 As label:
+            Text: ="Analytics tables taking a lot of FILE space?"
+            Width: =261
+            X: =752
+            Y: =13
+            ZIndex: =3
+
+        Icon1_1 As icon.ThumbsUp:
+            Height: =54
+            Icon: =Icon.ThumbsUp
+            OnSelect: =Set(storageTypeChosen, "Analytics Tables")
+            Width: =40
+            X: =1018
+            Y: =8
+            ZIndex: =4
+
+        TextCanvas1_4 As Text:
+            DisplayMode: =DisplayMode.Edit
+            FontColor: =
+            Height: =251
+            Text: ="File capacity tends to grow largelly primary by the amount of attachments in the system. For instance, there can be many email messages that have attachments associated, or a large number of annotations with associated attachments. The amount of solutions, web resources and other customizations can make this table grow as well. More recently, analtyics functionality such as Sales Insights, Customer Service insights, etc, can consume a good chunk of these as they capture their analytics in special tables appended with '-Analytics' "
+            Width: =188
+            X: =35
+            Y: =62
+            ZIndex: =5
+
+        "fileOptionsTabList As 'Tab list'.pcfdataset":
+            Alignment: ='TabList.Alignment'.Vertical
+            DisplayMode: =DisplayMode.Edit
+            Height: =239
+            Items: =["Email Messages", "Notes", "Customizations", "Analytics", "Other?"]
+            Width: =162
+            X: =35
+            Y: =350
+            ZIndex: =10
+
+        emailFileContainer As groupContainer.manualLayoutContainer:
+            Height: =463
+            Visible: =fileOptionsTabList.Selected.Value = "Email Messages"
+            Width: =790
+            X: =263
+            Y: =140
+            ZIndex: =11
+
+            Label19 As label:
+                Height: =153
+                Text: ="Email messages can contain one or more attachments. The higher the amount of email messages, the probable higher amount of file storage. If email messages are noted in the Database capacity as a large table, deleting email messages can reduce both the email table AND attachment table."
+                Width: =767
+                X: =16
+                Y: =16
+                ZIndex: =2
+
+            Label20 As label:
+                Height: =53
+                Italic: =true
+                Text: ="If you delete this data, the attachments will no longer be available in customer engagement apps. However, if you have them saved in Office Outlook, they will still be there."
+                Width: =767
+                X: =16
+                Y: =143
+                ZIndex: =3
+
+            ButtonCanvas1 As Button:
+                BasePaletteColor: =
+                DisplayMode: =DisplayMode.Edit
+                FontColor: =
+                Height: =32
+                Text: ="Verify"
+                Width: =96
+                X: =48
+                Y: =344
+                ZIndex: =4
+
+            ButtonCanvas1_1 As Button:
+                BasePaletteColor: =
+                DisplayMode: =DisplayMode.Edit
+                FontColor: =
+                Height: =32
+                Text: ="Bulk Delete"
+                Width: =96
+                X: =48
+                Y: =406
+                ZIndex: =5
+
+            TextCanvas8 As Text:
+                DisplayMode: =DisplayMode.Edit
+                FontColor: =
+                Height: =30
+                Text: |-
+                    ="# Emails With Attachments: " & fileCapacitiesResult.emailsCount
+                Width: =197
+                X: =16
+                Y: =227
+                ZIndex: =6
+
+        notesFileContainer As groupContainer.manualLayoutContainer:
+            Height: =emailFileContainer.Height
+            Visible: =fileOptionsTabList.Selected.Value = "Notes"
+            Width: =emailFileContainer.Width
+            X: =emailFileContainer.X
+            Y: =emailFileContainer.Y
+            ZIndex: =12
+
+            Label14_1 As label:
+                Text: ="Notes File"
+                X: =16
+                Y: =24
+                ZIndex: =1
+
+            TextCanvas9 As Text:
+                DisplayMode: =DisplayMode.Edit
+                FontColor: =
+                Height: =34
+                Text: |-
+                    ="# Notes With Attachments: " & fileCapacitiesResult.notesCount
+                Width: =239
+                X: =16
+                Y: =88
+                ZIndex: =2
+
+        customizationsFileContainer As groupContainer.manualLayoutContainer:
+            Height: =emailFileContainer.Height
+            Visible: =fileOptionsTabList.Selected.Value = "Customizations"
+            Width: =emailFileContainer.Width
+            X: =emailFileContainer.X
+            Y: =emailFileContainer.Y
+            ZIndex: =13
+
+            Label14_2 As label:
+                Text: ="Customizations File"
+                X: =16
+                Y: =24
+                ZIndex: =1
+
+        analyticsFileContainer As groupContainer.manualLayoutContainer:
+            Height: =emailFileContainer.Height
+            Visible: =fileOptionsTabList.Selected.Value = "Analytics"
+            Width: =emailFileContainer.Width
+            X: =emailFileContainer.X
+            Y: =emailFileContainer.Y
+            ZIndex: =14
+
+            Label14_3 As label:
+                Text: ="Analytics File"
+                X: =16
+                Y: =24
+                ZIndex: =1
+
+            "Gallery3 As gallery.'BrowseLayout_Vertical_ThreeTextVariant_ver5.0'":
+                DelayItemLoading: =true
+                Height: =206
+                Items: =componentLayers_v2
+                Layout: =Layout.Vertical
+                LoadingSpinner: =LoadingSpinner.Data
+                TemplatePadding: =0
+                TemplateSize: =96
+                Visible: =CountRows(componentLayers_v2) > 0
+                Width: =352
+                X: =400
+                Y: =107
+                ZIndex: =1
+
+                Title5 As label:
+                    FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                    Height: =Self.Size * 1.8
+                    OnSelect: =Select(Parent)
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Size: =11
+                    Text: =ThisItem.rank
+                    VerticalAlign: =VerticalAlign.Top
+                    Width: =Parent.TemplateWidth - 86
+                    X: =16
+                    Y: =(Parent.TemplateHeight - (Self.Size*1.8 + Subtitle4.Size*1.8 + 2 + Body2.Size*1.8)) / 2
+                    ZIndex: =1
+
+                Subtitle4 As label:
+                    FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                    Height: =Self.Size * 1.8
+                    OnSelect: =Select(Parent)
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Size: =11
+                    Text: =ThisItem.solutionName
+                    VerticalAlign: =VerticalAlign.Top
+                    Width: =Title5.Width
+                    X: =Title5.X
+                    Y: =Title5.Y + Title5.Height
+                    ZIndex: =2
+
+                Body2 As label:
+                    FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                    Height: =Self.Size * 1.8
+                    OnSelect: =Select(Parent)
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Size: =11
+                    Text: =ThisItem.publisher
+                    VerticalAlign: =VerticalAlign.Top
+                    Width: =Title5.Width
+                    X: =Title5.X
+                    Y: =Subtitle4.Y + Subtitle4.Height
+                    ZIndex: =3
+
+                NextArrow5 As icon.ChevronRight:
+                    AccessibleLabel: =Self.Tooltip
+                    Color: =RGBA(166, 166, 166, 1)
+                    Height: =50
+                    Icon: =Icon.ChevronRight
+                    OnSelect: =Select(Parent)
+                    PaddingBottom: =16
+                    PaddingLeft: =16
+                    PaddingRight: =16
+                    PaddingTop: =16
+                    Tooltip: ="View item details"
+                    Width: =50
+                    X: =Parent.TemplateWidth - Self.Width - 12
+                    Y: =(Parent.TemplateHeight / 2) - (Self.Height / 2)
+                    ZIndex: =4
+
+                Separator5 As rectangle:
+                    Height: =8
+                    OnSelect: =Select(Parent)
+                    Width: =Parent.TemplateWidth
+                    Y: =Parent.TemplateHeight - Self.Height
+                    ZIndex: =5
+
+                Rectangle5 As rectangle:
+                    Height: =Parent.TemplateHeight - Separator5.Height
+                    OnSelect: =Select(Parent)
+                    Visible: =ThisItem.IsSelected
+                    Width: =4
+                    ZIndex: =6
+
+            "Gallery2 As gallery.'BrowseLayout_Vertical_OneTextVariant_ver5.0'":
+                DelayItemLoading: =true
+                Height: =312
+                Items: =Table(fileCapacitiesResult.analyticsTables)
+                Layout: =Layout.Vertical
+                LoadingSpinner: =LoadingSpinner.Data
+                OnSelect: =
+                TemplatePadding: =0
+                TemplateSize: =45
+                Width: =321
+                X: =16
+                Y: =128
+                ZIndex: =1
+
+                Title3 As label:
+                    FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                    Height: =24
+                    OnSelect: =Select(Parent)
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Size: =11
+                    Text: =ThisItem.Value.parententitylogicalname
+                    VerticalAlign: =VerticalAlign.Top
+                    Width: =287
+                    X: =16
+                    Y: =(Parent.TemplateHeight / 2) - (Self.Height / 2)
+                    ZIndex: =1
+
+                Separator3 As rectangle:
+                    Height: =8
+                    OnSelect: =Select(Parent)
+                    Width: =Parent.TemplateWidth
+                    Y: =Parent.TemplateHeight - Self.Height
+                    ZIndex: =3
+
+                Rectangle3 As rectangle:
+                    Height: =Parent.TemplateHeight - Separator3.Height
+                    OnSelect: =Select(Parent)
+                    Visible: =ThisItem.IsSelected
+                    Width: =4
+                    ZIndex: =4
+
+                Icon3 As icon.Search:
+                    Height: =34
+                    Icon: =Icon.Search
+                    OnSelect: |-
+                        =Select(Parent);
+                        ClearCollect(componentLayers_v2, Blank());
+                        
+                        //With({flowResult: 'Get-Analytics-Table-Info'.Run("annotation", "https://ralop-salesinsights.crm.dynamics.com") },
+                        With({flowResult: 'Get-Analytics-Table-Info'.Run(Gallery2.Selected.Value.parententitylogicalname, Substitute([@ModelDrivenFormIntegration].Item.'Environment CDS Instance URL', ".com/", ".com")) },
+                        
+                           ForAll(Table(ParseJSON(flowResult.result).records) As _components, Collect(componentLayers_v2, {solutionName: _components.Value.msdyn_solutionname, publisher: _components.Value.msdyn_publishername, rank: _components.Value.msdyn_order}));
+                           Set(entityConfigId, flowResult.entityconfigid);
+                        );
+                    Width: =35
+                    X: =275
+                    Y: =5
+                    ZIndex: =5
+
+            TextCanvas9_1 As Text:
+                DisplayMode: =DisplayMode.Edit
+                FontColor: =
+                Height: =34
+                Text: |-
+                    ="# of Analytics Tables: " & CountRows(Table(fileCapacitiesResult.analyticsTables))
+                Width: =239
+                X: =132
+                Y: =27
+                ZIndex: =2
+
+            Label14_5 As label:
+                Height: =46
+                Text: ="Following tables are configured some analytics feature"
+                Width: =384
+                X: =16
+                Y: =61
+                ZIndex: =3
+
+            TextCanvas14 As Text:
+                DisplayMode: =DisplayMode.Edit
+                FontColor: =
+                Height: =63
+                Text: ="If you're looking to reduce storage for this table (" & Gallery2.Selected.Value.parententitylogicalname & "), find the corresponding feature to disable. If you cannot find it, uninstall the corresponding solution."
+                Width: =352
+                X: =400
+                Y: =27
+                ZIndex: =4
+
+            Button3_3 As button:
+                OnSelect: |+
+                    ='UninstallSolution-Async'.Run(Substitute([@ModelDrivenFormIntegration].Item.'Environment CDS Instance URL', ".com/", ".com"), Gallery3.Selected.solutionName, !IsBlank(LookUp(componentLayers_v2, solutionName = "Active")), entityConfigId);
+                    
+                Text: ="uninstall"
+                X: =623
+                Y: =400
+                ZIndex: =5
+
+        otherFileContainer As groupContainer.manualLayoutContainer:
+            Height: =emailFileContainer.Height
+            Visible: =fileOptionsTabList.Selected.Value = "Other?"
+            Width: =emailFileContainer.Width
+            X: =emailFileContainer.X
+            Y: =emailFileContainer.Y
+            ZIndex: =15
+
+            Label14_4 As label:
+                Text: ="Other File"
+                X: =16
+                Y: =24
+                ZIndex: =1
+
+        ButtonCanvas3 As Button:
+            BasePaletteColor: =
+            DisplayMode: =DisplayMode.Edit
+            FontColor: =
+            Height: =32
+            OnSelect: =Set(fileCapacitiesResult, ParseJSON('File-Capacities'.Run( Substitute([@ModelDrivenFormIntegration].Item.'Environment CDS Instance URL', ".com/", ".com")).result))
+            Text: ="Scan"
+            Width: =96
+            X: =482
+            Y: =21
+            ZIndex: =16
+
+        TextCanvas12 As Text:
+            DisplayMode: =DisplayMode.Edit
+            FontColor: =
+            Height: =49
+            Text: |-
+                ="Click Here to run a quick scan of this org: "
+            Width: =219
+            X: =263
+            Y: =13
+            ZIndex: =17
+
+    logContainer As groupContainer.manualLayoutContainer:
+        Height: =618
+        Visible: =storageTypeChosen = "Log"
+        Width: =1068
+        X: =240
+        Y: =99
+        ZIndex: =29
+
+        TextCanvas1_2 As Text:
+            DisplayMode: =DisplayMode.Edit
+            FontColor: =
+            Height: =32
+            Text: ="Log"
+            Width: =96
+            X: =40
+            Y: =40
+            ZIndex: =1
+
+    analyticsTablesContainer As groupContainer.manualLayoutContainer:
+        Height: =618
+        Visible: =storageTypeChosen = "Analytics Tables"
+        Width: =1068
+        X: =240
+        Y: =99
+        ZIndex: =32
+
+        TextCanvas1_3 As Text:
+            DisplayMode: =DisplayMode.Edit
+            FontColor: =
+            Height: =29
+            Text: ="Analytics Tables"
+            Width: =177
+            X: =40
+            Y: =40
+            ZIndex: =1
+
+        Label6_2 As label:
+            Height: =91
+            Text: ="Analytics tables can take a lot of File storage space. To clean them up. Enter the name of an analytics table to identify"
+            Width: =371
+            X: =40
+            Y: =95
+            ZIndex: =2
+
+        tableNameInput_2 As text:
+            Default: =""
+            HintText: ="Enter analytics table"
+            X: =28
+            Y: =213
+            ZIndex: =3
+
+        Image4_2 As image:
+            Height: =184
+            Image: =analytics
+            Width: =574
+            X: =493
+            Y: =49
+            ZIndex: =4
+
+        Button2_2 As button:
+            DisplayMode: =If(IsBlank(tableNameInput_2.Text),DisplayMode.Disabled,DisplayMode.Edit)
+            OnSelect: |-
+                =ClearCollect(componentLayers_v2, Blank());
+                
+                //With({flowResult: 'Get-Analytics-Table-Info'.Run("annotation", "https://ralop-salesinsights.crm.dynamics.com") },
+                With({flowResult: 'Get-Analytics-Table-Info'.Run(tableNameInput_2.Text, Substitute([@ModelDrivenFormIntegration].Item.'Environment CDS Instance URL', ".com/", ".com")) },
+                   If(!flowResult.issuccesful, Notify("No details could be found around this table... make sure is typed accurately (omit -analytics portion)"));
+                
+                   ForAll(Table(ParseJSON(flowResult.result).records) As _components, Collect(componentLayers_v2, {solutionName: _components.Value.msdyn_solutionname, publisher: _components.Value.msdyn_publishername, rank: _components.Value.msdyn_order}));
+                   Set(entityConfigId, flowResult.entityconfigid);
+                );
+            Text: ="Search"
+            X: =40
+            Y: =287
+            ZIndex: =5
+
+        TextInput2_2 As text:
+            Default: =""
+            HintText: ="Enter solution name to uninstall"
+            X: =748
+            Y: =513
+            ZIndex: =7
+
+        Button3_2 As button:
+            DisplayMode: =If(CountRows(componentLayers_v2) > 0 And !IsBlank(TextInput2_2.Text),    DisplayMode.Edit, DisplayMode.Disabled)
+            OnSelect: ='UninstallSolution-Async'.Run(Substitute([@ModelDrivenFormIntegration].Item.'Environment CDS Instance URL', ".com/", ".com"), TextInput2_2.Text, !IsBlank(LookUp(componentLayers_v2, solutionName = "Active")), entityConfigId)
+            Text: ="uninstall"
+            X: =908
+            Y: =565
+            ZIndex: =8
+
+        Label9_2 As label:
+            Height: =166
+            Text: ="This table growth could be caused by a feature enabled in one of these D365 Analtyics/Insights solution. It the feature is not longer wanting to be leveraged, disable it through the corresponding app config. It analytics/insights is not longer needed, or taking to much space in lower environment uninstall analytics solution."
+            Visible: =CountRows(componentLayers_v2) > 0
+            Width: =542
+            X: =526
+            Y: =281
+            ZIndex: =9
+
+        Table2_1 As Table.pcfdataset:
+            DisplayMode: =DisplayMode.Edit
+            Height: =232
+            Items: =componentLayers_v2
+            onCellValueChange: =false
+            onFilter: =false
+            onNavigate: =false
+            onRowSelect: =false
+            onSave: =false
+            Width: =571
+            X: =28
+            Y: =354
+            ZIndex: =10
+
+            rank1 As pcfDataField.textualColumn:
+                FieldDisplayName: ="rank"
+                FieldName: ="rank"
+                FieldType: ="O"
+                FieldVariantName: ="textualColumn"
+                Order: =1
+                ZIndex: =17
+
+            solutionName1 As pcfDataField.textualColumn:
+                FieldDisplayName: ="solutionName"
+                FieldName: ="solutionName"
+                FieldType: ="O"
+                FieldVariantName: ="textualColumn"
+                Order: =2
+                ZIndex: =18
+
+            publisher1 As pcfDataField.textualColumn:
+                FieldDisplayName: ="publisher"
+                FieldName: ="publisher"
+                FieldType: ="O"
+                FieldVariantName: ="textualColumn"
+                Order: =3
+                ZIndex: =19
+
+    analyticsGroup As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =32
+
+        Icon2 As icon.Trending:
+            Icon: =Icon.Trending
+            OnSelect: =Set(storageTypeChosen, "Analytics Tables")
+            Visible: =false
+            X: =28
+            Y: =613
+            ZIndex: =30
+
+        analyticsLabel As label:
+            Height: =64
+            OnSelect: =Set(storageTypeChosen, "Analytics Tables")
+            Text: |-
+                ="Analytics
+                Tables"
+            Visible: =false
+            Width: =136
+            X: =104
+            Y: =613
+            ZIndex: =31
+

@@ -1,0 +1,466 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ImportExportXml version="9.2.24043.234" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SolutionManifest>
+    <UniqueName>CapacityTracking</UniqueName>
+    <LocalizedNames>
+      <LocalizedName description="CapacityTracking" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions />
+    <Version>1.0.0.0</Version>
+    <Managed>0</Managed>
+    <Publisher>
+      <UniqueName>MicrosoftCE</UniqueName>
+      <LocalizedNames>
+        <LocalizedName description="Microsoft CE" languagecode="1033" />
+      </LocalizedNames>
+      <Descriptions />
+      <EMailAddress xsi:nil="true"></EMailAddress>
+      <SupportingWebsiteUrl xsi:nil="true"></SupportingWebsiteUrl>
+      <CustomizationPrefix>msftce</CustomizationPrefix>
+      <CustomizationOptionValuePrefix>32186</CustomizationOptionValuePrefix>
+      <Addresses>
+        <Address>
+          <AddressNumber>1</AddressNumber>
+          <AddressTypeCode>1</AddressTypeCode>
+          <City xsi:nil="true"></City>
+          <County xsi:nil="true"></County>
+          <Country xsi:nil="true"></Country>
+          <Fax xsi:nil="true"></Fax>
+          <FreightTermsCode xsi:nil="true"></FreightTermsCode>
+          <ImportSequenceNumber xsi:nil="true"></ImportSequenceNumber>
+          <Latitude xsi:nil="true"></Latitude>
+          <Line1 xsi:nil="true"></Line1>
+          <Line2 xsi:nil="true"></Line2>
+          <Line3 xsi:nil="true"></Line3>
+          <Longitude xsi:nil="true"></Longitude>
+          <Name xsi:nil="true"></Name>
+          <PostalCode xsi:nil="true"></PostalCode>
+          <PostOfficeBox xsi:nil="true"></PostOfficeBox>
+          <PrimaryContactName xsi:nil="true"></PrimaryContactName>
+          <ShippingMethodCode>1</ShippingMethodCode>
+          <StateOrProvince xsi:nil="true"></StateOrProvince>
+          <Telephone1 xsi:nil="true"></Telephone1>
+          <Telephone2 xsi:nil="true"></Telephone2>
+          <Telephone3 xsi:nil="true"></Telephone3>
+          <TimeZoneRuleVersionNumber xsi:nil="true"></TimeZoneRuleVersionNumber>
+          <UPSZone xsi:nil="true"></UPSZone>
+          <UTCOffset xsi:nil="true"></UTCOffset>
+          <UTCConversionTimeZoneCode xsi:nil="true"></UTCConversionTimeZoneCode>
+        </Address>
+        <Address>
+          <AddressNumber>2</AddressNumber>
+          <AddressTypeCode>1</AddressTypeCode>
+          <City xsi:nil="true"></City>
+          <County xsi:nil="true"></County>
+          <Country xsi:nil="true"></Country>
+          <Fax xsi:nil="true"></Fax>
+          <FreightTermsCode xsi:nil="true"></FreightTermsCode>
+          <ImportSequenceNumber xsi:nil="true"></ImportSequenceNumber>
+          <Latitude xsi:nil="true"></Latitude>
+          <Line1 xsi:nil="true"></Line1>
+          <Line2 xsi:nil="true"></Line2>
+          <Line3 xsi:nil="true"></Line3>
+          <Longitude xsi:nil="true"></Longitude>
+          <Name xsi:nil="true"></Name>
+          <PostalCode xsi:nil="true"></PostalCode>
+          <PostOfficeBox xsi:nil="true"></PostOfficeBox>
+          <PrimaryContactName xsi:nil="true"></PrimaryContactName>
+          <ShippingMethodCode>1</ShippingMethodCode>
+          <StateOrProvince xsi:nil="true"></StateOrProvince>
+          <Telephone1 xsi:nil="true"></Telephone1>
+          <Telephone2 xsi:nil="true"></Telephone2>
+          <Telephone3 xsi:nil="true"></Telephone3>
+          <TimeZoneRuleVersionNumber xsi:nil="true"></TimeZoneRuleVersionNumber>
+          <UPSZone xsi:nil="true"></UPSZone>
+          <UTCOffset xsi:nil="true"></UTCOffset>
+          <UTCConversionTimeZoneCode xsi:nil="true"></UTCConversionTimeZoneCode>
+        </Address>
+      </Addresses>
+    </Publisher>
+    <RootComponents>
+      <RootComponent type="1" schemaName="admin_environment" behavior="2" />
+      <RootComponent type="1" schemaName="admin_environmentcapacity" behavior="2" />
+      <RootComponent type="1" schemaName="msftcsa_tablerecommendation" behavior="2" />
+      <RootComponent type="29" id="{0f92ddc9-26a0-ee11-be37-000d3a57227a}" behavior="0" />
+      <RootComponent type="29" id="{2649a100-939e-ee11-be37-000d3a57227a}" behavior="0" />
+      <RootComponent type="29" id="{54e9881a-729f-ee11-be37-000d3a57227a}" behavior="0" />
+      <RootComponent type="29" id="{7bc2fa7e-ed9d-ee11-be37-000d3a57227a}" behavior="0" />
+      <RootComponent type="29" id="{8e42a8c8-4c9f-ee11-be37-000d3a549f24}" behavior="0" />
+      <RootComponent type="29" id="{a461478e-48af-ee11-a569-000d3a549f24}" behavior="0" />
+      <RootComponent type="29" id="{ab2a51d8-a89a-ee11-be37-000d3a5726bf}" behavior="0" />
+      <RootComponent type="29" id="{c90e1cf9-789f-ee11-be37-000d3a549f24}" behavior="0" />
+      <RootComponent type="29" id="{ed392cd1-a79a-ee11-be37-000d3a4d7b1b}" behavior="0" />
+      <RootComponent type="300" schemaName="msftcsa_tablecapacityinformation_86070" behavior="0" />
+      <RootComponent type="62" schemaName="msftce_CapacityTracker" behavior="0" />
+      <RootComponent type="80" schemaName="msftce_CapacityTracker" behavior="0" />
+      <RootComponent type="9" schemaName="msftcsa_tabletypes" behavior="0" />
+      <RootComponent type="9" schemaName="msftcsa_worthcleaningup" behavior="0" />
+    </RootComponents>
+    <MissingDependencies>
+      <MissingDependency>
+        <Required type="1" schemaName="admin_aibuildermodel" displayName="AiBuilderModel" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="admin_app" displayName="PowerApps App" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="admin_businessprocessflows" displayName="Business Process Flows" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="admin_environment" displayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="1" schemaName="admin_environment" displayName="Environment" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="admin_environment" displayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="300" schemaName="msftcsa_tablecapacityinformation_86070" displayName="Table Capacity Information" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="admin_environment" displayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="admin_environment" displayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="62" schemaName="msftce_CapacityTracker" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="admin_environment" displayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="80" schemaName="msftce_CapacityTracker" displayName="Capacity Tracker" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="admin_environmentaddons" displayName="Environment Addons" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="admin_environmentcapacity" displayName="Environment Capacity" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="1" schemaName="admin_environmentcapacity" displayName="Environment Capacity" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="admin_environmentcapacity" displayName="Environment Capacity" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="admin_flow" displayName="Flow" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="admin_portal" displayName="Power Pages Site" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="admin_pva" displayName="PVA Bot" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="admin_rpa" displayName="Desktop flow" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="admin_solution" displayName="Power Platform Solution" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="coe_environmentcreationrequest" displayName="Environment Creation Request" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="msdyn_componentlayer" displayName="Component Layer" solution="ComponentHistoryAPIs (9.1.0.37)" />
+        <Dependent type="29" displayName="Get-Analytics-Table-Info" id="{7bc2fa7e-ed9d-ee11-be37-000d3a57227a}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="msftcsa_tablerecommendation" displayName="Table Recommendation" solution="Active" />
+        <Dependent type="1" schemaName="msftcsa_tablerecommendation" displayName="Table Recommendation" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="retentionconfig" displayName="RetentionConfig" solution="msft_DataArchivalBaseComponents (1.0.0.198)" />
+        <Dependent type="29" displayName="LTR - Get Available Retention Policies" id="{0f92ddc9-26a0-ee11-be37-000d3a57227a}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="retentionconfig" displayName="RetentionConfig" solution="msft_DataArchivalBaseComponents (1.0.0.198)" />
+        <Dependent type="29" displayName="LTR - Create Table Retention" id="{c90e1cf9-789f-ee11-be37-000d3a549f24}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="10" schemaName="admin_admin_aibuildermodel_AiEnvironment_admin_" displayName="admin_admin_aibuildermodel_AiEnvironment_admin_" parentSchemaName="admin_aibuildermodel" parentDisplayName="AiBuilderModel" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="10" schemaName="admin_admin_businessprocessflows_BusinessProces" displayName="admin_admin_businessprocessflows_BusinessProces" parentSchemaName="admin_businessprocessflows" parentDisplayName="Business Process Flows" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="10" schemaName="admin_admin_solution_SolutionEnvironment_admin_" displayName="admin_admin_solution_SolutionEnvironment_admin_" parentSchemaName="admin_solution" parentDisplayName="Power Platform Solution" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="10" schemaName="admin_Environment_BusinessArea_admin_Envi" displayName="admin_Environment_BusinessArea_admin_Envi" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="10" schemaName="admin_EnvironmentAddons_Environment_admin" displayName="admin_EnvironmentAddons_Environment_admin" parentSchemaName="admin_environmentaddons" parentDisplayName="Environment Addons" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="10" schemaName="admin_EnvironmentMaker" displayName="admin_EnvironmentMaker" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="10" schemaName="admin_Flow_FlowEnvironment_admin_Environm" displayName="admin_Flow_FlowEnvironment_admin_Environm" parentSchemaName="admin_flow" parentDisplayName="Flow" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="10" schemaName="admin_PortalEnvironment" displayName="admin_PortalEnvironment" parentSchemaName="admin_portal" parentDisplayName="Power Pages Site" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="10" schemaName="admin_rel_AppEnvironment" displayName="admin_rel_AppEnvironment" parentSchemaName="admin_app" parentDisplayName="PowerApps App" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="10" schemaName="admin_rel_PVAEnvironment" displayName="admin_rel_PVAEnvironment" parentSchemaName="admin_pva" parentDisplayName="PVA Bot" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="10" schemaName="admin_RPA_DesktopflowEnvironment_admin_En" displayName="admin_RPA_DesktopflowEnvironment_admin_En" parentSchemaName="admin_rpa" parentDisplayName="Desktop flow" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="10" schemaName="coe_EnvironmentCreationRequest_Environmen" displayName="coe_EnvironmentCreationRequest_Environmen" parentSchemaName="coe_environmentcreationrequest" parentDisplayName="Environment Creation Request" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="admin_administrationmode" displayName="Administration Mode" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="admin_adminmicrosoftteamsenvironmentstatus" displayName="Admin - Microsoft Teams Environment Status" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="admin_adminreason" displayName="Admin - Status Reason" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="admin_adminreviewon" displayName="Admin - Review Teams Environment Status On" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="admin_backgroundoperationsenabled" displayName="Background Operations Enabled" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="admin_businessarea" displayName="Business Area" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="admin_businessjustificationdate" displayName="Date Asked for Business Justification" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="admin_displayname" displayName="Display Name" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="admin_environmentcdsinstanceurl" displayName="Environment CDS Instance URL" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="admin_environmentcreatedon" displayName="Environment Created On" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="admin_environmentdeleted" displayName="Environment Deleted" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="admin_environmentdeletedon" displayName="Environment Deleted On" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="admin_environmentexternalconnectioncount" displayName="Environment External Connection Count" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="admin_environmentisorphaned" displayName="Environment is Orphaned" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="admin_environmentmakerdisplayname" displayName="Environment Maker Display Name" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="admin_environmentmodifiedon" displayName="Environment Modified On" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="admin_environmentname" displayName="Name" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="admin_environmentowner" displayName="Environment Owner" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="admin_environmentpurpose" displayName="Environment Purpose" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="admin_environmentpurposetext" displayName="Environment Purpose Text" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="admin_environmentsku" displayName="Environment Sku" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="admin_environmentstate" displayName="Environment State" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="admin_excusefromappquarantineflow" displayName="Excuse From App Quarantine Flow" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="admin_excusefromarchivalflows" displayName="Excuse From Inactivity Flows" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="admin_excusefromcomplianceflow" displayName="Excuse From Compliance Flow" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="admin_excusefromemptyenvironmentcleanup" displayName="Excuse From Empty Environment Cleanup" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="admin_excusefrominventory" displayName="Excuse From Inventory" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="admin_governanceprotectionlevel" displayName="Governance Protection Level" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="admin_maker" displayName="Environment Maker" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="admin_makerrequirementbusinessimpact" displayName="Maker Requirement - Business Impact" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="admin_makerrequirementbusinessjustification" displayName="Maker Requirement - Business Justification" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="admin_organizationid" displayName="Organization ID" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="admin_pcfenabled" displayName="PCF enabled" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="admin_region" displayName="Environment Region" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="admin_tenantid" displayName="TenantID" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="CenterofExcellenceCoreComponents (4.31)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="crfe9_mychargebackcode" displayName="MyChargeBackCode" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="Active" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="new_environmentdeletedby" displayName="Environment Deleted By" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="Active" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="new_workordernumber" displayName="Work Order Number" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="Active" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="ownerid" displayName="Owner" parentSchemaName="admin_environment" parentDisplayName="Environment" solution="Active" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="26" schemaName="Activated Business Process Flows" displayName="Activated Business Process Flows" parentSchemaName="admin_businessprocessflows" parentDisplayName="Business Process Flows" solution="CenterofExcellenceCoreComponents (4.31)" id="{a63188f9-18bb-4a53-8f72-200ac4181ee2}" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="26" schemaName="Active Bots" displayName="Active Bots" parentSchemaName="admin_pva" parentDisplayName="PVA Bot" solution="CenterofExcellenceCoreComponents (4.31)" id="{762c25fc-901f-4b6a-af4f-3dcd755f0630}" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="26" schemaName="Active Environment Add-Ons" displayName="Active Environment Add-Ons" parentSchemaName="admin_environmentaddons" parentDisplayName="Environment Addons" solution="CenterofExcellenceCoreComponents (4.31)" id="{9f90a044-9e78-484f-bc2a-ccb292837870}" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="26" schemaName="Active Environment Creation Requests" displayName="Active Environment Creation Requests" parentSchemaName="coe_environmentcreationrequest" parentDisplayName="Environment Creation Request" solution="CenterofExcellenceCoreComponents (4.31)" id="{0ba3408a-26f0-4785-9be9-b469f1054728}" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="26" schemaName="Active Flows" displayName="Active Flows" parentSchemaName="admin_flow" parentDisplayName="Flow" solution="CenterofExcellenceCoreComponents (4.31)" id="{3b6d0cb9-b36d-4ac9-a5c4-3ff2fdd92c89}" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="26" schemaName="Active RPAS" displayName="Active RPAS" parentSchemaName="admin_rpa" parentDisplayName="Desktop flow" solution="CenterofExcellenceCoreComponents (4.31)" id="{0cd9ce03-77a7-4866-97ae-e26a45bff4e1}" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="26" schemaName="Active Solutions" displayName="Active Solutions" parentSchemaName="admin_solution" parentDisplayName="Power Platform Solution" solution="CenterofExcellenceCoreComponents (4.31)" id="{7d1aa8b3-7f19-446c-b5f4-82b8ce3a9c48}" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="26" schemaName="All Apps" displayName="All Apps" parentSchemaName="admin_app" parentDisplayName="PowerApps App" solution="CenterofExcellenceCoreComponents (4.31)" id="{c454b997-4940-436b-b2db-31f344ddc4bf}" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="26" schemaName="Custom AI Models" displayName="Custom AI Models" parentSchemaName="admin_aibuildermodel" parentDisplayName="AiBuilderModel" solution="CenterofExcellenceCoreComponents (4.31)" id="{5dc88d5a-b283-4513-97a1-2684feb5a243}" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="26" schemaName="Environment Capacity Subgrid" displayName="Environment Capacity Subgrid" parentSchemaName="admin_environmentcapacity" parentDisplayName="Environment Capacity" solution="CenterofExcellenceCoreComponents (4.31)" id="{7ea45cad-438b-eb11-a812-000d3a1f6308}" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="26" schemaName="Environment: Add-Ons" displayName="Environment: Add-Ons" parentSchemaName="admin_environmentaddons" parentDisplayName="Environment Addons" solution="CenterofExcellenceCoreComponents (4.31)" id="{f77e44ca-6e5c-ed11-9561-00224808108d}" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="26" schemaName="Environment: PVA Add-Ons" displayName="Environment: PVA Add-Ons" parentSchemaName="admin_environmentaddons" parentDisplayName="Environment Addons" solution="CenterofExcellenceCoreComponents (4.31)" id="{753862c4-ff05-ee11-8f6e-0022480813ff}" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="26" schemaName="Maker Lookup View" displayName="Maker Lookup View" parentSchemaName="admin_maker" parentDisplayName="Maker" solution="CenterofExcellenceCoreComponents (4.31)" id="{32cb5052-a761-447d-b592-5641a097a171}" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="26" schemaName="Power Pages Sites" displayName="Power Pages Sites" parentSchemaName="admin_portal" parentDisplayName="Power Pages Site" solution="CenterofExcellenceCoreComponents (4.31)" id="{c63b99ef-865e-481a-9de9-e070fff4acb0}" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="26" schemaName="PVA Environment Add-Ons" displayName="PVA Environment Add-Ons" parentSchemaName="admin_environmentaddons" parentDisplayName="Environment Addons" solution="CenterofExcellenceCoreComponents (4.31)" id="{82e3d9ec-845c-ed11-9561-00224805cbe4}" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="59" schemaName="PVA: Consumed versus Allocated" displayName="PVA: Consumed versus Allocated" parentSchemaName="admin_environmentaddons" parentDisplayName="Environment Addons" solution="CenterofExcellenceCoreComponents (4.31)" id="{63248f13-865c-ed11-9561-00224805c003}" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="61" schemaName="msdyn_/Images/AppModule_Default_Icon.png" displayName="msdyn_/Images/AppModule_Default_Icon.png" solution="AppModuleWebResources (2.5)" />
+        <Dependent type="80" schemaName="msftce_CapacityTracker" displayName="Capacity Tracker" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="66" schemaName="Microsoft.PowerApps.PowerAppsOneGrid" displayName="Microsoft.PowerApps.PowerAppsOneGrid" solution="BaseCustomControlsCore (9.0.2404.3022)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="66" schemaName="MscrmControls.Canvas.CanvasControl" displayName="MscrmControls.Canvas.CanvasControl" solution="BaseCustomControlsCore (9.0.2404.3022)" />
+        <Dependent type="60" displayName="Environment main form" parentDisplayName="Environment" id="{e49ee592-d2b0-ee11-a569-0022482a4279}" />
+      </MissingDependency>
+    </MissingDependencies>
+  </SolutionManifest>
+</ImportExportXml>

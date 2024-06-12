@@ -1,0 +1,315 @@
+NewUserPopup As CanvasComponent:
+    Fill: =RGBA(0, 0, 0, 0)
+    Height: =App.Height
+    Width: =App.Width
+    X: =0
+    Y: =0
+    ZIndex: =1
+
+    transparentBackground_1 As rectangle:
+        Fill: =RGBA(209, 209, 209, .8)
+        Height: =App.Height
+        Width: =App.Width
+        ZIndex: =1
+
+    solidBackground_1 As rectangle:
+        Fill: =RGBA(0, 51, 102, 1)
+        Height: =675
+        Width: =1191
+        X: =72
+        Y: =36
+        ZIndex: =2
+
+    closeLabel_1 As icon.CancelBadge:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =42
+        Icon: =Icon.CancelBadge
+        OnSelect: |
+            =Set(showNewUserPopup, false);
+            Reset(MicrosoftEmailInput);
+            Set(userSearched, Blank());
+            Set(onboardNewUser,false);
+            Set(showTempPassword, false);
+            Set(tempPassword, "");
+            Set(showTempPassword,false);
+            Set(validUser_json, Blank());
+            Set(payloadString, "");
+            Set(validateUserInPFE, Blank());
+            Set(userCreated_json, Blank());
+            Set(createButtonDisabled, false);
+            
+            //userSearched,validUser_json,payloadString,validateUserInPFE
+            
+            // Load licenses after newly created account
+            If(!msUserExists And userAccountCreatedSuccesfully,
+            
+                    // Search for Current User in PFECRMOnline, searching against job title [TEMP], will check for 'other' email first
+                Set(userDetailsResponse_json, ParseJSON('Temp-TestingNewFlowForIncomingRequests'.Run("FindMSUserInPFETenant", "{""msftUserEmail"":""" & User().Email & """ }").result));
+                Set(msUserExists, If(CountRows(Table(userDetailsResponse_json.value)) > 0 , true, false));
+            
+                If(msUserExists, 
+                    Set(userMainRecord, 
+                        {
+                            id: Text(First(Table(userDetailsResponse_json.value)).Value.id), 
+                            userPrincipalName: Text(First(Table(userDetailsResponse_json.value)).Value.userPrincipalName)
+                        }
+                    );
+            
+                    //GetUserLicenses
+                    Set(userLicences_json, ParseJSON('Temp-TestingNewFlowForIncomingRequests'.Run("GetUserLicenses", "{""userId"":""" & userMainRecord.id & """ }").result));
+                    Set(userLicences_Table, 
+                        ForAll(Table(userLicences_json.value) As _items,
+                            {
+                                licenseAssignmentId: Text(_items.Value.id),
+                                licenseSkuId: Text(_items.Value.skuId),
+                                licenseSkuPartNumber: Text(_items.Value.skuPartNumber),
+                                timeAssignment: "N/A",
+                                friendlyName: LookUp(productsFriendly, skuId = Text(_items.Value.skuId)).FriendlyName
+                            }
+                        )
+                    );
+            
+                    //Get User Timed Requests
+                    Set(userTimedRequests_json, ParseJSON('Temp-TestingNewFlowForIncomingRequests'.Run("GetAccessRequests", "{""userId"":""" & userMainRecord.id & """ }").result));
+                    Set(userTimedRequests_Table, 
+                        ForAll(Table(userTimedRequests_json.value),
+                            {
+                                requestName: Text(ThisRecord.Value.msftce_name),
+                                requestType: Value(ThisRecord.Value.msftce_requesttype),
+                                requestLicenseSkuId: Text(ThisRecord.Value.msftce_licenseskuid),
+                                requestStartDate: Text(ThisRecord.Value.msftce_startdate),
+                                requestLength: Value(ThisRecord.Value.msftce_length),
+                                requestEndDate: Text(ThisRecord.Value.msftce_enddate),
+                                requestStateCode: Value(ThisRecord.Value.statecode)
+                            }
+                        )
+                    );
+            
+                    //GetRoleAssignmentOfUser
+                    Set(userAssignments_json, ParseJSON('Temp-TestingNewFlowForIncomingRequests'.Run("GetRoleAssignmentOfUser", "{""userId"":""" & userMainRecord.id & """ }").result));
+                    Set(userAssignments_Table, 
+                        ForAll(Table(userAssignments_json.value),
+                            {
+                                roleAssignmentId: Text(ThisRecord.Value.id),
+                                principalId: Text(ThisRecord.Value.principalId),
+                                roleDefinitionId: Text(ThisRecord.Value.roleDefinitionId),
+                                roleDisplayName: Text(ThisRecord.Value.roleDefinition.displayName),
+                                timeAssignment: "false"
+                            }
+                        )
+                    );
+            
+                    // Retrieve all SKUS
+                    Set(availableSKUs_table_2, 
+                        ForAll(Table(ParseJSON('Temp-TestingNewFlowForIncomingRequests'.Run("AvailableSKUs", "{}").result).value) As _skus, 
+                            { capabilityStatus: Text(_skus.Value.capabilityStatus),   //Text(ThisRecord.Value.capabilityStatus), 
+                                consumedUnits: Value(_skus.Value.consumedUnits),
+                                skuId: Text(_skus.Value.skuId), 
+                                skuPartNumber: Text(_skus.Value.skuPartNumber), 
+                                enabledPrepaidUnits: Value(_skus.Value.prepaidUnits.enabled),
+                                appliesTo: Text(_skus.Value.appliesTo),
+                                friendlyName: LookUp(productsFriendly, skuId = Text(_skus.Value.skuId)).FriendlyName
+                            }
+                        )
+                    );
+            
+                );
+            );
+            
+            Set(userAccountCreatedSuccesfully, false);
+        Width: =50
+        X: =75
+        Y: =47
+        ZIndex: =3
+
+    poupLabel_1 As label:
+        Color: =RGBA(255, 255, 255, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =32
+        Text: ="Onboard New User"
+        Width: =220
+        X: =1043
+        Y: =36
+        ZIndex: =4
+
+    currentUserEmailLabel As label:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =32
+        Text: |-
+            ="PFECRMOnline Email: " & userMainRecord.userPrincipalName
+        Width: =764
+        X: =132
+        Y: =57
+        ZIndex: =5
+
+    MicrosoftEmailLabel As label:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =35
+        Text: |-
+            ="Enter Microsoft Email:"
+        Width: =228
+        X: =112
+        Y: =144
+        ZIndex: =7
+
+    MicrosoftEmailInput As text:
+        Default: =If(!msUserExists, User().Email, "")
+        DisplayMode: =If(!msUserExists, DisplayMode.View, DisplayMode.Edit)
+        HintText: ="Enter Microsoft Email"
+        X: =306
+        Y: =144
+        ZIndex: =8
+
+    ValidateMSUserButton As button:
+        OnSelect: |+
+            =Set(userSearched, MicrosoftEmailInput.Text);
+            Set(validUser_json, ParseJSON(ValidateADUser.Run(userSearched).validuser));
+            If(Boolean(validUser_json.validMSUser), 
+                // True condition
+                Notify("MS user is valid", NotificationType.Success, 2000);
+                Set(payloadString, "{""userEmail"":"""  & Text(validUser_json.email) & """,""userUPN"":""" & Text(validUser_json.upn) & """}");
+                Set(validateUserInPFE, ParseJSON('Temp-TestingNewFlowForIncomingRequests'.Run("ValidateUser", payloadString).result));
+                , 
+                
+                // False condition
+                Notify("MS user provided is not valid", NotificationType.Error, 2000));
+            
+        Text: ="Validate"
+        X: =661
+        Y: =144
+        ZIndex: =9
+
+    UserMessageLabel As label:
+        Color: =RGBA(255, 255, 255, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =72
+        Text: |-
+            =If(Boolean(validUser_json.validMSUser) And Boolean(validateUserInPFE.accountInPFECRMOnlineFound),
+                "User " & userSearched & " already has an account associated in PFECRMOnline " & "[" & Text(validateUserInPFE.accountInPFECRMOnline) & "]", 
+                "USER NOT CURRENTLY EXISTS IN PFECRMONLINE")
+        Visible: =!IsBlank(userSearched) And Boolean(validUser_json.validMSUser)
+        Width: =627
+        X: =112
+        Y: =225
+        ZIndex: =11
+
+    UserAccessIssueLabel As label:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =46
+        Text: ="User access issues?"
+        Visible: =If(msUserExists And Boolean(validUser_json.validMSUser) And (userProfile.mail = userSearched Or userProfile.userPrincipalName = userSearched), true, false)
+        Width: =177
+        X: =112
+        Y: =309
+        ZIndex: =16
+
+    ResetYourPasswordButton As button:
+        OnSelect: |-
+            =Notify("Functionality for this not implemented yet 😅");
+            
+            Set(tempPassword, "Fargoctslabs!" & RoundDown(Rand() * 1000000,0));
+            
+            Set(payloadString, 
+                    "{""pfeCrmOnlineUserId"":""" & Text(validateUserInPFE.accountInPFECRMOnline) & ""","
+                    & """tempPassword"":""" & tempPassword & """}"
+                );
+            'Temp-TestingNewFlowForIncomingRequests'.Run("ResetPassword", payloadString);
+            Set(showTempPassword, true);
+        Text: ="Reset Your PW"
+        Visible: =If(msUserExists And Boolean(validUser_json.validMSUser) And (userProfile.mail = userSearched Or userProfile.userPrincipalName = userSearched), true, false)
+        X: =289
+        Y: =315
+        ZIndex: =17
+
+    OnboardNewUserButton As button:
+        Height: =43
+        OnSelect: |-
+            =Set(onboardNewUser,true);
+            Set(createButtonDisabled, false);
+        Text: ="OnBoard New User"
+        Visible: =Boolean(validUser_json.validMSUser) And !Boolean(validateUserInPFE.accountInPFECRMOnlineFound)
+        Width: =228
+        X: =105
+        Y: =381
+        ZIndex: =18
+
+    PreferedLoginLabel As label:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =31
+        Text: |-
+            ="Select Prefered Login: "
+        Visible: =onboardNewUser
+        Width: =194
+        X: =105
+        Y: =430
+        ZIndex: =19
+
+    PreferedLoginDropdown As dropdown:
+        Height: =42
+        Items: =[Substitute(Text(validUser_json.email),"@microsoft.com","@pfecrmonline.onmicrosoft.com"), Substitute(Text(validUser_json.upn),"@microsoft.com","@pfecrmonline.onmicrosoft.com")]
+        Visible: =onboardNewUser
+        Width: =470
+        X: =304
+        Y: =430
+        ZIndex: =20
+
+    CreateUserButton As button:
+        DisplayMode: =If(createButtonDisabled = false, DisplayMode.Edit, DisplayMode.Disabled)
+        OnSelect: |+
+            =Set(tempPassword, "Fargoctslabs!" & RoundDown(Rand() * 1000000,0));
+            
+            Set(microsoftEmails, """" & Text(validUser_json.upn) & """"); // Set upn
+            Set(microsoftEmails, microsoftEmails & If(Text(validUser_json.upn) = Text(validUser_json.email), "", ",""" & Text(validUser_json.email) & """"));
+            
+            //Add licenses string format
+                ClearCollect(baseLicenses, [LookUp(productsFriendly, FriendlyName = "Dynamics 365 Customer Service Enterprise").skuId]);
+                Set(addLicenses_stringFormat, Concat(baseLicenses,  "{""skuId"":""" & ThisRecord.Value & """}",   ","));
+            
+            Set(payloadString, "{" &
+            """displayName"":"""  & Text(validUser_json.displayName) & """," &
+            """userName"":""" & Substitute(PreferedLoginDropdown.SelectedText.Value, "@pfecrmonline.onmicrosoft.com", "") & """," &
+            """password"":""" & tempPassword & """," &
+            """microsoftEmails"":" & "[" & microsoftEmails & "]," & 
+            """licensesToAdd"":" & "["  & addLicenses_stringFormat  & "]," &
+            """roleToAdd"":" & """" & LookUp(AzureRoles, RoleName = "Global Admin").RoleId & """," &
+            """msftEmailForNotification"":""" & userSearched & """" &
+            "}");
+            
+            
+            Set(userCreated_json, ParseJSON('Temp-TestingNewFlowForIncomingRequests'.Run("CreateUser", payloadString).result));
+            
+            If(IsBlank(Text(userCreated_json.id)) = false,
+                // ***  TRUE CONDITION ***
+                Notify("Setting up the account, an email will be sent to: " & MicrosoftEmailInput.Text & " with additional instructions", NotificationType.Success); 
+                Set(userAccountCreatedSuccesfully, true);
+                
+            
+                //Disable the create button temporary
+                Set(createButtonDisabled, true);
+            
+            
+                , 
+                // ***  FALSE CONDITION ***    
+                Notify("Something went wrong creating your account... please contact Rafael Lopez Alcaraz at ralop@microsoft.com", NotificationType.Error)
+            );
+            
+            
+            
+            
+        Text: ="Create User"
+        Visible: =onboardNewUser
+        X: =105
+        Y: =562
+        ZIndex: =21
+
+    TempPasswordLabel As label:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =71
+        Text: |-
+            ="Your temp password is: " & tempPassword & " , you will be prompted to change password after login"
+        Visible: =showTempPassword
+        Width: =637
+        X: =115
+        Y: =353
+        ZIndex: =22
+

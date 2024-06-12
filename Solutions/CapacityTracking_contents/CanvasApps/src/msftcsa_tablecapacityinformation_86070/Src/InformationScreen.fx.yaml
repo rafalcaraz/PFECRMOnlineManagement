@@ -1,0 +1,17 @@
+InformationScreen As screen:
+
+    Arrow7 As arrow.backArrow:
+        OnSelect: =Back()
+        X: =12
+        Y: =12
+        ZIndex: =1
+
+    Label13 As label:
+        Height: =407
+        Text: |-
+            ="This app provides guidance on capacity governance for the power platform. It can facilitate in providing insights about particular tables to know what those are, why they grow so large, and to provide reccomendations into how to reduce capacity if needed. For additional information refere to: https://learn.microsoft.com/en-us/power-platform/admin/free-storage-space"
+        Width: =578
+        X: =93
+        Y: =62
+        ZIndex: =2
+

@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Connector xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <connectorid>243d6a82-91db-49e5-97cd-452750800ed0</connectorid>
+  <description></description>
+  <displayname>PFECRMOnlineHelper</displayname>
+  <iconbrandcolor>#007ee5</iconbrandcolor>
+  <name>bacsa_5Fpfecrmonlinehelper</name>
+  <connectortype>1</connectortype>
+  <openapidefinition>/Connector/bacsa_5Fpfecrmonlinehelper_openapidefinition.json</openapidefinition>
+  <connectionparameters>/Connector/bacsa_5Fpfecrmonlinehelper_connectionparameters.json</connectionparameters>
+  <policytemplateinstances>/Connector/bacsa_5Fpfecrmonlinehelper_policytemplateinstances.json</policytemplateinstances>
+  <iconblob>/Connector/bacsa_5Fpfecrmonlinehelper_iconblob.Png</iconblob>
+</Connector>

@@ -1,0 +1,10 @@
+<environmentvariabledefinition schemaname="bacsa_PFECRMOnlineAppEnvVariable">
+  <displayname default="PFECRMOnline App Env Variable">
+    <label description="PFECRMOnline App Env Variable" languagecode="1033" />
+  </displayname>
+  <introducedversion>1.0.0.0</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000003</type>
+</environmentvariabledefinition>

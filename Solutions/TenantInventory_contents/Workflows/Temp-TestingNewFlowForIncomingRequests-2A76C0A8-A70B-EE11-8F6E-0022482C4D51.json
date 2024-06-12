@@ -1,0 +1,156 @@
+{
+  "properties": {
+    "connectionReferences": {},
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "PFECRMOnlineFlowListenerURL (bacsa_PFECRMOnlineFlowListenerURL)": {
+          "defaultValue": "https://prod-165.westus.logic.azure.com:443/workflows/317d63f343bc4a849a4bdd532908f630/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=x8CRx9jNK3dv4wmWNMMWmb5xciCSjeQ3R7xepkenr2U",
+          "type": "String",
+          "metadata": {
+            "schemaName": "bacsa_PFECRMOnlineFlowListenerURL",
+            "description": "The URL that triggers in PFECRMOnline"
+          }
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "519fb732-3aa6-4588-a5c2-0e1efbf2e386"
+          },
+          "type": "Request",
+          "kind": "PowerAppV2",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "Area",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Enter valid Action",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_1": {
+                  "title": "Operation",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Enter Parameters In JSON String Format",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_2": {
+                  "title": "Parameters",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Enter Parameters In JSON String Format",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text",
+                "text_1",
+                "text_2"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Parameters_JSON": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "1875f3b0-90e0-4e6e-b74a-5b1e77a19fca"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "parametersJSON",
+                "type": "object",
+                "value": "@json(triggerBody()['text_2'])"
+              }
+            ]
+          }
+        },
+        "Target_Flow_URL": {
+          "runAfter": {
+            "Parameters_JSON": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "ee80d2a4-1f5c-4956-8061-79f6f4f8c943"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "pfecrmonlineTargetFlowURL",
+                "type": "string",
+                "value": "@parameters('PFECRMOnlineFlowListenerURL (bacsa_PFECRMOnlineFlowListenerURL)')"
+              }
+            ]
+          }
+        },
+        "Send_Request": {
+          "runAfter": {
+            "Target_Flow_URL": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "9d07e525-e442-4948-90cb-648694a71a97"
+          },
+          "type": "Http",
+          "inputs": {
+            "method": "POST",
+            "uri": "@variables('pfecrmonlineTargetFlowURL')",
+            "body": {
+              "Area": "@triggerBody()['text']",
+              "Operation": "@triggerBody()['text_1']",
+              "Parameters": "@json(triggerBody()['text_2'])"
+            },
+            "retryPolicy": {
+              "type": "none"
+            }
+          }
+        },
+        "Respond_to_a_PowerApp_or_flow": {
+          "runAfter": {
+            "Send_Request": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "25fa00d3-8095-4b69-ad36-e61ab1357f22"
+          },
+          "type": "Response",
+          "kind": "PowerApp",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "result": "@{body('Send_Request')}"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "title": "result",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

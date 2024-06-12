@@ -1,0 +1,58 @@
+PopUpTemplate As CanvasComponent:
+    Fill: =RGBA(0, 0, 0, 0)
+    Height: =App.Height
+    Width: =App.Width
+    X: =0
+    Y: =0
+    ZIndex: =1
+
+    transparentBackground_3 As rectangle:
+        Fill: =RGBA(209, 209, 209, .8)
+        Height: =App.Height
+        Width: =App.Width
+        ZIndex: =1
+
+    solidBackground_3 As rectangle:
+        Fill: =RGBA(0, 51, 102, 1)
+        Height: =675
+        Width: =1191
+        X: =72
+        Y: =36
+        ZIndex: =2
+
+    closeLabel_3 As icon.CancelBadge:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =42
+        Icon: =Icon.CancelBadge
+        OnSelect: |+
+            =Set(showTemplatePopup, false); // Replace this with the a new variable close new poup 
+            
+            
+            
+            
+            
+        Width: =50
+        X: =75
+        Y: =47
+        ZIndex: =3
+
+    poupLabel_3 As label:
+        Color: =RGBA(255, 255, 255, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =32
+        Text: ="Template Popup" // Change this for the name of the popup screen
+        Width: =220
+        X: =1043
+        Y: =36
+        ZIndex: =4
+
+    currentUserEmailLabel_2 As label:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =32
+        Text: |-
+            ="PFECRMOnline Email: " & userMainRecord.userPrincipalName
+        Width: =764
+        X: =132
+        Y: =57
+        ZIndex: =5
+

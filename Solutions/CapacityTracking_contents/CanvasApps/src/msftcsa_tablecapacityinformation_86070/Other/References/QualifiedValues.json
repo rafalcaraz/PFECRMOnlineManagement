@@ -1,0 +1,36 @@
+{
+  "QualifiedValues": [
+    {
+      "Kind": "default.cds_msftcsa_tablerecommendation_forms",
+      "Namespace": "Table Recommendations (Forms)",
+      "Values": {
+        "Information": "5cc94f83-9c29-4c00-b737-b22f6fd2f3ac"
+      }
+    },
+    {
+      "Kind": "default.cds_admin_environment_forms",
+      "Namespace": "Environments (Forms)",
+      "Values": {
+        "Environment main form": "e49ee592-d2b0-ee11-a569-0022482a4279",
+        "Information": "2204fb62-137e-4500-92e2-cfc0c3ad09a4",
+        "Main Environment Form": "898bd883-98f4-4ee4-8221-29b1c39912ed"
+      }
+    },
+    {
+      "Kind": "default.cds_msftcsa_environment_forms",
+      "Namespace": "Environments (Forms)1",
+      "Values": {
+        "Information": "7121a4c9-5782-4f62-bf3b-f3b12b67590f"
+      }
+    },
+    {
+      "Kind": "default.cds_admin_environment_forms",
+      "Namespace": "Environments (Forms)11",
+      "Values": {
+        "Environment main form": "e49ee592-d2b0-ee11-a569-0022482a4279",
+        "Information": "2204fb62-137e-4500-92e2-cfc0c3ad09a4",
+        "Main Environment Form": "898bd883-98f4-4ee4-8221-29b1c39912ed"
+      }
+    }
+  ]
+}

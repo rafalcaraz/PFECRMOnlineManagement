@@ -1,0 +1,139 @@
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnRecognizedIntent
+  id: main
+  intent:
+    displayName: Untitled
+    triggerQueries:
+      - global admin
+      - global administrator
+      - GA
+
+  actions:
+    - kind: InvokeFlowAction
+      id: invokeFlowAction_aiaruG
+      input:
+        binding:
+          text: CheckTenantAccess
+          text_1: =System.User.Email
+          text_2: none
+
+      output:
+        binding:
+          message: Topic.globalAdminStatusMessage
+
+      flowId: 8828904a-716f-ee11-8179-0022482c4aea
+
+    - kind: ConditionGroup
+      id: conditionGroup_DjoltE
+      conditions:
+        - id: conditionItem_3XUgU2
+          condition: =Topic.globalAdminStatusMessage = "DENY"
+          actions:
+            - kind: SendActivity
+              id: sendActivity_2rQq7v
+              activity: "It seems you don't approval to access PFECRMOnline Tenant. If you have questions reach out to: Teresa Hagman, Chris Carley or Rafael Lopez Alcaraz"
+
+      elseActions:
+        - kind: SetVariable
+          id: rfa3m8
+          variable: Topic.varPFECrmOnlineUserId
+          value: f89e1b16-63fb-4b09-b8e8-0a859966a74c
+
+        - kind: Question
+          id: IFjzIU
+          interruptionPolicy:
+            allowInterruption: true
+
+          variable: Topic.varGlobalAdminAction
+          prompt: What action do you want for Global Admin?
+          entity:
+            kind: EmbeddedEntity
+            definition:
+              kind: ClosedListEntity
+              items:
+                - id: Check Status
+                  displayName: Check Status
+
+                - id: Assign Global Admin
+                  displayName: Assign Global Admin
+
+            displayName: EmbeddedEntity-HIsrQ5
+
+        - kind: ConditionGroup
+          id: E9Sme0
+          conditions:
+            - id: xCibxI
+              condition: =Topic.varGlobalAdminAction = 'bacsa_pfecrmOnlineBot.topic.GlobalAdmin.main.IFjzIU'.'Assign Global Admin'
+              actions:
+                - kind: SendActivity
+                  id: 5HeSEM
+                  activity: You want to assign global admin. Please provide a justification.
+
+                - kind: Question
+                  id: 7FkOUL
+                  interruptionPolicy:
+                    allowInterruption: true
+
+                  variable: init:Topic.globalAdminJustification
+                  prompt: "Please enter justification for Global Admin:"
+                  entity: StringPrebuiltEntity
+
+                - kind: SendActivity
+                  id: MewsQe
+                  activity: Thank you. Please wait while I grant Global Admin
+
+                - kind: InvokeFlowAction
+                  id: BOqT3l
+                  input:
+                    binding:
+                      text: AssignGlobalAdmin
+                      text_1: =System.User.Email
+                      text_2: =Topic.globalAdminJustification
+
+                  output:
+                    binding:
+                      message: Topic.globalAdminStatusMessage
+
+                  flowId: 8828904a-716f-ee11-8179-0022482c4aea
+
+                - kind: SendActivity
+                  id: GKg8wm
+                  activity: "{Topic.globalAdminStatusMessage}"
+
+          elseActions:
+            - kind: SendActivity
+              id: 24GRpn
+              activity: Checking Global Admin Status. Please wait...
+
+            - kind: InvokeFlowAction
+              id: UXklTG
+              input:
+                binding:
+                  text: CheckStatus
+                  text_1: =System.User.Email
+                  text_2: none
+
+              output:
+                binding:
+                  message: Topic.globalAdminStatusMessage
+
+              flowId: 8828904a-716f-ee11-8179-0022482c4aea
+
+            - kind: InvokeFlowAction
+              id: uZTKZR
+              input:
+                binding:
+                  text: CheckStatus
+                  text_1: =System.User.Email
+                  text_2: none
+
+              output:
+                binding:
+                  message: Topic.globalAdminStatusMessage
+
+              flowId: 8828904a-716f-ee11-8179-0022482c4aea
+
+            - kind: SendActivity
+              id: OO9Vsv
+              activity: "{Topic.globalAdminStatusMessage}"

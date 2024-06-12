@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Connector xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <connectorid>a9791588-2c2d-4b6e-9dd7-614834b5e2a2</connectorid>
+  <description></description>
+  <displayname>BizAppsCSATenantHelper</displayname>
+  <iconbrandcolor>#007ee5</iconbrandcolor>
+  <name>bacsa_5Fbizappscsatenanthelper</name>
+  <connectortype>1</connectortype>
+  <openapidefinition>/Connector/bacsa_5Fbizappscsatenanthelper_openapidefinition.json</openapidefinition>
+  <connectionparameters>/Connector/bacsa_5Fbizappscsatenanthelper_connectionparameters.json</connectionparameters>
+  <policytemplateinstances>/Connector/bacsa_5Fbizappscsatenanthelper_policytemplateinstances.json</policytemplateinstances>
+  <iconblob>/Connector/bacsa_5Fbizappscsatenanthelper_iconblob.Png</iconblob>
+</Connector>

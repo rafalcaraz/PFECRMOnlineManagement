@@ -1,0 +1,10 @@
+<botcomponent schemaname="bacsa_pfecrmOnlineBot.topic.GlobalAdmin">
+  <componenttype>9</componenttype>
+  <iscustomizable>0</iscustomizable>
+  <name>GlobalAdmin</name>
+  <parentbotid>
+    <schemaname>bacsa_pfecrmOnlineBot</schemaname>
+  </parentbotid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</botcomponent>

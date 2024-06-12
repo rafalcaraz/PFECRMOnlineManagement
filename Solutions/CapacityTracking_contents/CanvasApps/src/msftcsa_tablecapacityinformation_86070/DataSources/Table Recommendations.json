@@ -1,0 +1,170 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "msftcsa_tablerecommendations",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "msftcsa_tablerecommendation",
+    "MaxGetRowsCount": 500,
+    "Name": "Table Recommendations",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "_ownerid_value": "Owner",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "msftcsa_description": "Description",
+      "msftcsa_easytoclean": "Easy To Clean",
+      "msftcsa_helperurl": "Helper URL",
+      "msftcsa_name": "Name",
+      "msftcsa_notes": "Notes",
+      "msftcsa_tablerecommendation_AsyncOperations": "System Jobs",
+      "msftcsa_tablerecommendation_BulkDeleteFailures": "Bulk Delete Failures",
+      "msftcsa_tablerecommendation_DuplicateBaseRecord": "Duplicate Records (msftcsa_tablerecommendation_DuplicateBaseRecord)",
+      "msftcsa_tablerecommendation_DuplicateMatchingRecord": "Duplicate Records (msftcsa_tablerecommendation_DuplicateMatchingRecord)",
+      "msftcsa_tablerecommendation_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "msftcsa_tablerecommendation_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "msftcsa_tablerecommendation_ProcessSession": "Process Sessions",
+      "msftcsa_tablerecommendation_SyncErrors": "Sync Errors",
+      "msftcsa_tablerecommendationid": "Table Recommendation",
+      "msftcsa_tabletype": "Table Type",
+      "msftcsa_worthcleaningup": "Worth Cleaning Up",
+      "overriddencreatedon": "Record Created On",
+      "owningbusinessunit": "Owning Business Unit",
+      "owningteam": "Owning Team",
+      "owninguser": "Owning User",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "Table Recommendations",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "Table Recommendations (Views)",
+    "Name": "_msftcsa_tablerecommendation_views",
+    "RelatedEntityName": "Table Recommendations",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "0a761798-358a-4947-bec9-a34cdafff909": "Inactive Table Recommendations",
+      "2745a18f-3968-4782-97cb-f61201717ee8": "Table Recommendation Associated View",
+      "2dd930bb-ab7d-43f1-b668-f30dbddbf52e": "Table Recommendation Lookup View",
+      "4cdd5d16-307d-4d92-9bc8-14a296453cc8": "Active Table Recommendations",
+      "b7f6ad7f-f477-4759-991c-16053dc634ae": "Table Recommendation Advanced Find View"
+    }
+  },
+  {
+    "DisplayName": "Easy To Clean (Table Recommendations)",
+    "Name": "msftcsa_tablerecommendation_msftcsa_easytoclean",
+    "OptionSetInfoNameMapping": {
+      "0": "No",
+      "1": "Yes"
+    },
+    "OptionSetIsBooleanValued": true,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "msftcsa_easytoclean",
+        "OptionSetReferenceEntityName": "Table Recommendations"
+      }
+    },
+    "OptionSetTypeKey": "BooleanType",
+    "RelatedColumnInvariantName": "msftcsa_easytoclean",
+    "RelatedEntityName": "Table Recommendations",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status (Table Recommendations)",
+    "Name": "msftcsa_tablerecommendation_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "Table Recommendations"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "Table Recommendations",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (Table Recommendations)",
+    "Name": "msftcsa_tablerecommendation_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "Table Recommendations"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "Table Recommendations",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Table Types",
+    "Name": "msftcsa_tabletypes",
+    "OptionSetInfoNameMapping": {
+      "321730000": "System",
+      "321730001": "Core",
+      "321730002": "Microsoft Custom Table",
+      "321730003": "Custom Table",
+      "321730004": "Internal",
+      "321730005": "Customization",
+      "321730006": "Analytics",
+      "321730007": "Configuration"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": true,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "msftcsa_tabletype",
+        "OptionSetReferenceEntityName": "Table Recommendations"
+      }
+    },
+    "OptionSetTypeKey": "PicklistType",
+    "RelatedColumnInvariantName": "msftcsa_tabletype",
+    "RelatedEntityName": "Table Recommendations",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Worth Cleaning Up",
+    "Name": "msftcsa_worthcleaningup",
+    "OptionSetInfoNameMapping": {
+      "321730000": "Yes",
+      "321730001": "No",
+      "321730002": "Maybe"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": true,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "msftcsa_worthcleaningup",
+        "OptionSetReferenceEntityName": "Table Recommendations"
+      }
+    },
+    "OptionSetTypeKey": "PicklistType",
+    "RelatedColumnInvariantName": "msftcsa_worthcleaningup",
+    "RelatedEntityName": "Table Recommendations",
+    "Type": "OptionSetInfo"
+  }
+]

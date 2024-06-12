@@ -1,0 +1,211 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "msftcsa_CapacityDataverse"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "83255185-054a-4f47-a96e-19b66586041d"
+          },
+          "type": "Request",
+          "kind": "PowerAppV2",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "environmentUrl",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Enter environment url",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_1": {
+                  "title": "solutionUniqueName",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Enter solution uniue name",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "boolean": {
+                  "description": "Is an active layer",
+                  "title": "isActiveLayer",
+                  "type": "boolean",
+                  "x-ms-content-hint": "BOOLEAN",
+                  "x-ms-dynamically-added": true
+                },
+                "text_2": {
+                  "description": "The id of the entityanalyticsConfigId",
+                  "title": "entityAnalyticsConfigId",
+                  "type": "string",
+                  "x-ms-content-hint": "TEXT",
+                  "x-ms-dynamically-added": true
+                }
+              },
+              "required": [
+                "text",
+                "text_1",
+                "boolean",
+                "text_2"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Set_variable": {
+          "runAfter": {
+            "Scope": [
+              "Failed",
+              "TimedOut"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "c05d83f6-2b0b-4819-9cba-6200b5b7013b"
+          },
+          "type": "SetVariable",
+          "inputs": {
+            "name": "resultVar",
+            "value": "error"
+          }
+        },
+        "Respond_to_a_PowerApp_or_flow": {
+          "runAfter": {
+            "Set_variable": [
+              "TimedOut",
+              "Skipped",
+              "Failed",
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "d203d597-63a1-4b07-aa64-80fc3fc180ce"
+          },
+          "type": "Response",
+          "kind": "PowerApp",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "title": "result",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                }
+              },
+              "additionalProperties": {}
+            },
+            "statusCode": 200,
+            "body": {
+              "result": "@variables('resultVar')"
+            }
+          }
+        },
+        "Init_var_result": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "2d6e179e-5b56-4ed0-b6dc-88104cbfe465"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "resultVar",
+                "type": "string",
+                "value": "success"
+              }
+            ]
+          }
+        },
+        "Scope": {
+          "actions": {
+            "Condition": {
+              "actions": {
+                "Delete_a_row_from_selected_environment_(preview)": {
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "parameters": {
+                      "organization": "@triggerBody()?['text']",
+                      "entityName": "entityanalyticsconfigs",
+                      "recordId": "@triggerBody()?['text_2']"
+                    },
+                    "host": {
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+                      "operationId": "DeleteRecordWithOrganization",
+                      "connectionName": "shared_commondataserviceforapps"
+                    }
+                  }
+                }
+              },
+              "else": {
+                "actions": {
+                  "Perform_Uninstall_solution_async": {
+                    "metadata": {
+                      "operationMetadataId": "089fd14f-53ee-4e7e-aa0d-b2a832afb5f7"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "parameters": {
+                        "organization": "@triggerBody()['text']",
+                        "actionName": "UninstallSolutionAsync",
+                        "item": {
+                          "SolutionUniqueName": "@{triggerBody()['text_1']}"
+                        }
+                      },
+                      "host": {
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+                        "operationId": "PerformUnboundActionWithOrganization",
+                        "connectionName": "shared_commondataserviceforapps"
+                      }
+                    }
+                  }
+                }
+              },
+              "expression": {
+                "and": [
+                  {
+                    "equals": [
+                      "@triggerBody()?['boolean']",
+                      "@true"
+                    ]
+                  }
+                ]
+              },
+              "type": "If"
+            }
+          },
+          "runAfter": {
+            "Init_var_result": [
+              "Succeeded"
+            ]
+          },
+          "type": "Scope"
+        }
+      }
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}

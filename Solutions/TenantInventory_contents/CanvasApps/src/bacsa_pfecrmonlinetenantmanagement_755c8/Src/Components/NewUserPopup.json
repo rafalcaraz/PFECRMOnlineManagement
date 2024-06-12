@@ -1,0 +1,27 @@
+{
+  "ComponentAllowCustomization": true,
+  "ComponentChangedSinceFileImport": true,
+  "ComponentManifest": {
+    "AllowAccessToGlobals": true,
+    "AllowCustomization": true,
+    "Description": "",
+    "Name": "NewUserPopup",
+    "TemplateGuid": "c03e5dc2bc5d4033adc3b7016b88ffd7"
+  },
+  "ComponentType": "CanvasComponent",
+  "CustomGroupControlTemplateName": "",
+  "CustomProperties": [],
+  "FirstParty": true,
+  "Id": "http://microsoft.com/appmagic/Component",
+  "IsComponentLocked": false,
+  "IsComponentTemplate": true,
+  "IsCustomGroupControlTemplate": false,
+  "IsPcfControl": false,
+  "IsPremiumPcfControl": false,
+  "IsWidgetTemplate": false,
+  "LastModifiedTimestamp": "638235490348938077",
+  "Name": "c03e5dc2bc5d4033adc3b7016b88ffd7",
+  "OverridableProperties": {},
+  "TemplateOriginalName": "5d7c24009fe547d6873ac6082da49d63",
+  "Version": "638059519328393256"
+}

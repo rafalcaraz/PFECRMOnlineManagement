@@ -1,0 +1,20 @@
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnConversationStart
+  id: main
+  actions:
+    - kind: SendActivity
+      id: sendMessage_M0LuhV
+      activity:
+        text:
+          - Hello, I'm {System.Bot.Name}.  I can help provide access to PFECRMOnline
+        speak:
+          - Thanks for calling, how can I help?
+
+    - kind: SendActivity
+      id: sendActivity_1jQC46
+      activity: |-
+        Type things like
+        - Check Global Admin Status
+        - Request global admin status
+        - Reset Password

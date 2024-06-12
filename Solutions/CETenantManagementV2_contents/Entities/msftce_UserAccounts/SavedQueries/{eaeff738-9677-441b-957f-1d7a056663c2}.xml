@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{eaeff738-9677-441b-957f-1d7a056663c2}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="msftce_name" select="1" icon="1" preview="1">
+        <row name="result" id="msftce_useraccountsid">
+          <cell name="msftce_name" width="300" />
+          <cell name="createdon" width="125" />
+          <cell name="msftce_userid" width="100" />
+          <cell name="msftce_creatoruseremail" width="149" />
+          <cell name="msftce_creatoruserid" width="128" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="msftce_useraccounts">
+          <attribute name="msftce_useraccountsid" />
+          <attribute name="msftce_name" />
+          <attribute name="createdon" />
+          <order attribute="msftce_name" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="msftce_userid" />
+          <attribute name="msftce_creatoruseremail" />
+          <attribute name="msftce_creatoruserid" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active User Accounts" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

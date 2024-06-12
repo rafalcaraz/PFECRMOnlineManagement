@@ -1,0 +1,10 @@
+[
+  {
+    "ApiId": "/providers/microsoft.powerapps/apis/shared_logicflows",
+    "FlowNameId": "096d4af6-4db6-45d8-86af-ea2e34f3e0d9",
+    "Name": "Temp-TestingNewFlowForIncomingRequests",
+    "ServiceKind": "ConnectedWadl",
+    "Type": "ServiceInfo",
+    "WorkflowEntityId": "2a76c0a8-a70b-ee11-8f6e-0022482c4d51"
+  }
+]

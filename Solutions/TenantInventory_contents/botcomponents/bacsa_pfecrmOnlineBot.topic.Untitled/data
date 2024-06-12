@@ -1,0 +1,98 @@
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnRecognizedIntent
+  id: main
+  intent:
+    displayName: Reset Password
+    triggerQueries:
+      - reset password
+      - forgot password
+      - password reset
+      - can't login
+      - need to change password
+      - help with password
+      - reset my account password
+
+  actions:
+    - kind: Question
+      id: question_4XaZHk
+      interruptionPolicy:
+        allowInterruption: true
+
+      variable: init:Topic.resetPassword
+      prompt: Do you really want to reset your password? (not implemented yet)
+      entity: BooleanPrebuiltEntity
+
+    - kind: ConditionGroup
+      id: conditionGroup_qykzpj
+      conditions:
+        - id: conditionItem_dhAjN5
+          condition: =Topic.resetPassword = true
+          actions:
+            - kind: InvokeFlowAction
+              id: invokeFlowAction_HAw1xc
+              input:
+                binding:
+                  text: FindMSUserInPFETenant
+                  text_1: =System.User.Email
+                  text_2: none
+
+              output:
+                binding:
+                  message: Topic.pfeCrmOnlineMessage
+
+              flowId: 8828904a-716f-ee11-8179-0022482c4aea
+
+            - kind: ConditionGroup
+              id: conditionGroup_jk7tBP
+              conditions:
+                - id: conditionItem_RWx6Ig
+                  condition: =Topic.pfeCrmOnlineMessage = "NONE"
+                  actions:
+                    - kind: SendActivity
+                      id: sendActivity_3krufW
+                      activity: Was not able to find your account in PFECRMOnline. Make sure to link your account in aka.ms/pfecrmonline
+
+              elseActions:
+                - kind: Question
+                  id: question_TBpxeB
+                  interruptionPolicy:
+                    allowInterruption: true
+
+                  variable: init:Topic.isMatchingAccount
+                  prompt: "Is this your account: {Topic.pfeCrmOnlineMessage} ? Clicking 'YES' will reset your password."
+                  entity: BooleanPrebuiltEntity
+
+                - kind: ConditionGroup
+                  id: conditionGroup_4XCkrC
+                  conditions:
+                    - id: conditionItem_PoyhwS
+                      condition: =Topic.isMatchingAccount = true
+                      actions:
+                        - kind: InvokeFlowAction
+                          id: invokeFlowAction_acDpr6
+                          input:
+                            binding:
+                              text: ResetPassword
+                              text_1: =System.User.Email
+                              text_2: none
+
+                          output:
+                            binding:
+                              message: Topic.tempPassword
+
+                          flowId: 8828904a-716f-ee11-8179-0022482c4aea
+
+                        - kind: SendActivity
+                          id: W147Qw
+                          activity: "Ok your password was reset to: {Topic.tempPassword} . Sign in again and will prompt you to choose your new password."
+
+                  elseActions:
+                    - kind: SendActivity
+                      id: sendActivity_PXjouC
+                      activity: Please make sure your account is linked properly in aka.ms/pfecrmonline
+
+      elseActions:
+        - kind: SendActivity
+          id: sendActivity_HQWaN4
+          activity: Ok i will not reset your password

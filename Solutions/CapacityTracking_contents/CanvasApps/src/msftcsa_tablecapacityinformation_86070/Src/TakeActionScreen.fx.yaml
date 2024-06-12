@@ -1,0 +1,716 @@
+TakeActionScreen As screen:
+    OnVisible: |-
+        =Set(ltrInfo, 'LTR-TableValidation'.Run([@ModelDrivenFormIntegration].Item.'Name'));
+        Set(ltrCreateNew, false);
+        Set(ltrQueryLoaded, false);
+
+    Arrow8 As arrow.backArrow:
+        OnSelect: =Back()
+        X: =8
+        Y: =12
+        ZIndex: =1
+
+    Label17 As label:
+        Text: ="Take action screen"
+        Width: =212
+        X: =99
+        Y: =17
+        ZIndex: =2
+
+    TextCanvas5 As Text:
+        DisplayMode: =DisplayMode.Edit
+        FontColor: =
+        Height: =49
+        Text: ="If you're unsure on what to do, read here"
+        Width: =241
+        X: =20
+        Y: =80
+        ZIndex: =3
+
+    Icon8 As icon.Lightbulb:
+        Height: =47
+        Icon: =Icon.Lightbulb
+        OnSelect: =Navigate(AdditionalInfoScreen)
+        Width: =46
+        X: =261
+        Y: =80
+        ZIndex: =4
+
+    "ActionsAvailable As 'Tab list'.pcfdataset":
+        Alignment: ='TabList.Alignment'.Vertical
+        DisplayMode: =DisplayMode.Edit
+        Height: =438
+        Items: =["Bulk Delete", "Long Term Retention", "Azure Synapse Link", "Integration Tools", "Custom Code"]
+        Width: =174
+        X: =20
+        Y: =172
+        ZIndex: =5
+
+    bulkDeleteActionContainer As groupContainer.manualLayoutContainer:
+        Height: =558
+        Visible: =ActionsAvailable.Selected.Value = "Bulk Delete"
+        Width: =535
+        X: =789
+        Y: =172
+        ZIndex: =6
+
+        bulkCreateBulkDeleteLabel_1 As label:
+            Text: ="Create Bulk Deletion Job"
+            Width: =226
+            X: =28
+            Y: =15
+            ZIndex: =2
+
+        bulkTableNameLabel_1 As label:
+            Height: =39
+            Text: |
+                ="Table Name: " & If(IsBlank(Table1_1.Selected), "<No Table Chosen Yet>", Table1_1.Selected.Name)
+            Width: =476
+            X: =28
+            Y: =55
+            ZIndex: =3
+
+        bulkCriteriaDropdown_1 As dropdown:
+            Items: |-
+                =[{name: "Days", format: "OlderThanXDays"}, {name: "Months", format: "OlderThanXMonths"} , {name: "Years", format: "OlderThanXYears"}]
+            X: =201
+            Y: =102
+            ZIndex: =4
+
+        bulkDaysDropdown_1 As dropdown:
+            Items: =Sequence(30,1,1)
+            X: =201
+            Y: =184
+            ZIndex: =5
+
+        bulkRecurrenceToggle_1 As toggleSwitch:
+            FalseText: ="One Time"
+            TrueText: ="Recurring"
+            Width: =160
+            X: =28
+            Y: =267
+            ZIndex: =6
+
+        bulkSpecifyRecurrenceLabel_1 As label:
+            Height: =72
+            Text: |-
+                ="Specify Recurrence Days:"
+            Visible: =bulkRecurrenceToggle_1.Value
+            Width: =118
+            X: =28
+            Y: =330
+            ZIndex: =7
+
+        bulkRecurrenceDropdown_1 As dropdown:
+            Height: =37
+            Items: =Sequence(30,1,1)
+            Visible: =bulkRecurrenceToggle_1.Value
+            Width: =193
+            X: =164
+            Y: =333
+            ZIndex: =8
+
+        bulkCreateBulkButton_1 As button:
+            Height: =53
+            OnSelect: =CreateBulkDeletionJob.Run( Substitute([@ModelDrivenFormIntegration].Item.'Environment CDS Instance URL', ".com/", ".com"), Table1_1.Selected.Name, bulkCriteriaDropdown_1.Selected.format, bulkDaysDropdown_1.Selected.Value, If(bulkRecurrenceToggle_1.Value, $"FREQ=DAILY;INTERVAL=;{bulkRecurrenceDropdown_1.Selected.Value}", ""))
+            Text: ="Create Bulk delete"
+            Visible: =!IsBlank(Table1_1.Selected)
+            Width: =206
+            X: =16
+            Y: =484
+            ZIndex: =9
+
+        bulkTableNameLabel_2 As label:
+            Height: =39
+            Text: |-
+                ="Filter Range:"
+            Width: =160
+            X: =28
+            Y: =103
+            ZIndex: =10
+
+        bulkTableNameLabel_3 As label:
+            Height: =39
+            Text: |-
+                ="Filter Amount:"
+            Width: =160
+            X: =28
+            Y: =184
+            ZIndex: =11
+
+        bulkTableNameLabel_4 As label:
+            Height: =70
+            Italic: =true
+            Text: |-
+                ="To create a more complex bulk delete job, create it here:"
+            Visible: =!IsBlank(Table1_1.Selected)
+            Width: =213
+            X: =280
+            Y: =467
+            ZIndex: =12
+
+        Arrow5 As arrow:
+            Height: =35
+            OnSelect: =Launch([@ModelDrivenFormIntegration].Item.'Environment CDS Instance URL' & "main.aspx?etc=4424&pagetype=entitylist&forceClassic=1")
+            Visible: =!IsBlank(Table1_1.Selected)
+            Width: =31
+            X: =493
+            Y: =493
+            ZIndex: =13
+
+    ltrActionContainer As groupContainer.manualLayoutContainer:
+        Height: =bulkDeleteActionContainer.Height
+        Visible: =ActionsAvailable.Selected.Value = "Long Term Retention"
+        Width: =bulkDeleteActionContainer.Width
+        X: =bulkDeleteActionContainer.X
+        Y: =bulkDeleteActionContainer.Y
+        ZIndex: =7
+
+        ltrLabel_1 As label:
+            Text: ="Long Term Retention"
+            Width: =226
+            X: =56
+            Y: =20
+            ZIndex: =2
+
+        "Gallery1_1 As gallery.'BrowseLayout_Vertical_ThreeTextVariant_ver5.0'":
+            DelayItemLoading: =true
+            Height: =370
+            Items: =ltrPolicies
+            Layout: =Layout.Vertical
+            LoadingSpinner: =LoadingSpinner.Data
+            TemplatePadding: =0
+            TemplateSize: =116
+            Visible: =ltrInfo.isvalidforltr And CountRows(ltrPolicies) > 0 And ltrCreateNew = false
+            Width: =388
+            X: =40
+            Y: =188
+            ZIndex: =3
+
+            Title2_1 As label:
+                FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                Height: =Self.Size * 1.8
+                OnSelect: =Select(Parent)
+                PaddingBottom: =0
+                PaddingLeft: =0
+                PaddingRight: =0
+                PaddingTop: =0
+                Text: =ThisItem.name
+                VerticalAlign: =VerticalAlign.Top
+                Width: =Parent.TemplateWidth - 86
+                X: =16
+                Y: =8
+                ZIndex: =1
+
+            Subtitle2_1 As label:
+                FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                Height: =Self.Size * 1.8
+                OnSelect: =Select(Parent)
+                PaddingBottom: =0
+                PaddingLeft: =0
+                PaddingRight: =0
+                PaddingTop: =0
+                Text: =ThisItem.viewName
+                VerticalAlign: =VerticalAlign.Top
+                Width: =Title2_1.Width
+                X: =Title2_1.X
+                Y: =39
+                ZIndex: =2
+
+            Body1_3 As label:
+                FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                Height: =Self.Size * 1.8
+                OnSelect: =Select(Parent)
+                PaddingBottom: =0
+                PaddingLeft: =0
+                PaddingRight: =0
+                PaddingTop: =0
+                Text: =ThisItem.statuscode
+                VerticalAlign: =VerticalAlign.Top
+                Width: =Title2_1.Width
+                X: =Title2_1.X
+                Y: =61
+                ZIndex: =3
+
+            NextArrow2_1 As icon.ChevronRight:
+                AccessibleLabel: =Self.Tooltip
+                Color: =RGBA(166, 166, 166, 1)
+                Height: =50
+                Icon: =Icon.ChevronRight
+                OnSelect: |-
+                    =Select(Parent);
+                    Launch("https://make.powerapps.com/environments/" & [@ModelDrivenFormIntegration].Item.'Name' & "/retentionPolicies/" & ThisItem.id);
+                PaddingBottom: =16
+                PaddingLeft: =16
+                PaddingRight: =16
+                PaddingTop: =16
+                Tooltip: ="View retention policy config details"
+                Width: =50
+                X: =Parent.TemplateWidth - Self.Width - 12
+                Y: =(Parent.TemplateHeight / 2) - (Self.Height / 2)
+                ZIndex: =4
+
+            Separator2_1 As rectangle:
+                BorderThickness: =1
+                Fill: =RGBA(0, 18, 107, 1)
+                Height: =8
+                OnSelect: =Select(Parent)
+                Width: =Parent.TemplateWidth
+                Y: =Parent.TemplateHeight - Self.Height
+                ZIndex: =5
+
+            Rectangle2_1 As rectangle:
+                Height: =Parent.TemplateHeight - Separator2_1.Height
+                OnSelect: =Select(Parent)
+                Visible: =ThisItem.IsSelected
+                Width: =4
+                ZIndex: =6
+
+            Body1_5 As label:
+                FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                Height: =21
+                OnSelect: =Select(Parent)
+                PaddingBottom: =0
+                PaddingLeft: =0
+                PaddingRight: =0
+                PaddingTop: =0
+                Text: =If(IsBlank(ThisItem.recurrence), "One Time", Substitute(Substitute(ThisItem.recurrence, "FREQ=", ""), ";INTERVAL=", "-"))
+                VerticalAlign: =VerticalAlign.Top
+                Width: =175
+                X: =Title2_1.X
+                Y: =87
+                ZIndex: =7
+
+            Body1_4 As label:
+                FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                Height: =21
+                OnSelect: =Select(Parent)
+                PaddingBottom: =0
+                PaddingLeft: =0
+                PaddingRight: =0
+                PaddingTop: =0
+                Text: |-
+                    ="Recurrence: " & If(IsBlank(ThisItem.recurrence), "--", ThisItem.recurrence)
+                VerticalAlign: =VerticalAlign.Top
+                X: =168
+                Y: =85
+                ZIndex: =8
+
+        ltrTableName_1 As label:
+            Height: =42
+            Text: |
+                ="Table Name: " & If(IsBlank(Table1_1.Selected), "<No Table Chosen Yet>", Table1_1.Selected.Name)
+            Width: =344
+            X: =56
+            Y: =40
+            ZIndex: =4
+
+        ltrInfoIcon_1 As icon.Error:
+            Height: =32
+            Icon: =Icon.Error
+            OnSelect: |-
+                =Launch($"https://make.powerapps.com/environments/{[@ModelDrivenFormIntegration].Item.'Name'}/entities")
+            Tooltip: ="Verify table is enabled for long term retention here"
+            Width: =35
+            X: =247
+            Y: =20
+            ZIndex: =5
+
+        ltrNotAvailableLabel_1 As label:
+            Color: =RGBA(255, 0, 0, 1)
+            Height: =41
+            Text: =ltrInfo.validforltrmessage
+            Visible: =!ltrInfo.isvalidforltr
+            Width: =360
+            X: =40
+            Y: =82
+            ZIndex: =6
+
+        Button6_1 As button:
+            Height: =30
+            OnSelect: =Set(ltrCreateNew, true)
+            Text: ="Create New"
+            Visible: =ltrInfo.isvalidforltr And ltrQueryLoaded And !IsBlank(Table1_1.Selected)
+            Width: =128
+            X: =56
+            Y: =207
+            ZIndex: =18
+
+        ltrNoltrsCreatedLabel_1 As label:
+            Height: =61
+            Text: ="No Created long retention configurations enabled for this table. Ensure this table is configured for long term retention"
+            Visible: =ltrInfo.isvalidforltr And ltrQueryLoaded And !IsBlank(tableNameFile) And CountRows(ltrPolicies) = 0
+            Width: =360
+            X: =56
+            Y: =131
+            ZIndex: =19
+
+        ltrLtrsCreatedLabel_1 As label:
+            Height: =41
+            Text: ="Below are long term retention configurations created for this table"
+            Visible: =ltrInfo.isvalidforltr And ltrQueryLoaded And !IsBlank(tableNameFile) And CountRows(ltrPolicies) > 0
+            Width: =360
+            X: =56
+            Y: =131
+            ZIndex: =20
+
+        ButtonCanvas2 As Button:
+            BasePaletteColor: =
+            DisplayMode: =If(ltrInfo.isvalidforltr, DisplayMode.Edit, DisplayMode.Disabled)
+            FontColor: =
+            Height: =32
+            OnSelect: |
+                =Set(tableNameFile, Lower(Substitute(Table1_1.Selected.Name,"Base","")));
+                Set(ltrQueryLoaded, false);
+                If(ltrInfo.isvalidforltr And !("-analytics" in Table1_1.Selected.Name),
+                
+                    ClearCollect(tableViews, Blank());
+                    With(
+                        //{views: ParseJSON('LTR-GetViewInformation'.Run("https://ralop-salesinsights.crm.dynamics.com",fileTableNameInput.Text).viewslist) },
+                        {views: ParseJSON('LTR-GetViewInformation'.Run(Substitute([@ModelDrivenFormIntegration].Item.'Environment CDS Instance URL', "com/", "com"),tableNameFile).viewslist) },
+                        ForAll(Table(views) As _views,
+                            Collect(tableViews, 
+                                {
+                                    name: Text(_views.Value.name),
+                                    id: Text(_views.Value.savedqueryid),
+                                    fetchXml: Text(_views.Value.fetchxml),
+                                    solutionId: Text(_views.Value.solutionid)
+                                }
+                            )
+                        )
+                    );
+                
+                
+                    ClearCollect(ltrPolicies, Blank());
+                    With(
+                        //{policies: ParseJSON('LTR-GetAvailableRetentionPolicies'.Run("https://ralop-salesinsights.crm.dynamics.com", fileTableNameInput.Text).retentionpolicies) },
+                        {policies: ParseJSON('LTR-GetAvailableRetentionPolicies'.Run(Substitute([@ModelDrivenFormIntegration].Item.'Environment CDS Instance URL', "com/", "com"), tableNameFile).retentionpolicies) },
+                        ForAll(Table(policies) As _policies,
+                            Collect(ltrPolicies, 
+                                {
+                                    //name: "TEst"
+                                    name: Text(_policies.Value.name),
+                                    id: Text(_policies.Value.retentionConfigId),
+                                    fetchXml: Text(_policies.Value.criteria),
+                                    viewId: Text(_policies.Value.viewid),
+                                    viewName: Text(_policies.Value.viewName),
+                                    recurrence: Text(_policies.Value.recurrence),
+                                    nextrun: Text(_policies.Value.nextRun),
+                                    state: Text(_policies.Value.state),
+                                    statuscode: Text(_policies.Value.statusCode)
+                                }
+                            )
+                        )
+                    );
+                  Set(ltrQueryLoaded, true);
+                );
+            Text: ="Validate"
+            Visible: =true
+            Width: =96
+            X: =367
+            Y: =45
+            ZIndex: =22
+
+        ltrCreateGroup_1 As group:
+            Height: =5
+            Width: =5
+            X: =40
+            Y: =-20
+            ZIndex: =22
+
+            ltrDateDropdown_1 As datepicker:
+                Visible: =ltrInfo.isvalidforltr And ltrQueryLoaded And ltrCreateNew
+                Width: =413
+                X: =60
+                Y: =386
+                ZIndex: =7
+
+            ltrHoursDropdown_1 As dropdown:
+                Default: =Text(Hour(Now()),"")
+                Items: =["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"]
+                Visible: =ltrInfo.isvalidforltr And ltrQueryLoaded And ltrCreateNew
+                Width: =142
+                X: =60
+                Y: =443
+                ZIndex: =8
+
+            ltrMinutesDropdown_1 As dropdown:
+                Default: =Text(Minute(Now()),"")
+                Items: =["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59"]
+                Visible: =ltrInfo.isvalidforltr And ltrQueryLoaded And ltrCreateNew
+                Width: =136
+                X: =221
+                Y: =443
+                ZIndex: =9
+
+            ltrRecurrenceDropdown_1 As dropdown:
+                Items: =["Once", "Daily", "Monthly", "Weekly", "Yearly"]
+                Visible: =ltrInfo.isvalidforltr And ltrQueryLoaded And ltrCreateNew
+                Width: =142
+                X: =186
+                Y: =510
+                ZIndex: =10
+
+            ltrNameInput_1 As text:
+                Default: =""
+                HintText: ="Enter Retention policy name"
+                Visible: =ltrInfo.isvalidforltr And ltrQueryLoaded And ltrCreateNew
+                Width: =369
+                X: =142
+                Y: =251
+                ZIndex: =11
+
+            ltrCreateLTRButton_3 As button:
+                DisplayMode: =If(IsBlank(tableNameFile) Or IsBlank(ltrNameInput_1.Text), DisplayMode.Disabled, DisplayMode.Edit)
+                Height: =36
+                OnSelect: |-
+                    =Set(retentionGuid, GUID());
+                    Set(tempObject, 
+                        {
+                            name: ltrNameInput_1.Text,
+                            recurrence: If(ltrRecurrenceDropdown_1.Selected.Value <> "Once","FREQ="&Upper(ltrRecurrenceDropdown_1.Selected.Value)&";INTERVAL=1", ""),
+                            uniquename: "ui_" & retentionGuid,
+                            starttime: DateTimeValue("" & ltrDateDropdown_1.SelectedDate & " " & ltrHoursDropdown_1.Selected.Value & ":" & ltrMinutesDropdown_1.Selected.Value),
+                            retentionconfigid: retentionGuid,
+                            entitylogicalname: tableNameFile,
+                            viewid: ltrViewDropdown_1.Selected.id,
+                            criteria: ltrViewDropdown_1.Selected.fetchXml,
+                            statecode: 0,
+                            statuscode: 10
+                        }
+                    
+                    );
+                    
+                    Set(retentionGuid,'LTR-CreateTableRetention'.Run(Substitute([@ModelDrivenFormIntegration].Item.'Environment CDS Instance URL', "com/", "com"), JSON(tempObject)).recordid);
+                    
+                    Notify("Created LTR For this Table with id: " & retentionGuid , NotificationType.Success);
+                Text: ="Create"
+                Visible: =ltrInfo.isvalidforltr And ltrQueryLoaded And ltrCreateNew
+                Width: =154
+                X: =381
+                Y: =519
+                ZIndex: =12
+
+            ltrViewDropdown_1 As dropdown:
+                Default: =
+                Height: =45
+                Items: =tableViews
+                Tooltip: ="Select a view"
+                Visible: =ltrInfo.isvalidforltr And ltrQueryLoaded And ltrCreateNew
+                Width: =369
+                X: =142
+                Y: =302
+                ZIndex: =13
+
+            ltrCriteriaViewLabel_1 As label:
+                Height: =39
+                Text: |-
+                    ="Criteria: "
+                Visible: =ltrInfo.isvalidforltr And ltrQueryLoaded And ltrCreateNew
+                Width: =146
+                X: =40
+                Y: =308
+                ZIndex: =14
+
+            ltrNameLabel_1 As label:
+                Height: =39
+                Text: |-
+                    ="Name: "
+                Visible: =ltrInfo.isvalidforltr And ltrQueryLoaded And ltrCreateNew
+                Width: =146
+                X: =40
+                Y: =252
+                ZIndex: =15
+
+            ltrScheduleLabel_1 As label:
+                Height: =39
+                Text: |-
+                    ="Schedule - Start Date: "
+                Visible: =ltrInfo.isvalidforltr And ltrQueryLoaded And ltrCreateNew
+                Width: =280
+                X: =40
+                Y: =347
+                ZIndex: =16
+
+            ltrRecurrenceLabel_1 As label:
+                Height: =39
+                Text: |-
+                    ="Criteria: "
+                Visible: =ltrInfo.isvalidforltr And ltrQueryLoaded And ltrCreateNew
+                Width: =146
+                X: =56
+                Y: =510
+                ZIndex: =17
+
+            ltrCreateLTRButton_2 As button:
+                Height: =36
+                OnSelect: |-
+                    =Set(ltrCreateNew, false);
+                    Reset(ltrNameInput_1);
+                    Reset(ltrViewDropdown_1);
+                    Reset(ltrDateDropdown_1);
+                    Reset(ltrHoursDropdown_1);
+                    Reset(ltrMinutesDropdown_1);
+                    Reset(ltrRecurrenceDropdown_1);
+                Text: ="Cancel"
+                Visible: =ltrInfo.isvalidforltr And ltrQueryLoaded And ltrCreateNew
+                Width: =154
+                X: =381
+                Y: =483
+                ZIndex: =21
+
+        TextCanvas2 As Text:
+            DisplayMode: =DisplayMode.Edit
+            FontColor: =
+            Height: =41
+            Text: ="This table is an analtyics table and cannot be leveraged for Long Term Retention"
+            Visible: =ltrInfo.isvalidforltr And "-analytics" in Table1_1.Selected.Name
+            Width: =368
+            X: =60
+            Y: =90
+            ZIndex: =23
+
+    azureSynapseActionContainer As groupContainer.manualLayoutContainer:
+        Height: =bulkDeleteActionContainer.Height
+        Visible: =ActionsAvailable.Selected.Value = "Azure Synapse Link"
+        Width: =bulkDeleteActionContainer.Width
+        X: =bulkDeleteActionContainer.X
+        Y: =bulkDeleteActionContainer.Y
+        ZIndex: =8
+
+        TextCanvas2_2 As Text:
+            DisplayMode: =DisplayMode.Edit
+            FontColor: =
+            Height: =34
+            Text: ="Azure Synapse Link"
+            Width: =246
+            X: =24
+            Y: =24
+            ZIndex: =1
+
+    "'3rdPartyActionContainer' As groupContainer.manualLayoutContainer":
+        Height: =bulkDeleteActionContainer.Height
+        Visible: =ActionsAvailable.Selected.Value = "Integration Tools"
+        Width: =bulkDeleteActionContainer.Width
+        X: =bulkDeleteActionContainer.X
+        Y: =bulkDeleteActionContainer.Y
+        ZIndex: =9
+
+        TextCanvas2_3 As Text:
+            DisplayMode: =DisplayMode.Edit
+            FontColor: =
+            Height: =44
+            Text: ="Third Party Tools"
+            Width: =219
+            X: =24
+            Y: =24
+            ZIndex: =1
+
+    customCodeActionContainer As groupContainer.manualLayoutContainer:
+        Height: =bulkDeleteActionContainer.Height
+        Visible: =ActionsAvailable.Selected.Value = "Custom Code"
+        Width: =bulkDeleteActionContainer.Width
+        X: =bulkDeleteActionContainer.X
+        Y: =bulkDeleteActionContainer.Y
+        ZIndex: =10
+
+        TextCanvas2_4 As Text:
+            DisplayMode: =DisplayMode.Edit
+            FontColor: =
+            Height: =32
+            Text: ="Custom Code"
+            Width: =96
+            X: =24
+            Y: =24
+            ZIndex: =1
+
+    Container4 As groupContainer.manualLayoutContainer:
+        Height: =558
+        X: =241
+        Y: =172
+        ZIndex: =11
+
+        TableTypesLabel_2 As label:
+            Height: =48
+            Text: |-
+                ="Filter By Table Type:"
+            Width: =141
+            X: =19
+            Y: =40
+            ZIndex: =2
+
+        WorthCleaningLabel_2 As label:
+            Height: =48
+            Text: ="Worth Cleaningup"
+            Width: =141
+            X: =17
+            Y: =96
+            ZIndex: =3
+
+        TableTypesFilterDropdown_2 As combobox:
+            Default: =Blank()
+            DisplayFields: =["Value"]
+            Height: =48
+            Items: =Choices('Table Recommendations'.'Table Type')
+            SearchFields: =["Value"]
+            SearchItems: =Choices('Table Recommendations'.'Table Type',TableTypesFilterDropdown_2.SearchText)
+            Width: =308
+            X: =172
+            Y: =40
+            ZIndex: =4
+
+        WorthCleaningFilterDropdown_2 As combobox:
+            Default: =Blank()
+            DisplayFields: =["Value"]
+            Height: =48
+            Items: =Choices('Table Recommendations'.'Worth Cleaning Up')
+            SearchFields: =["Value"]
+            SearchItems: =Choices('Table Recommendations'.'Worth Cleaning Up',WorthCleaningFilterDropdown_2.SearchText)
+            Width: =308
+            X: =172
+            Y: =96
+            ZIndex: =5
+
+        Table1_1 As Table.pcfdataset:
+            DisplayMode: =DisplayMode.Edit
+            Height: =328
+            Items: |-
+                =Filter(
+                    JoinedValues,
+                    Reccomendation.'Table Type' in If(
+                        IsBlank(TableTypesFilterDropdown_2.SelectedItems) Or CountRows(TableTypesFilterDropdown_2.SelectedItems) = 0,
+                        Choices('Table Recommendations'.'Table Type'),
+                        TableTypesFilterDropdown_2.SelectedItems
+                    ),
+                    Reccomendation.'Worth Cleaning Up' in If(
+                        IsBlank(WorthCleaningFilterDropdown_2.SelectedItems) Or CountRows(WorthCleaningFilterDropdown_2.SelectedItems) = 0,
+                        Choices('Table Recommendations'.'Worth Cleaning Up'),
+                        WorthCleaningFilterDropdown_2.SelectedItems
+                    )
+                )
+            onCellValueChange: =false
+            onFilter: =false
+            onNavigate: =false
+            onRowSelect: =false
+            onSave: =false
+            Width: =471
+            X: =0
+            Y: =178
+            ZIndex: =6
+
+            Name1_1 As pcfDataField.textualColumn:
+                FieldDisplayName: ="Name"
+                FieldName: ="Name"
+                FieldType: ="O"
+                FieldVariantName: ="textualColumn"
+                Order: =1
+                ZIndex: =15
+
+            tableSize1_1 As pcfDataField.textualColumn:
+                FieldDisplayName: ="Table Size (MB)"
+                FieldName: ="tableSize"
+                FieldType: ="O"
+                FieldVariantName: ="textualColumn"
+                Order: =2
+                ZIndex: =16
+

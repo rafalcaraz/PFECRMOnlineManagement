@@ -1,0 +1,153 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_bacsa-5fpfecrmonlinehelper-5f7e995d98be6020f7": {
+        "runtimeSource": "invoker",
+        "connection": {
+          "connectionReferenceLogicalName": "bacsa_MigrateNewCustomConn"
+        },
+        "api": {
+          "name": "shared_bacsa-5fpfecrmonlinehelper-5fba3afc5e162617b4",
+          "logicalName": "bacsa_5Fpfecrmonlinehelper"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "6a8dfa65-23e0-45ac-bc1f-b86af1fdb6d0"
+          },
+          "type": "Request",
+          "kind": "Button",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "required": []
+            }
+          }
+        }
+      },
+      "actions": {
+        "PerformAction": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "aba190e2-05a7-4202-8e09-6d771137e0fd"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_bacsa-5fpfecrmonlinehelper-5f7e995d98be6020f7",
+              "operationId": "PerformAction",
+              "apiId": ""
+            },
+            "parameters": {
+              "body/Area": "UserMaintenance",
+              "body/Operation": "GetAllUsers",
+              "body/Parameters": {}
+            },
+            "authentication": {
+              "type": "Raw",
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+            }
+          }
+        },
+        "Filter_only_ones_with_manager": {
+          "runAfter": {
+            "PerformAction": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "f0372f8d-d8b6-4725-ba4e-63bc62bc5c1b"
+          },
+          "type": "Query",
+          "inputs": {
+            "from": "@outputs('PerformAction')?['body']",
+            "where": "@equals(contains(item(), 'manager'), true)"
+          }
+        },
+        "Apply_to_each": {
+          "foreach": "@body('Filter_only_ones_with_manager')",
+          "actions": {
+            "Compose": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "f06f0eb1-60c8-45c5-ac32-83c45cc7cc2b"
+              },
+              "type": "Compose",
+              "inputs": {
+                "userObjectId": "@{item()?['id']}",
+                "customSecurityAttributes": [
+                  {
+                    "customSecurityAttributeName": "parentAccountId",
+                    "customSecurityAttributeValue": "@{item()?['manager/id']}"
+                  },
+                  {
+                    "customSecurityAttributeName": "parentAccountEmail",
+                    "customSecurityAttributeValue": "@{item()?['manager/userPrincipalName']}"
+                  },
+                  {
+                    "customSecurityAttributeName": "isMainAccount",
+                    "customSecurityAttributeValue": "@false"
+                  }
+                ]
+              }
+            },
+            "PerformAction_2": {
+              "runAfter": {
+                "Compose": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "c66ac753-867d-424f-a5f3-a20e07ed83d7"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_bacsa-5fpfecrmonlinehelper-5f7e995d98be6020f7",
+                  "operationId": "PerformAction",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_bacsa-5fpfecrmonlinehelper-5fba3afc5e162617b4"
+                },
+                "parameters": {
+                  "body/Area": "UserMaintenance",
+                  "body/Operation": "UpdateUser",
+                  "body/Parameters": "@outputs('Compose')"
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                }
+              }
+            }
+          },
+          "runAfter": {
+            "Filter_only_ones_with_manager": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "605f8317-ab77-4baa-b3b2-698612dbb693"
+          },
+          "type": "Foreach"
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

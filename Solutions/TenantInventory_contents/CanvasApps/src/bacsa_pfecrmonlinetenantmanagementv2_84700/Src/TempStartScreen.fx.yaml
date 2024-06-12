@@ -1,0 +1,71 @@
+TempStartScreen As screen:
+    Fill: =RGBA(237, 237, 237, 1)
+    OnVisible: =Set(startScreenTimer, true)
+
+    TextCanvas11 As Text:
+        DisplayMode: =DisplayMode.Edit
+        Font: =""
+        FontColor: =
+        FontItalic: =false
+        FontStrikethrough: =false
+        FontUnderline: =false
+        Height: =73
+        Size: =22
+        Text: ="PFECRMOnline App"
+        Width: =413
+        X: =40
+        Y: =40
+        ZIndex: =1
+
+    Spinner1 As Spinner:
+        BasePaletteColor: =
+        DisplayMode: =DisplayMode.Edit
+        Font: =""
+        FontColor: =
+        FontItalic: =false
+        FontSize: =0
+        FontStrikethrough: =false
+        FontUnderline: =false
+        FontWeight: =""
+        Height: =210
+        Label: ="Loading... Checking Access"
+        Visible: =!fullyLoaded
+        Width: =457
+        X: =388
+        Y: =232
+        ZIndex: =2
+
+    Timer1 As timer:
+        AutoStart: =true
+        Duration: =3000
+        OnTimerEnd: =If(fullyLoaded And userManager.userPrincipalName in approvedManagers, Navigate(MainScreen,ScreenTransition.Fade))
+        Repeat: =startScreenTimer
+        Visible: =false
+        X: =1192
+        Y: =640
+        ZIndex: =3
+
+    TextCanvas12 As Text:
+        DisplayMode: =DisplayMode.Edit
+        Font: =""
+        FontColor: =
+        FontItalic: =false
+        FontStrikethrough: =false
+        FontUnderline: =false
+        Height: =100
+        Text: =errorMessage
+        Width: =512
+        X: =283
+        Y: =267
+        ZIndex: =5
+
+    Label1 As label:
+        Height: =42
+        Text: |-
+            ="Manager email: " & userManager.userPrincipalName
+        Visible: =false
+        Width: =435
+        X: =267
+        Y: =136
+        ZIndex: =7
+

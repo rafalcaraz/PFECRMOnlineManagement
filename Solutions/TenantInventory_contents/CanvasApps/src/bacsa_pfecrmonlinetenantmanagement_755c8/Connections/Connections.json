@@ -1,0 +1,137 @@
+{
+  "099874df-90d7-4580-93c9-b3fcecfc560f": {
+    "connectionRef": {
+      "apiTier": "Standard",
+      "displayName": "Logic flows",
+      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1636/1.0.1636.3297/logicflows/icon.png",
+      "id": "/providers/microsoft.powerapps/apis/shared_logicflows",
+      "parameterHints": {
+        "workflowEntityId": {
+          "value": "59f34468-ca74-ed11-81ad-000d3a9dc2c0"
+        },
+        "workflowName": {
+          "value": "4596f97a-9f06-0f28-2862-5e8bcf65d174"
+        }
+      },
+      "parameterHintsV2": {
+        "workflowEntityId": {
+          "value": "59f34468-ca74-ed11-81ad-000d3a9dc2c0"
+        },
+        "workflowName": {
+          "value": "4596f97a-9f06-0f28-2862-5e8bcf65d174"
+        }
+      }
+    },
+    "datasets": {},
+    "dataSources": [
+      "ListAvailableSKUs"
+    ],
+    "dependencies": {},
+    "dependents": [],
+    "id": "099874df-90d7-4580-93c9-b3fcecfc560f"
+  },
+  "0e273cb0-a6ba-49e0-93a5-d7b6d2073609": {
+    "connectionRef": {
+      "apiTier": "Standard",
+      "displayName": "Office 365 Users",
+      "iconUri": "https://connectoricons-prod.azureedge.net/u/laborbol/partial-builds/390724148/1.0.1641.3327/office365users/icon.png",
+      "id": "/providers/microsoft.powerapps/apis/shared_office365users",
+      "parameterHints": {},
+      "parameterHintsV2": {}
+    },
+    "datasets": {},
+    "dataSources": [
+      "Office365Users"
+    ],
+    "dependencies": {},
+    "dependents": [],
+    "id": "0e273cb0-a6ba-49e0-93a5-d7b6d2073609"
+  },
+  "368e0ab8-f247-4350-89e2-9a1d80a81261": {
+    "connectionRef": {
+      "apiTier": "Standard",
+      "displayName": "Logic flows",
+      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1636/1.0.1636.3297/logicflows/icon.png",
+      "id": "/providers/microsoft.powerapps/apis/shared_logicflows",
+      "parameterHints": {
+        "workflowEntityId": {
+          "value": "2a76c0a8-a70b-ee11-8f6e-0022482c4d51"
+        },
+        "workflowName": {
+          "value": "e0d9739d-8e6b-9622-6fb1-ccd55f9ec55f"
+        }
+      },
+      "parameterHintsV2": {
+        "workflowEntityId": {
+          "value": "2a76c0a8-a70b-ee11-8f6e-0022482c4d51"
+        },
+        "workflowName": {
+          "value": "e0d9739d-8e6b-9622-6fb1-ccd55f9ec55f"
+        }
+      }
+    },
+    "datasets": {},
+    "dataSources": [
+      "Temp-TestingNewFlowForIncomingRequests"
+    ],
+    "dependencies": {},
+    "dependents": [],
+    "id": "368e0ab8-f247-4350-89e2-9a1d80a81261"
+  },
+  "718d413a-ef5e-43f3-ad42-00793ad61a05": {
+    "connectionRef": {
+      "apiTier": "Standard",
+      "displayName": "Office 365 Users",
+      "iconUri": "https://connectoricons-prod.azureedge.net/u/laborbol/partial-builds/390724148/1.0.1641.3327/office365users/icon.png",
+      "id": "/providers/microsoft.powerapps/apis/shared_office365users",
+      "parameterHints": {},
+      "parameterHintsV2": {}
+    },
+    "datasets": {},
+    "dataSources": [],
+    "dependencies": {},
+    "dependents": [
+      "b674baf6-cd7b-457b-a9b1-486e1d9a239d"
+    ],
+    "id": "718d413a-ef5e-43f3-ad42-00793ad61a05"
+  },
+  "b674baf6-cd7b-457b-a9b1-486e1d9a239d": {
+    "connectionRef": {
+      "apiTier": "Standard",
+      "displayName": "Logic flows",
+      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1636/1.0.1636.3297/logicflows/icon.png",
+      "id": "/providers/microsoft.powerapps/apis/shared_logicflows",
+      "parameterHints": {
+        "718d413a-ef5e-43f3-ad42-00793ad61a05": {
+          "value": "shared_office365users"
+        },
+        "workflowEntityId": {
+          "value": "c73790a2-db7b-ed11-81ad-000d3a8b13eb"
+        },
+        "workflowName": {
+          "value": "0678341b-1b78-3d53-f297-6b91bd81d39b"
+        }
+      },
+      "parameterHintsV2": {
+        "shared_office365users": {
+          "value": "718d413a-ef5e-43f3-ad42-00793ad61a05"
+        },
+        "workflowEntityId": {
+          "value": "c73790a2-db7b-ed11-81ad-000d3a8b13eb"
+        },
+        "workflowName": {
+          "value": "0678341b-1b78-3d53-f297-6b91bd81d39b"
+        }
+      }
+    },
+    "datasets": {},
+    "dataSources": [
+      "ValidateADUser"
+    ],
+    "dependencies": {
+      "shared_office365users": "718d413a-ef5e-43f3-ad42-00793ad61a05"
+    },
+    "dependents": [],
+    "id": "b674baf6-cd7b-457b-a9b1-486e1d9a239d"
+  }
+}

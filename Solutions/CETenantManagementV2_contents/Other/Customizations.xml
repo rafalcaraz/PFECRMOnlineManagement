@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ImportExportXml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Entities />
+  <Roles />
+  <Workflows />
+  <FieldSecurityProfiles />
+  <Templates />
+  <EntityMaps />
+  <EntityRelationships />
+  <OrganizationSettings />
+  <optionsets />
+  <CustomControls />
+  <AppModuleSiteMaps />
+  <AppModules />
+  <EntityDataProviders />
+  <Connectors />
+  <connectionreferences>
+    <connectionreference connectionreferencelogicalname="msftce_CEMSAzureManagementCustomConnectorRef">
+      <connectionreferencedisplayname>CE MS Azure Management Custom Connector Ref</connectionreferencedisplayname>
+      <connectorid>/providers/Microsoft.PowerApps/apis/shared_msftce-5fazure-20management-20-2d-20rbac-5fcaf1f3b1e9f2d23e</connectorid>
+      <customconnectorid>
+        <connectorid>036d54ed-097d-4faa-a769-4f9062644506</connectorid>
+      </customconnectorid>
+      <iscustomizable>1</iscustomizable>
+      <statecode>0</statecode>
+      <statuscode>1</statuscode>
+    </connectionreference>
+    <connectionreference connectionreferencelogicalname="msftce_CEMSGraphCustomConnectorRef">
+      <connectionreferencedisplayname>CE MS Graph Custom Connector Ref</connectionreferencedisplayname>
+      <connectorid>/providers/Microsoft.PowerApps/apis/shared_msftce-5fgraph-20api-20custom-20connector-5fcaf1f3b1e9f2d23e</connectorid>
+      <customconnectorid>
+        <connectorid>9e2dc2c0-26eb-4c57-9441-2c3ed6970cd8</connectorid>
+      </customconnectorid>
+      <iscustomizable>1</iscustomizable>
+      <statecode>0</statecode>
+      <statuscode>1</statuscode>
+    </connectionreference>
+    <connectionreference connectionreferencelogicalname="msftce_CETenantManagementAzureAd">
+      <connectionreferencedisplayname>CE Tenant Management Azure Ad</connectionreferencedisplayname>
+      <connectorid>/providers/Microsoft.PowerApps/apis/shared_azuread</connectorid>
+      <iscustomizable>1</iscustomizable>
+      <statecode>0</statecode>
+      <statuscode>1</statuscode>
+    </connectionreference>
+    <connectionreference connectionreferencelogicalname="msftce_CETenantManagementDataverse">
+      <connectionreferencedisplayname>CE Tenant Management Dataverse</connectionreferencedisplayname>
+      <connectorid>/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps</connectorid>
+      <iscustomizable>1</iscustomizable>
+      <statecode>0</statecode>
+      <statuscode>1</statuscode>
+    </connectionreference>
+    <connectionreference connectionreferencelogicalname="msftce_CETenantManagementO365Outlook">
+      <connectionreferencedisplayname>CE Tenant Management O365 Outlook</connectionreferencedisplayname>
+      <connectorid>/providers/Microsoft.PowerApps/apis/shared_office365</connectorid>
+      <iscustomizable>1</iscustomizable>
+      <statecode>0</statecode>
+      <statuscode>1</statuscode>
+    </connectionreference>
+    <connectionreference connectionreferencelogicalname="msftce_HttpWithAzureADGraph">
+      <connectionreferencedisplayname>Http With Azure AD - Graph</connectionreferencedisplayname>
+      <connectorid>/providers/Microsoft.PowerApps/apis/shared_webcontents</connectorid>
+      <iscustomizable>1</iscustomizable>
+      <statecode>0</statecode>
+      <statuscode>1</statuscode>
+    </connectionreference>
+    <connectionreference connectionreferencelogicalname="msftce_sharedmsftce5fazure20management202d20rbac5fcaf1f3b1e9f2d23e_2b00e">
+      <connectionreferencedisplayname>Azure Management - RBAC CETenantManagementV2-2b00e</connectionreferencedisplayname>
+      <connectorid>/providers/Microsoft.PowerApps/apis/shared_msftce-5fazure-20management-20-2d-20rbac-5fcaf1f3b1e9f2d23e</connectorid>
+      <customconnectorid>
+        <connectorid>036d54ed-097d-4faa-a769-4f9062644506</connectorid>
+      </customconnectorid>
+      <iscustomizable>1</iscustomizable>
+      <statecode>0</statecode>
+      <statuscode>1</statuscode>
+    </connectionreference>
+    <connectionreference connectionreferencelogicalname="msftce_sharedoffice365groups_b471d">
+      <connectionreferencedisplayname>Office 365 Groups CETenantManagementV2-b471d</connectionreferencedisplayname>
+      <connectorid>/providers/Microsoft.PowerApps/apis/shared_office365groups</connectorid>
+      <iscustomizable>1</iscustomizable>
+      <statecode>0</statecode>
+      <statuscode>1</statuscode>
+    </connectionreference>
+    <connectionreference connectionreferencelogicalname="msftce_sharedsharepointonline_756f6">
+      <connectionreferencedisplayname>SharePoint CETenantManagementV2-756f6</connectionreferencedisplayname>
+      <connectorid>/providers/Microsoft.PowerApps/apis/shared_sharepointonline</connectorid>
+      <iscustomizable>1</iscustomizable>
+      <statecode>0</statecode>
+      <statuscode>1</statuscode>
+    </connectionreference>
+    <connectionreference connectionreferencelogicalname="msftce_sharedteams_71179">
+      <connectionreferencedisplayname>Microsoft Teams CETenantManagementV2-71179</connectionreferencedisplayname>
+      <connectorid>/providers/Microsoft.PowerApps/apis/shared_teams</connectorid>
+      <iscustomizable>1</iscustomizable>
+      <statecode>0</statecode>
+      <statuscode>1</statuscode>
+    </connectionreference>
+    <connectionreference connectionreferencelogicalname="msftce_sharedwebcontentsv2_2519f">
+      <connectionreferencedisplayname>HTTP With Microsoft Entra ID CETenantManagementV2-2519f</connectionreferencedisplayname>
+      <connectorid>/providers/Microsoft.PowerApps/apis/shared_webcontentsv2</connectorid>
+      <iscustomizable>1</iscustomizable>
+      <statecode>0</statecode>
+      <statuscode>1</statuscode>
+    </connectionreference>
+    <connectionreference connectionreferencelogicalname="msftce_sharedwebcontentsv2_71a38">
+      <connectionreferencedisplayname>HTTP With Microsoft Entra ID CETenantManagementV2-71a38</connectionreferencedisplayname>
+      <connectorid>/providers/Microsoft.PowerApps/apis/shared_webcontentsv2</connectorid>
+      <iscustomizable>1</iscustomizable>
+      <statecode>0</statecode>
+      <statuscode>1</statuscode>
+    </connectionreference>
+    <connectionreference connectionreferencelogicalname="msftce_sharedwebcontentsv2_76c82">
+      <connectionreferencedisplayname>HTTP With Microsoft Entra ID CETenantManagementV2-76c82</connectionreferencedisplayname>
+      <connectorid>/providers/Microsoft.PowerApps/apis/shared_webcontentsv2</connectorid>
+      <iscustomizable>1</iscustomizable>
+      <statecode>0</statecode>
+      <statuscode>1</statuscode>
+    </connectionreference>
+    <connectionreference connectionreferencelogicalname="msftce_sharedwebcontentsv2_a1268">
+      <connectionreferencedisplayname>HTTP With Microsoft Entra ID CETenantManagementV2-a1268</connectionreferencedisplayname>
+      <connectorid>/providers/Microsoft.PowerApps/apis/shared_webcontentsv2</connectorid>
+      <iscustomizable>1</iscustomizable>
+      <statecode>0</statecode>
+      <statuscode>1</statuscode>
+    </connectionreference>
+    <connectionreference connectionreferencelogicalname="msftce_sharedwebcontentsv2_a824a">
+      <connectionreferencedisplayname>HTTP With Microsoft Entra ID CETenantManagementV2-a824a</connectionreferencedisplayname>
+      <connectorid>/providers/Microsoft.PowerApps/apis/shared_webcontentsv2</connectorid>
+      <iscustomizable>1</iscustomizable>
+      <statecode>0</statecode>
+      <statuscode>1</statuscode>
+    </connectionreference>
+    <connectionreference connectionreferencelogicalname="msftce_sharedwebcontentsv2_cde67">
+      <connectionreferencedisplayname>HTTP With Microsoft Entra ID CETenantManagementV2-cde67</connectionreferencedisplayname>
+      <connectorid>/providers/Microsoft.PowerApps/apis/shared_webcontentsv2</connectorid>
+      <iscustomizable>1</iscustomizable>
+      <statecode>0</statecode>
+      <statuscode>1</statuscode>
+    </connectionreference>
+  </connectionreferences>
+  <Languages>
+    <Language>1033</Language>
+  </Languages>
+</ImportExportXml>

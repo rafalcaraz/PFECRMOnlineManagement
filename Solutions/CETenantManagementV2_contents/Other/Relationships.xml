@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<EntityRelationships xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <EntityRelationship Name="business_unit_msftce_engineerfeedback" />
+  <EntityRelationship Name="business_unit_msftce_pfecrmonlinerequest" />
+  <EntityRelationship Name="business_unit_msftce_useraccounts" />
+  <EntityRelationship Name="lk_msftce_engineerfeedback_createdby" />
+  <EntityRelationship Name="lk_msftce_engineerfeedback_modifiedby" />
+  <EntityRelationship Name="lk_msftce_pfecrmonlinerequest_createdby" />
+  <EntityRelationship Name="lk_msftce_pfecrmonlinerequest_modifiedby" />
+  <EntityRelationship Name="lk_msftce_useraccounts_createdby" />
+  <EntityRelationship Name="lk_msftce_useraccounts_modifiedby" />
+  <EntityRelationship Name="owner_msftce_engineerfeedback" />
+  <EntityRelationship Name="owner_msftce_pfecrmonlinerequest" />
+  <EntityRelationship Name="owner_msftce_useraccounts" />
+  <EntityRelationship Name="team_msftce_engineerfeedback" />
+  <EntityRelationship Name="team_msftce_pfecrmonlinerequest" />
+  <EntityRelationship Name="team_msftce_useraccounts" />
+  <EntityRelationship Name="user_msftce_engineerfeedback" />
+  <EntityRelationship Name="user_msftce_pfecrmonlinerequest" />
+  <EntityRelationship Name="user_msftce_useraccounts" />
+</EntityRelationships>

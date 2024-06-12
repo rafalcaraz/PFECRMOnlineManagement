@@ -1,0 +1,297 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_powerplatformforadmins": {
+        "runtimeSource": "invoker",
+        "connection": {
+          "connectionReferenceLogicalName": "msftcsa_CapacityPPForAdmins"
+        },
+        "api": {
+          "name": "shared_powerplatformforadmins"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "afbea329-37f0-4601-9573-c909acb3fdee"
+          },
+          "type": "Request",
+          "kind": "PowerAppV2",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "environmentName",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "enter environment Name",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Respond_to_a_PowerApp_or_flow": {
+          "runAfter": {
+            "Check_If_D365_Env": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "aa3b8253-3454-4d72-9ce2-880a962fd958"
+          },
+          "type": "Response",
+          "kind": "PowerApp",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "isvalidforltr": "@variables('isValidForLTR')",
+              "validforltrmessage": "@variables('messageLTR')"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "isvalidforltr": {
+                  "title": "isValidForLTR",
+                  "x-ms-dynamically-added": true,
+                  "type": "boolean"
+                },
+                "validforltrmessage": {
+                  "title": "validForLTRMessage",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "Get_Environment_Info": {
+          "runAfter": {
+            "Init_var_-_message_output": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "48e02597-b70b-4fad-b871-5397f8fd8902"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_powerplatformforadmins",
+              "operationId": "GetSingleEnvironment",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_powerplatformforadmins"
+            },
+            "parameters": {
+              "environment": "@triggerBody()['text']",
+              "api-version": "2016-11-01"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Check_If_D365_Env": {
+          "actions": {
+            "valid_-_d365_env": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "18ff63f3-8884-45a3-900f-b40b967e4b32"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "isValidForLTR",
+                "value": "@true"
+              }
+            },
+            "valid_-_d365_env_messaage": {
+              "runAfter": {
+                "valid_-_d365_env": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "3ff19246-1d09-46cd-935f-7d8d182e07c5"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "messageLTR",
+                "value": "Environment is of type D365"
+              }
+            }
+          },
+          "runAfter": {
+            "Get_Environment_Info": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Get_Environment_Info_Again": {
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "55b7e19d-b89a-4f2f-9884-b73daba74994"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_powerplatformforadmins",
+                    "operationId": "GetSingleEnvironment",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_powerplatformforadmins"
+                  },
+                  "parameters": {
+                    "environment": "@triggerBody()['text']",
+                    "api-version": "2021-04-01"
+                  },
+                  "authentication": "@parameters('$authentication')"
+                },
+                "description": "This api version brings back governance info. i.e. managed environemnt or not"
+              },
+              "Check_If_It_is_a_managed_environment": {
+                "actions": {
+                  "valid_-_managed_environment": {
+                    "runAfter": {},
+                    "metadata": {
+                      "operationMetadataId": "03e7a9d4-b29c-45c5-8455-32c7bac55311"
+                    },
+                    "type": "SetVariable",
+                    "inputs": {
+                      "name": "isValidForLTR",
+                      "value": true
+                    }
+                  },
+                  "valid_-_managed_environment_message": {
+                    "runAfter": {
+                      "valid_-_managed_environment": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "aa929fcd-4a47-400c-ac4b-4538642f8335"
+                    },
+                    "type": "SetVariable",
+                    "inputs": {
+                      "name": "messageLTR",
+                      "value": "Environment is a managed environment"
+                    }
+                  }
+                },
+                "runAfter": {
+                  "Get_Environment_Info_Again": [
+                    "Succeeded"
+                  ]
+                },
+                "else": {
+                  "actions": {
+                    "invalid_-_no_d365_or_managed_environment": {
+                      "runAfter": {},
+                      "metadata": {
+                        "operationMetadataId": "c0c1735f-097c-4668-9e40-c1378c9cbe9c"
+                      },
+                      "type": "SetVariable",
+                      "inputs": {
+                        "name": "isValidForLTR",
+                        "value": false
+                      }
+                    },
+                    "invalid_-_no_d365_or_managed_environment_message": {
+                      "runAfter": {
+                        "invalid_-_no_d365_or_managed_environment": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "e113bca8-6154-4b8e-9104-9232cc09f69d"
+                      },
+                      "type": "SetVariable",
+                      "inputs": {
+                        "name": "messageLTR",
+                        "value": "Environment is neither D365 or managed environment"
+                      }
+                    }
+                  }
+                },
+                "expression": {
+                  "not": {
+                    "equals": [
+                      "@outputs('Get_Environment_Info_Again')?['body/properties/governanceConfiguration/protectionLevel']",
+                      "Basic"
+                    ]
+                  }
+                },
+                "metadata": {
+                  "operationMetadataId": "7c2701f3-f2e3-4024-8f14-6b48448856db"
+                },
+                "type": "If"
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+              "@outputs('Get_Environment_Info')?['body/properties/linkedEnvironmentMetadata/schemaType']",
+              "Full"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "3e03bffe-4625-462a-b38b-106a0eef7117"
+          },
+          "type": "If"
+        },
+        "Init_var_-_is_valid_for_LTR": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "a21c8134-791e-437a-826a-3c4a6a283f6a"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "isValidForLTR",
+                "type": "boolean",
+                "value": false
+              }
+            ]
+          }
+        },
+        "Init_var_-_message_output": {
+          "runAfter": {
+            "Init_var_-_is_valid_for_LTR": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "661a8c68-6d75-49f3-9c4c-a48a5b835206"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "messageLTR",
+                "type": "string"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

@@ -1,0 +1,59 @@
+HowToScreen As screen:
+
+    Arrow1 As arrow.backArrow:
+        OnSelect: =Back()
+        X: =1
+        ZIndex: =1
+
+    Label2 As label:
+        Height: =200
+        Text: |-
+            ="1) Navigate to aka.ms/ppac
+             2) On the left pane, expand Resources, and select Capacity
+             3) Select Dataverse tab and find environment to analyze
+             4) Click on Details Icon
+             5) On the top database chart, click on menu and select 'Download Tables'
+             6) Import into App"
+        Width: =716
+        X: =51
+        Y: =90
+        ZIndex: =3
+
+    Label3 As label:
+        Text: ="How to Screen"
+        X: =51
+        Y: =50
+        ZIndex: =4
+
+    Image1 As image:
+        Height: =476
+        Image: =ppaclist
+        Width: =313
+        X: =21
+        Y: =267
+        ZIndex: =5
+
+    Image2 As image:
+        Height: =245
+        Image: =envCapacity
+        Width: =828
+        X: =368
+        Y: =498
+        ZIndex: =6
+
+    Image3 As image:
+        Height: =187
+        Image: =envList
+        Width: =757
+        X: =385
+        Y: =290
+        ZIndex: =7
+
+    Button1 As button:
+        OnSelect: |-
+            =Launch("https://admin.powerplatform.microsoft.com/resources/capacity/environment/" & [@ModelDrivenFormIntegration].Item.'Name')
+        Text: ="Launch PPAC"
+        X: =225
+        Y: =50
+        ZIndex: =8
+

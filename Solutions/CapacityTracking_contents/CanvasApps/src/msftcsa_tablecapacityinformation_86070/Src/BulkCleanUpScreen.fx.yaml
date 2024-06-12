@@ -1,0 +1,102 @@
+BulkCleanUpScreen As screen:
+
+    Arrow2 As arrow.backArrow:
+        OnSelect: =Back()
+        X: =40
+        Y: =40
+        ZIndex: =1
+
+    Label4 As label:
+        Text: ="Create Bulk Deletion Job"
+        Width: =366
+        X: =40
+        Y: =101
+        ZIndex: =2
+
+    CriteriaDropdown As dropdown:
+        Items: |-
+            =[{name: "Days", format: "OlderThanXDays"}, {name: "Months", format: "OlderThanXMonths"} , {name: "Years", format: "OlderThanXYears"}]
+        X: =30
+        Y: =193
+        ZIndex: =3
+
+    ValueDropdown As dropdown:
+        Items: =Sequence(30,1,1)
+        X: =30
+        Y: =252
+        ZIndex: =4
+
+    recurrenceToggle As toggleSwitch:
+        FalseText: ="One Time"
+        Height: =34
+        TrueText: ="Recurring"
+        Width: =180
+        X: =40
+        Y: =403
+        ZIndex: =5
+
+    Label5 As label:
+        Text: |-
+            ="Table Name: " & tableName
+        X: =30
+        Y: =153
+        ZIndex: =6
+
+    Button5 As button:
+        Height: =65
+        OnSelect: =CreateBulkDeletionJob.Run( Substitute([@ModelDrivenFormIntegration].Item.'Environment CDS Instance URL', ".com/", ".com"), tableName, CriteriaDropdown.Selected.format, ValueDropdown.Selected.Value, If(recurrenceToggle.Value, $"FREQ=DAILY;INTERVAL=;{recurrenceDaysDropdown.Selected.Value}", ""))
+        Text: ="Create Bulk Delete"
+        Width: =195
+        X: =25
+        Y: =585
+        ZIndex: =7
+
+    disclamierText As label:
+        Height: =213
+        Text: |-
+            ="This will kick off a simplebulk delete operation deleting all records depending on the created on filter. For a more robust robust query, please create it manually through the environment settings. 
+            
+            Please offload any records needed prior doing so."
+        Width: =438
+        X: =655
+        Y: =107
+        ZIndex: =8
+
+    recurrenceDaysDropdown As dropdown:
+        Height: =59
+        Items: =Sequence(30,1,1)
+        Visible: =recurrenceToggle.Value
+        Width: =252
+        X: =220
+        Y: =483
+        ZIndex: =9
+
+    environmentUrlInput As text:
+        Default: =""
+        HintText: ="Enter environment Url"
+        Visible: =false
+        X: =30
+        Y: =321
+        ZIndex: =10
+
+    recurrenceAmountLabel As label:
+        Height: =78
+        Text: |-
+            ="Specify Recurrence Days:"
+        Visible: =recurrenceToggle.Value
+        X: =30
+        Y: =464
+        ZIndex: =11
+
+    disclamierText_1 As label:
+        Height: =213
+        Text: |-
+            ="In caase that data needs to be retained there are a couple of alternatives:
+            
+            1) Leverage Dataverse Long Term Retention
+            2) ."
+        Width: =438
+        X: =655
+        Y: =313
+        ZIndex: =12
+

@@ -1,0 +1,10 @@
+[
+  {
+    "ApiId": "/providers/microsoft.powerapps/apis/shared_logicflows",
+    "FlowNameId": "060a670e-aa0a-4ac0-bd35-42ce0d62c1f2",
+    "Name": "ValidateADUser",
+    "ServiceKind": "ConnectedWadl",
+    "Type": "ServiceInfo",
+    "WorkflowEntityId": "c73790a2-db7b-ed11-81ad-000d3a8b13eb"
+  }
+]

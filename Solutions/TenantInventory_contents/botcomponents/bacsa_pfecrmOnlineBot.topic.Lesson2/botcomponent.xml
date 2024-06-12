@@ -1,0 +1,10 @@
+<botcomponent schemaname="bacsa_pfecrmOnlineBot.topic.Lesson2">
+  <componenttype>9</componenttype>
+  <iscustomizable>0</iscustomizable>
+  <name>Lesson 2 - A simple topic with a condition and variable</name>
+  <parentbotid>
+    <schemaname>bacsa_pfecrmOnlineBot</schemaname>
+  </parentbotid>
+  <statecode>1</statecode>
+  <statuscode>2</statuscode>
+</botcomponent>

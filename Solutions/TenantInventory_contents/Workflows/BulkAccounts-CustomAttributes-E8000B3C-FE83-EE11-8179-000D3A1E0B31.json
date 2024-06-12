@@ -1,0 +1,663 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_sharepointonline": {
+        "runtimeSource": "invoker",
+        "connection": {
+          "connectionReferenceLogicalName": "bacsa_MigrateNewSharepoint"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      },
+      "shared_bacsa-5fpfecrmonlinehelper-5f7e995d98be6020f7": {
+        "runtimeSource": "invoker",
+        "connection": {
+          "connectionReferenceLogicalName": "bacsa_MigrateNewCustomConn"
+        },
+        "api": {
+          "name": "shared_bacsa-5fpfecrmonlinehelper-5fba3afc5e162617b4",
+          "logicalName": "bacsa_5Fpfecrmonlinehelper"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "a84b658c-b075-45a4-ae1d-f58ac7ee9bbe"
+          },
+          "type": "Request",
+          "kind": "Button",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "required": []
+            }
+          }
+        }
+      },
+      "actions": {
+        "ManagersInfo": {
+          "runAfter": {
+            "ConfigsTest": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "fd8c434d-9e5a-4f18-9235-b7b059d44429"
+          },
+          "type": "Compose",
+          "inputs": {
+            "fieldNAM": [
+              "antoniha@microsoft.com",
+              "jonhuss@microsoft.com",
+              "jeortgie@microsoft.com",
+              "hemab@microsoft.com"
+            ],
+            "fieldLATAM": [
+              "caberang@microsoft.com"
+            ],
+            "core": [
+              "mspencer@microsoft.com",
+              "jstrand@microsoft.com",
+              "hollycha@microsoft.com"
+            ],
+            "emea": [
+              "absaxena@microsoft.com",
+              "anlampre@microsoft.com",
+              "asgup@microsoft.com",
+              "carolinr@microsoft.com",
+              "estaykova@microsoft.com",
+              "smilitescu@microsoft.com",
+              "simranc@microsoft.com",
+              "tomasgold@microsoft.com"
+            ],
+            "smc": [
+              "timtee@microsoft.com"
+            ],
+            "onprem": [
+              "kacook@microsoft.com"
+            ],
+            "exclude": [
+              "lfenster@microsoft.com"
+            ]
+          }
+        },
+        "exclusions": {
+          "runAfter": {
+            "ManagersInfo": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "4224e672-350d-46e8-a50c-e251e83f947a"
+          },
+          "type": "Compose",
+          "inputs": [
+            "seanmcn@microsoft.com"
+          ]
+        },
+        "Get_file_content": {
+          "runAfter": {
+            "exclusions": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "%252fDocuments%252fusers.json": "/Documents/users.json",
+            "operationMetadataId": "3337c5c9-ae9d-4202-bc52-9684c7c57afd"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline",
+              "operationId": "GetFileContent",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "https://microsoft-my.sharepoint.com/personal/ralop_microsoft_com/",
+              "id": "%252fDocuments%252fusers.json",
+              "inferContentType": false
+            },
+            "authentication": {
+              "type": "Raw",
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+            }
+          }
+        },
+        "Compose": {
+          "runAfter": {
+            "Get_file_content": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "39edc9f9-3d30-4573-925f-4b58d8059cd3"
+          },
+          "type": "Compose",
+          "inputs": "@json(decodeBase64(body('Get_file_content')?['$content']))"
+        },
+        "Apply_to_each": {
+          "foreach": "@outputs('Compose')?['msftLinkedAccounts']",
+          "actions": {
+            "Compose_3": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "d7a9cda3-7b99-455c-b675-15bfb0ce0b0c"
+              },
+              "type": "Compose",
+              "inputs": "@item()"
+            },
+            "Area": {
+              "runAfter": {
+                "Compose_3": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "b5c8f014-8b50-41cf-803d-9d1f67d0f5d1"
+              },
+              "type": "Compose",
+              "inputs": "@if(contains(outputs('ManagersInfo')?['fieldNAM'], item()?['managerEmail']), 'Field-NAM' ,\r\n  if(contains(outputs('ManagersInfo')?['fieldLATAM'], item()?['managerEmail']), 'Field-LATAM' ,\r\n  \tif(contains(outputs('ManagersInfo')?['core'], item()?['managerEmail']), 'Core' ,\r\n  \t\tif(contains(outputs('ManagersInfo')?['emea'], item()?['managerEmail']), 'EMEA' ,\r\n  \t\t  if(contains(outputs('ManagersInfo')?['smc'], item()?['managerEmail']), 'SMC' ,\r\n  \t\t  \tif(contains(outputs('ManagersInfo')?['onprem'], item()?['managerEmail']), 'OnPrem' ,\r\n  \t\t  \t\tif(contains(outputs('ManagersInfo')?['exclude'], item()?['managerEmail']), 'Exception' ,\r\n  \t\t  \t\t\t'Other'\r\n  \t\t  \t\t)\r\n  \t\t  \t)\r\n  \t\t  )\r\n  \t\t)\r\n  \t)\r\n  )\r\n\r\n)"
+            },
+            "UpdateSecurityAttributes": {
+              "actions": {
+                "Sample_Compose": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "bcfe4d33-c70c-44df-9a14-3bb87141b1c5"
+                  },
+                  "type": "Compose",
+                  "inputs": [
+                    "email1",
+                    "email2"
+                  ]
+                },
+                "areaPayload": {
+                  "runAfter": {
+                    "Sample_Compose": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "5ff9f179-bebe-4772-8c85-d72a47e694d1"
+                  },
+                  "type": "Compose",
+                  "inputs": {
+                    "userObjectId": "@{item()?['id']}",
+                    "customSecurityAttributeName": "area",
+                    "customSecurityAttributeValue": "@{outputs('Area')}"
+                  }
+                },
+                "createdByEmailPayload": {
+                  "runAfter": {
+                    "areaPayload": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "5118c74c-b217-4c38-982f-916159e198b1"
+                  },
+                  "type": "Compose",
+                  "inputs": {
+                    "userObjectId": "@{items('Apply_to_each')?['id']}",
+                    "customSecurityAttributeName": "createdByEmail",
+                    "customSecurityAttributeValue": "TODO-STILL"
+                  }
+                },
+                "createdByIdPayload": {
+                  "runAfter": {
+                    "createdByEmailPayload": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "299bc597-f3c9-4420-a1e2-d843f8c4c19c"
+                  },
+                  "type": "Compose",
+                  "inputs": {
+                    "userObjectId": "@{items('Apply_to_each')?['id']}",
+                    "customSecurityAttributeName": "createdById",
+                    "customSecurityAttributeValue": "TODO-STILL"
+                  }
+                },
+                "isMainAcountPayload": {
+                  "runAfter": {
+                    "createdByIdPayload": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "e445aa47-c3b0-44df-b40e-8dfcbd3a5876"
+                  },
+                  "type": "Compose",
+                  "inputs": {
+                    "userObjectId": "@{items('Apply_to_each')?['id']}",
+                    "customSecurityAttributeName": "isMainAccount",
+                    "customSecurityAttributeValue": "@true"
+                  }
+                },
+                "microsoftEmailsPayload": {
+                  "runAfter": {
+                    "isMainAcountPayload": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "1ce27cbf-dbb7-400f-9d2f-bf88ba70b932"
+                  },
+                  "type": "Compose",
+                  "inputs": {
+                    "userObjectId": "@{items('Apply_to_each')?['id']}",
+                    "customSecurityAttributeName": "microsoftEmails",
+                    "customSecurityAttributeValue": "@items('Apply_to_each')?['otherMails']"
+                  }
+                },
+                "parentAccountEmailPayload": {
+                  "runAfter": {
+                    "microsoftEmailsPayload": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "051ec00f-97e9-4400-a3fa-ad1202a5e142"
+                  },
+                  "type": "Compose",
+                  "inputs": {
+                    "userObjectId": "@{items('Apply_to_each')?['id']}",
+                    "customSecurityAttributeName": "parentAccountEmail",
+                    "customSecurityAttributeValue": "TODO"
+                  }
+                },
+                "parentAccountIdPayload": {
+                  "runAfter": {
+                    "parentAccountEmailPayload": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "e3dabe66-eb15-4569-b5d0-d3827cc5862e"
+                  },
+                  "type": "Compose",
+                  "inputs": {
+                    "userObjectId": "@{items('Apply_to_each')?['id']}",
+                    "customSecurityAttributeName": "parentAccountId",
+                    "customSecurityAttributeValue": "TODO"
+                  }
+                },
+                "Condition": {
+                  "actions": {
+                    "PerformAction_-_createdById": {
+                      "runAfter": {
+                        "PerformAction_-_createdByEmail": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "213abda3-6cb9-4a0e-9dfa-56e644b2e974"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_bacsa-5fpfecrmonlinehelper-5f7e995d98be6020f7",
+                          "operationId": "PerformAction",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_bacsa-5fpfecrmonlinehelper-5fba3afc5e162617b4"
+                        },
+                        "parameters": {
+                          "body/Area": "UserMaintenance",
+                          "body/Operation": "UpdateUser",
+                          "body/Parameters": "@outputs('createdByIdPayload')"
+                        },
+                        "authentication": {
+                          "type": "Raw",
+                          "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                        },
+                        "retryPolicy": {
+                          "type": "none"
+                        }
+                      }
+                    },
+                    "PerformAction_-_parentAccountId": {
+                      "runAfter": {
+                        "PerformAction_-_parentAccountEmail": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "677da455-bc6a-4921-8ed1-512732ff2d52"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_bacsa-5fpfecrmonlinehelper-5f7e995d98be6020f7",
+                          "operationId": "PerformAction",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_bacsa-5fpfecrmonlinehelper-5fba3afc5e162617b4"
+                        },
+                        "parameters": {
+                          "body/Area": "UserMaintenance",
+                          "body/Operation": "UpdateUser",
+                          "body/Parameters": "@outputs('parentAccountIdPayload')"
+                        },
+                        "authentication": {
+                          "type": "Raw",
+                          "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                        },
+                        "retryPolicy": {
+                          "type": "none"
+                        }
+                      }
+                    },
+                    "PerformAction_-_createdByEmail": {
+                      "runAfter": {
+                        "PerformAction_-_parentAccountId": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "cde424c9-8c25-453a-b021-1ee7d2a2cafa"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_bacsa-5fpfecrmonlinehelper-5f7e995d98be6020f7",
+                          "operationId": "PerformAction",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_bacsa-5fpfecrmonlinehelper-5fba3afc5e162617b4"
+                        },
+                        "parameters": {
+                          "body/Area": "UserMaintenance",
+                          "body/Operation": "UpdateUser",
+                          "body/Parameters": "@outputs('createdByEmailPayload')"
+                        },
+                        "authentication": {
+                          "type": "Raw",
+                          "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                        },
+                        "retryPolicy": {
+                          "type": "none"
+                        }
+                      }
+                    },
+                    "PerformAction_-_parentAccountEmail": {
+                      "runAfter": {
+                        "PerformAction_-_microsoftEmails": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "92c5f89b-7ed1-4aef-a0ff-90770f2ec152"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_bacsa-5fpfecrmonlinehelper-5f7e995d98be6020f7",
+                          "operationId": "PerformAction",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_bacsa-5fpfecrmonlinehelper-5fba3afc5e162617b4"
+                        },
+                        "parameters": {
+                          "body/Area": "UserMaintenance",
+                          "body/Operation": "UpdateUser",
+                          "body/Parameters": "@outputs('parentAccountEmailPayload')"
+                        },
+                        "authentication": {
+                          "type": "Raw",
+                          "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                        },
+                        "retryPolicy": {
+                          "type": "none"
+                        }
+                      }
+                    },
+                    "PerformAction_-_area": {
+                      "runAfter": {},
+                      "metadata": {
+                        "operationMetadataId": "83037575-bb1c-4116-b463-6840a016f82b"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_bacsa-5fpfecrmonlinehelper-5f7e995d98be6020f7",
+                          "operationId": "PerformAction",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_bacsa-5fpfecrmonlinehelper-5fba3afc5e162617b4"
+                        },
+                        "parameters": {
+                          "body/Area": "UserMaintenance",
+                          "body/Operation": "UpdateUser",
+                          "body/Parameters": "@outputs('areaPayload')"
+                        },
+                        "authentication": {
+                          "type": "Raw",
+                          "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                        },
+                        "retryPolicy": {
+                          "type": "none"
+                        }
+                      }
+                    },
+                    "PerformAction_-_microsoftEmails": {
+                      "runAfter": {
+                        "PerformAction_-_isMainAccount": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "c03b7938-f747-4b45-a009-b80cdd5bfc22"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_bacsa-5fpfecrmonlinehelper-5f7e995d98be6020f7",
+                          "operationId": "PerformAction",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_bacsa-5fpfecrmonlinehelper-5fba3afc5e162617b4"
+                        },
+                        "parameters": {
+                          "body/Area": "UserMaintenance",
+                          "body/Operation": "UpdateUser",
+                          "body/Parameters": "@outputs('microsoftEmailsPayload')"
+                        },
+                        "authentication": {
+                          "type": "Raw",
+                          "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                        },
+                        "retryPolicy": {
+                          "type": "none"
+                        }
+                      }
+                    },
+                    "PerformAction_-_isMainAccount": {
+                      "runAfter": {
+                        "PerformAction_-_area": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "b6f0024b-5061-4d8e-b12c-e498edc27315"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_bacsa-5fpfecrmonlinehelper-5f7e995d98be6020f7",
+                          "operationId": "PerformAction",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_bacsa-5fpfecrmonlinehelper-5fba3afc5e162617b4"
+                        },
+                        "parameters": {
+                          "body/Area": "UserMaintenance",
+                          "body/Operation": "UpdateUser",
+                          "body/Parameters": "@outputs('isMainAcountPayload')"
+                        },
+                        "authentication": {
+                          "type": "Raw",
+                          "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                        },
+                        "retryPolicy": {
+                          "type": "none"
+                        }
+                      }
+                    }
+                  },
+                  "runAfter": {
+                    "PerformAction": [
+                      "Succeeded"
+                    ]
+                  },
+                  "expression": {
+                    "equals": [
+                      "@true",
+                      "@false"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "66203572-d198-431e-8d0a-2e18c81e5b9f"
+                  },
+                  "type": "If"
+                },
+                "Full_Payload": {
+                  "runAfter": {
+                    "parentAccountIdPayload": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "6863d170-23bd-4bb7-a85b-728aa5cd8ab4"
+                  },
+                  "type": "Compose",
+                  "inputs": {
+                    "userObjectId": "@{items('Apply_to_each')?['id']}",
+                    "customSecurityAttributes": [
+                      {
+                        "customSecurityAttributeName": "area",
+                        "customSecurityAttributeValue": "@{outputs('Area')}"
+                      },
+                      {
+                        "customSecurityAttributeName": "isMainAccount",
+                        "customSecurityAttributeValue": "@true"
+                      },
+                      {
+                        "customSecurityAttributeName": "microsoftEmails",
+                        "customSecurityAttributeValue": "@items('Apply_to_each')?['otherMails']"
+                      }
+                    ]
+                  }
+                },
+                "PerformAction": {
+                  "runAfter": {
+                    "Full_Payload": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "0655a234-8fbe-4c2f-8b8d-023d3ac7ea8b"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_bacsa-5fpfecrmonlinehelper-5f7e995d98be6020f7",
+                      "operationId": "PerformAction",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_bacsa-5fpfecrmonlinehelper-5fba3afc5e162617b4"
+                    },
+                    "parameters": {
+                      "body/Area": "UserMaintenance",
+                      "body/Operation": "UpdateUser",
+                      "body/Parameters": "@outputs('Full_Payload')"
+                    },
+                    "authentication": {
+                      "type": "Raw",
+                      "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                    }
+                  }
+                }
+              },
+              "runAfter": {
+                "Area": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "87c5c176-0ec3-4997-99f9-c295fee43945"
+              },
+              "type": "Scope"
+            }
+          },
+          "runAfter": {
+            "Compose": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "86590992-7927-4a2e-8edf-c1686c1b2aeb"
+          },
+          "type": "Foreach"
+        },
+        "ConfigsTest": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "61ef494b-852f-4b4a-ac26-0dbea037d057"
+          },
+          "type": "Compose",
+          "inputs": [
+            {
+              "attributeName": "area",
+              "attributeValue": "testArea123"
+            },
+            {
+              "attributeName": "createdByEmail",
+              "attributeValue": "email888"
+            },
+            {
+              "attributeName": "createdById",
+              "attributeValue": "id99922"
+            },
+            {
+              "attributeName": "isMainAccount",
+              "attributeValue": false
+            },
+            {
+              "attributeName": "microsoftEmails",
+              "attributeValue": [
+                "one",
+                "two"
+              ]
+            },
+            {
+              "attributeName": "parentAccountEmail",
+              "attributeValue": "email888222111"
+            },
+            {
+              "attributeName": "parentAccountId1111",
+              "attributeValue": "id09831903"
+            }
+          ]
+        },
+        "Terminate": {
+          "runAfter": {
+            "Apply_to_each": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "06095ee6-7ec1-4427-9f2c-df32030fceb1"
+          },
+          "type": "Terminate",
+          "inputs": {
+            "runStatus": "Succeeded"
+          }
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

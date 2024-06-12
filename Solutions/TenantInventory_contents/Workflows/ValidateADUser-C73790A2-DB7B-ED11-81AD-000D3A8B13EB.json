@@ -1,0 +1,205 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_office365users_2": {
+        "runtimeSource": "invoker",
+        "connection": {
+          "connectionReferenceLogicalName": "bacsa_sharedoffice365users_18f27"
+        },
+        "api": {
+          "name": "shared_office365users"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "39f9530d-3352-4f96-b2d5-1c3610e9e0ed"
+          },
+          "type": "Request",
+          "kind": "PowerAppV2",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "User Email",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Enter user email to validate",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Try_-_Find_User": {
+          "actions": {
+            "Set_valid_user_object": {
+              "runAfter": {
+                "Get_manager_(V2)": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "49941adb-86bd-4244-98bb-98c57a03ca2a"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "userObject",
+                "value": "{\n\"validMSUser\": true,\n\"accountEnabled\": \"@{if(outputs('Get_user_profile_(V2)')?['body/accountEnabled'], 'Yes', 'No')}\",\n\"displayName\": \"@{outputs('Get_user_profile_(V2)')?['body/displayName']}\",\n\"email\": \"@{outputs('Get_user_profile_(V2)')?['body/mail']}\",\n\"upn\": \"@{outputs('Get_user_profile_(V2)')?['body/userPrincipalName']}\",\n\"managerEmail\":\"@{outputs('Get_manager_(V2)')?['body/userPrincipalName']}\"\n}"
+              }
+            },
+            "Get_user_profile_(V2)": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "3efe83f7-72a1-4c5f-be3e-aff0e6d54ebd"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_office365users_2",
+                  "operationId": "UserProfile_V2",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365users"
+                },
+                "parameters": {
+                  "id": "@triggerBody()['text']"
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            },
+            "Get_manager_(V2)": {
+              "runAfter": {
+                "Get_user_profile_(V2)": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "54a06559-b26c-4de2-bb8c-e4c1b3814ae3"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_office365users_2",
+                  "operationId": "Manager_V2",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365users"
+                },
+                "parameters": {
+                  "id": "@triggerBody()['text']"
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            }
+          },
+          "runAfter": {
+            "Init_Var_-_User_Object": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "4f93e467-dcf5-4888-a5e3-45005463b6eb"
+          },
+          "type": "Scope"
+        },
+        "Catch_-_Handle_Error": {
+          "actions": {
+            "Set_user_object_-_not_found": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "6e06b6ee-07d1-478f-bc30-093ba71c49e8"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "userObject",
+                "value": "{\n\"validMSUser\": false,\n\"accountEnabled\": \"No\",\n\"displayName\":\"NA\",\n\"email\": \"N/A\",\n\"upn\": \"N/A\",\n\"managerEmail\": \"N/A\"\n}"
+              }
+            }
+          },
+          "runAfter": {
+            "Try_-_Find_User": [
+              "Failed"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "dd16a3c6-7f21-4455-a62f-cfcdef0e28e4"
+          },
+          "type": "Scope"
+        },
+        "Finally_-_Respond_to_Power_App": {
+          "actions": {
+            "Respond_to_a_PowerApp_or_flow": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "f98478a0-a44d-4050-a6df-f680957b1675"
+              },
+              "type": "Response",
+              "kind": "PowerApp",
+              "inputs": {
+                "statusCode": 200,
+                "body": {
+                  "validuser": "@variables('userObject')"
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "validuser": {
+                      "title": "validUser",
+                      "x-ms-dynamically-added": true,
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "runAfter": {
+            "Catch_-_Handle_Error": [
+              "Succeeded",
+              "Skipped"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "ca55c120-4806-4e60-91b0-255edf0b36ed"
+          },
+          "type": "Scope"
+        },
+        "Init_Var_-_User_Object": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "7c3b11ed-ebb8-44bc-aca2-951484e341e7"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "userObject",
+                "type": "string"
+              }
+            ]
+          }
+        }
+      },
+      "outputs": {}
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

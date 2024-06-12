@@ -1,0 +1,191 @@
+AzureResourcePopup As CanvasComponent:
+    Fill: =RGBA(0, 0, 0, 0)
+    Height: =App.Height
+    Width: =App.Width
+    X: =0
+    Y: =0
+    ZIndex: =1
+
+    transparentBackground_5 As rectangle:
+        Fill: =RGBA(209, 209, 209, .8)
+        Height: =App.Height
+        Width: =App.Width
+        ZIndex: =1
+
+    solidBackground_5 As rectangle:
+        Fill: =RGBA(0, 51, 102, 1)
+        Height: =675
+        Width: =1191
+        X: =72
+        Y: =36
+        ZIndex: =2
+
+    closeLabel_5 As icon.CancelBadge:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =42
+        Icon: =Icon.CancelBadge
+        OnSelect: |+
+            =Set(showAzureResourceGroupPopup, false); // Replace this with the a new variable close new poup 
+            
+            
+            
+            
+            
+        Width: =50
+        X: =75
+        Y: =47
+        ZIndex: =3
+
+    poupLabel_5 As label:
+        Color: =RGBA(255, 255, 255, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =32
+        Text: ="Azure Resource Popup" // Change this for the name of the popup screen
+        Width: =220
+        X: =1043
+        Y: =36
+        ZIndex: =4
+
+    currentUserEmailLabel_4 As label:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =32
+        Text: |-
+            ="PFECRMOnline Email: " & userMainRecord.userPrincipalName
+        Width: =764
+        X: =132
+        Y: =57
+        ZIndex: =5
+
+    InformationalLabel As label:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =37
+        Italic: =true
+        Text: ="Due to limited credits avaialble, consider utilizing a resource previously created"
+        Width: =538
+        X: =132
+        Y: =110
+        ZIndex: =6
+
+    GetAccessToRGButton As button:
+        OnSelect: |-
+            =Set(payloadString, 
+                "{""subscriptionId"":""" & SubscriptionDropdown.SelectedText.'data-ADB4D7A662F548B49FAC2B986E348A1Bid' & ""","
+             & """resourceGroupName"":""" &  SubscriptionDropdown.SelectedText.'data-ADB4D7A662F548B49FAC2B986E348A1BdisplayName' & ""","
+             & """pfeCrmOnlineUserId"":""" & userMainRecord.id & """}" )
+            ;
+            
+            Set(newResourceGroup, ParseJSON(
+                'Temp-TestingNewFlowForIncomingRequests'.Run("AssignCollaboratorRBACRole", payloadString).result)
+            );
+        Text: ="Get Access"
+        X: =776
+        Y: =248
+        ZIndex: =7
+
+    SubscriptionDropdown As dropdown:
+        Default: =
+        Items: =allAzureSubscriptions_json
+        X: =320
+        Y: =188
+        ZIndex: =8
+
+    SubscriptionSelectionLabel As label:
+        Color: =RGBA(255, 255, 255, 1)
+        Text: |-
+            ="Subscription:"
+        X: =132
+        Y: =188
+        ZIndex: =9
+
+    RGDropdown As dropdown:
+        Default: =
+        Items: =Filter(allResourceGroups, subscriptionName = SubscriptionDropdown.SelectedText.'data-ADB4D7A662F548B49FAC2B986E348A1BdisplayName')
+        X: =320
+        Y: =248
+        ZIndex: =10
+
+    RGSelectionLabel As label:
+        Color: =RGBA(255, 255, 255, 1)
+        Text: |-
+            ="Resource Group:"
+        X: =132
+        Y: =248
+        ZIndex: =11
+
+    PersonalRGLabel As label:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =43
+        Text: ="Need custom personal one? Request Access"
+        Width: =195
+        X: =125
+        Y: =520
+        ZIndex: =12
+
+    SubmitPersonalRGButton As button:
+        DisplayMode: |-
+            =
+            If(CountRows(Filter(allResourceGroups, Substitute(User().Email, "@microsoft.com", "") in name)) > 0, DisplayMode.Disabled, DisplayMode.Edit)
+        OnSelect: |-
+            =Set(payloadString, 
+                "{""subscriptionId"":""" & SubscriptionDropdown.SelectedText.'data-ADB4D7A662F548B49FAC2B986E348A1Bid' & ""","
+             & """msftUserEmail"":""" & User().Email & ""","
+             & """pfeCrmOnlineUserId"":""" & userMainRecord.id & """}" 
+            );
+            
+            Set(newResourceGroup, ParseJSON(
+                'Temp-TestingNewFlowForIncomingRequests'.Run("CreateResourceGroupForUser", payloadString).result)
+            );
+        Text: ="Button"
+        X: =321
+        Y: =523
+        ZIndex: =13
+
+    PersonalRGExistsLabel As label:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =42
+        Text: |-
+            ="Looks like you already got a resource group associated: " & If(CountRows(Filter(allResourceGroups, Substitute(User().Email, "@microsoft.com", "") in name)) >0, First(Filter(allResourceGroups, Substitute(User().Email, "@microsoft.com", "") in name)).name, "")
+        Visible: |-
+            =
+            If(CountRows(Filter(allResourceGroups, Substitute(User().Email, "@microsoft.com", "") in name)) > 0, true, false)
+        Width: =381
+        X: =170
+        Y: =580
+        ZIndex: =14
+
+    CommonRGLabel As label:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =43
+        Text: ="Common Resource group for the team?"
+        Width: =195
+        X: =633
+        Y: =520
+        ZIndex: =15
+
+    SubmitcustomRGButton As button:
+        DisplayMode: |-
+            =
+            If(IsBlank(CommonRGTextInput.Text), DisplayMode.Disabled, DisplayMode.Edit)
+        OnSelect: |-
+            =Set(payloadString, 
+                "{""subscriptionId"":""" & SubscriptionDropdown.SelectedText.'data-ADB4D7A662F548B49FAC2B986E348A1Bid' & ""","
+            & """resourceGroupName"":""" & CommonRGTextInput.Text & ""","
+             & """msftUserEmail"":""" & User().Email & ""","
+             & """pfeCrmOnlineUserId"":""" & userMainRecord.id & """}" 
+            );
+            
+            Set(newResourceGroup, ParseJSON(
+                'Temp-TestingNewFlowForIncomingRequests'.Run("CreateResourceGroupForUser", payloadString).result)
+            );
+        Text: ="Button"
+        X: =828
+        Y: =582
+        ZIndex: =16
+
+    CommonRGTextInput As text:
+        Default: =""
+        HintText: ="Enter Meaningful Name"
+        X: =828
+        Y: =523
+        ZIndex: =17
+

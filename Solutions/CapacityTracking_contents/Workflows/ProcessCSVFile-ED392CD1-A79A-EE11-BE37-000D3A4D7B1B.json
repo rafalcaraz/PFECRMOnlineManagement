@@ -1,0 +1,198 @@
+{
+  "properties": {
+    "connectionReferences": {},
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "38b3be6e-4bb1-472d-9b82-52b817e7cd5c"
+          },
+          "type": "Request",
+          "kind": "PowerAppV2",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "EnvironmentId",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Enter EnvironmentId",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_1": {
+                  "title": "Base64Value",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Enter Base64value",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text",
+                "text_1"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Init_Empty_Capacity_Tables": {
+          "runAfter": {
+            "Return_Componse": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "fd485ed9-b39a-4758-b5c7-7429004c2cd9"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "capacityTables",
+                "type": "array"
+              }
+            ]
+          }
+        },
+        "Init_base64ToBinary": {
+          "runAfter": {
+            "Init_Empty_Capacity_Tables": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "b2883a01-8dbd-4ff8-af69-51672f8e7c9b"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "base64ToBinary",
+                "type": "string",
+                "value": "@{base64ToBinary(triggerBody()['text_1'])}"
+              }
+            ]
+          }
+        },
+        "Output_As_an_Array": {
+          "runAfter": {
+            "Init_base64ToBinary": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "f24641ae-2412-4491-b03a-e24289af55f6"
+          },
+          "type": "Compose",
+          "inputs": "@split(replace(variables('base64ToBinary'),outputs('Return_Componse'),''),outputs('Init_New_Line_Componse'))"
+        },
+        "Go_Through_Each_Line": {
+          "foreach": "@take(skip(outputs('Output_As_an_Array'),1), 20)",
+          "actions": {
+            "Split_on_CSV": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "fc7f8f0a-ffd6-46c7-ae46-408667263c5d"
+              },
+              "type": "Compose",
+              "inputs": "@split(item(),',')"
+            },
+            "Append_to_array_variable": {
+              "runAfter": {
+                "Split_on_CSV": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "55b721b0-5450-4cdb-b43a-3b65ad6115d7"
+              },
+              "type": "AppendToArrayVariable",
+              "inputs": {
+                "name": "capacityTables",
+                "value": {
+                  "tableName": "@outputs('Split_on_CSV')[0]",
+                  "tableSize": "@outputs('Split_on_CSV')[1]"
+                }
+              }
+            }
+          },
+          "runAfter": {
+            "Output_As_an_Array": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "136ad06b-4d13-4ed0-947d-79bab13e3f81"
+          },
+          "type": "Foreach"
+        },
+        "Respond_to_a_PowerApp_or_flow": {
+          "runAfter": {
+            "Go_Through_Each_Line": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "9a6d0c52-ebfb-48c8-be71-ce6844e1259f"
+          },
+          "type": "Response",
+          "kind": "PowerApp",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "output": "@variables('base64ToBinary')",
+              "outputjson": "{\"tables\":[@{join(variables('capacityTables'),',')}]}"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "output": {
+                  "title": "output",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                },
+                "outputjson": {
+                  "title": "outputJson",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "Init_New_Line_Componse": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "37452d2f-f40f-4c07-b109-af78a888e0c2"
+          },
+          "type": "Compose",
+          "inputs": "@decodeUriComponent('%0A')"
+        },
+        "Return_Componse": {
+          "runAfter": {
+            "Init_New_Line_Componse": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "cb1757b1-857e-4ec5-8d6e-5fc38f53b2ad"
+          },
+          "type": "Compose",
+          "inputs": "@decodeUriComponent('%0D')"
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

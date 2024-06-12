@@ -1,0 +1,87 @@
+FeedbackPopup As CanvasComponent:
+    Fill: =RGBA(0, 0, 0, 0)
+    Height: =App.Height
+    Width: =App.Width
+    X: =0
+    Y: =0
+    ZIndex: =1
+
+    transparentBackground_4 As rectangle:
+        Fill: =RGBA(209, 209, 209, .8)
+        Height: =App.Height
+        Width: =App.Width
+        ZIndex: =1
+
+    solidBackground_4 As rectangle:
+        Fill: =RGBA(0, 51, 102, 1)
+        Height: =675
+        Width: =1191
+        X: =72
+        Y: =36
+        ZIndex: =2
+
+    closeLabel_4 As icon.CancelBadge:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =42
+        Icon: =Icon.CancelBadge
+        OnSelect: |+
+            =Set(showFeedbackPopup, false); // Replace this with the a new variable close new poup 
+            Reset(Dropdown1);
+            Reset(TextInput1);
+            
+            
+            
+            
+        Width: =50
+        X: =75
+        Y: =47
+        ZIndex: =3
+
+    poupLabel_4 As label:
+        Color: =RGBA(255, 255, 255, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =32
+        Text: ="Feedback" // Change this for the name of the popup screen
+        Width: =220
+        X: =1043
+        Y: =36
+        ZIndex: =4
+
+    currentUserEmailLabel_3 As label:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =32
+        Text: |-
+            ="PFECRMOnline Email: " & userMainRecord.userPrincipalName
+        Width: =764
+        X: =132
+        Y: =57
+        ZIndex: =5
+
+    Dropdown1 As dropdown:
+        Items: =["Licensing", "Other"]
+        X: =152
+        Y: =148
+        ZIndex: =6
+
+    TextInput1 As text:
+        Clear: =true
+        Default: =""
+        Height: =171
+        HintText: ="Enter feedback"
+        Mode: =TextMode.MultiLine
+        X: =152
+        Y: =222
+        ZIndex: =7
+
+    Button9 As button:
+        OnSelect: |-
+            =Set(payloadString, "{" &
+            """feedbackCategory"":""" & Dropdown1.SelectedText.Value & "@pfecrmonline.onmicrosoft.com" & """," &
+            """feedbackComments"":""" & TextInput1.Text & """" &
+            "}");
+            Set(userSearch_json, ParseJSON('Temp-TestingNewFlowForIncomingRequests'.Run("ProvideUserFeedback", payloadString).result));
+        Text: ="Button"
+        X: =152
+        Y: =427
+        ZIndex: =8
+

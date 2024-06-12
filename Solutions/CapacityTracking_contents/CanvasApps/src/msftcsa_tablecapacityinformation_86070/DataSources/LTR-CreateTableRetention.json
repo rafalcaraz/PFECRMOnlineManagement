@@ -1,0 +1,10 @@
+[
+  {
+    "ApiId": "/providers/microsoft.powerapps/apis/shared_logicflows",
+    "FlowNameId": "51884d12-3972-4294-af96-af45c6f817af",
+    "Name": "LTR-CreateTableRetention",
+    "ServiceKind": "ConnectedWadl",
+    "Type": "ServiceInfo",
+    "WorkflowEntityId": "c90e1cf9-789f-ee11-be37-000d3a549f24"
+  }
+]

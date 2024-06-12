@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CanvasApp xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>bacsa_pfecrmonlinetenantmanagementv2_84700</Name>
+  <AppVersion>2024-06-05T16:08:59Z</AppVersion>
+  <Status>Ready</Status>
+  <CreatedByClientVersion>3.23123.8.0</CreatedByClientVersion>
+  <MinClientVersion>3.23123.8.0</MinClientVersion>
+  <Tags>{"primaryDeviceWidth":"1366","primaryDeviceHeight":"768","supportsPortrait":"true","supportsLandscape":"true","primaryFormFactor":"Tablet","showStatusBar":"false","publisherVersion":"3.23123.8","minimumRequiredApiVersion":"2.2.0","hasComponent":"true","hasUnlockedComponent":"true","isUnifiedRootApp":"false","sienaVersion":"20231128T231319Z-3.23114.7.0","offlineLargeFilesSupport":"false"}</Tags>
+  <IsCdsUpgraded>0</IsCdsUpgraded>
+  <GalleryItemId xsi:nil="true"></GalleryItemId>
+  <BackgroundColor>RGBA(0,176,240,1)</BackgroundColor>
+  <DisplayName>PFECRMOnline Tenant Management v2</DisplayName>
+  <Description></Description>
+  <CommitMessage></CommitMessage>
+  <Publisher></Publisher>
+  <AuthorizationReferences>[]</AuthorizationReferences>
+  <ConnectionReferences>{"0061509c-0c4c-42b7-b184-f0be6daaf428":{"id":"/providers/microsoft.powerapps/apis/shared_office365users","displayName":"Office 365 Users","iconUri":"https://connectoricons-prod.azureedge.net/releases/v1.0.1686/1.0.1686.3706/office365users/icon.png","dataSources":["Office365Users"],"dependencies":[],"dependents":[],"parameterHints":{},"parameterHintsV2":{},"isOnPremiseConnection":false,"bypassConsent":false,"dataSets":{},"apiTier":"Standard","actions":["UserProfile_V2","Manager_V2","SearchUser","UserPhoto_V2"]},"857ccbd1-97e2-41fc-bbb0-6dcea2f85cc3":{"id":"/providers/microsoft.powerapps/apis/shared_logicflows","displayName":"Logic flows","iconUri":"https://connectoricons-prod.azureedge.net/u/patelronak/specialtrain-logicflows-2/1.0.1692.3734/logicflows/icon.png","dataSources":["ValidateADUser"],"dependencies":["bb6baa57-5f7e-4a5e-b915-37938cb17ed1"],"dependents":[],"parameterHints":{"workflowName":{"value":"981e11d4-3ce7-4ded-afb0-3793d8544d53"},"workflowEntityId":{"value":"c73790a2-db7b-ed11-81ad-000d3a8b13eb"},"bb6baa57-5f7e-4a5e-b915-37938cb17ed1":{"value":"shared_office365users"}},"parameterHintsV2":{"workflowName":{"value":"981e11d4-3ce7-4ded-afb0-3793d8544d53"},"workflowEntityId":{"value":"c73790a2-db7b-ed11-81ad-000d3a8b13eb"},"shared_office365users":{"value":"bb6baa57-5f7e-4a5e-b915-37938cb17ed1"}},"isOnPremiseConnection":false,"bypassConsent":false,"dataSets":{},"apiTier":"Standard","actions":["Run"]},"bb6baa57-5f7e-4a5e-b915-37938cb17ed1":{"id":"/providers/microsoft.powerapps/apis/shared_office365users","displayName":"Office 365 Users","iconUri":"https://connectoricons-prod.azureedge.net/releases/v1.0.1686/1.0.1686.3706/office365users/icon.png","dataSources":[],"dependencies":[],"dependents":["857ccbd1-97e2-41fc-bbb0-6dcea2f85cc3"],"parameterHints":{},"parameterHintsV2":{},"isOnPremiseConnection":false,"bypassConsent":false,"dataSets":{},"apiTier":"Standard"},"fcaf90d9-5d1a-4990-9b19-70821a96a39c":{"id":"/providers/microsoft.powerapps/apis/shared_logicflows","displayName":"Logic flows","iconUri":"https://connectoricons-prod.azureedge.net/u/patelronak/specialtrain-logicflows-2/1.0.1692.3734/logicflows/icon.png","dataSources":["Temp-TestingNewFlowForIncomingRequests"],"dependencies":[],"dependents":[],"parameterHints":{"workflowName":{"value":"954f81e4-441f-4113-9e17-7d74e007fc52"},"workflowEntityId":{"value":"2a76c0a8-a70b-ee11-8f6e-0022482c4d51"}},"parameterHintsV2":{"workflowName":{"value":"954f81e4-441f-4113-9e17-7d74e007fc52"},"workflowEntityId":{"value":"2a76c0a8-a70b-ee11-8f6e-0022482c4d51"}},"isOnPremiseConnection":false,"bypassConsent":false,"dataSets":{},"apiTier":"Standard","actions":["Run"]}}</ConnectionReferences>
+  <DatabaseReferences>{"default.cds":{"databaseDetails":{"referenceType":"Environmental","environmentName":"default.cds","overrideValues":{"status":"NotSpecified"}},"dataSources":{"Environment Variable Values":{"entitySetName":"environmentvariablevalues","logicalName":"environmentvariablevalue"}}}}</DatabaseReferences>
+  <AppComponents>[]</AppComponents>
+  <AppComponentDependencies>[]</AppComponentDependencies>
+  <CanConsumeAppPass>1</CanConsumeAppPass>
+  <CanvasAppType>0</CanvasAppType>
+  <BypassConsent>0</BypassConsent>
+  <EmbeddedApp xsi:nil="true"></EmbeddedApp>
+  <IntroducedVersion>1.0</IntroducedVersion>
+  <CdsDependencies>{"cdsdependencies":[{"componenttype":1,"logicalname":"environmentvariablevalue"}]}</CdsDependencies>
+  <IsCustomizable>1</IsCustomizable>
+  <BackgroundImageUri>/CanvasApps/bacsa_pfecrmonlinetenantmanagementv2_84700_BackgroundImageUri</BackgroundImageUri>
+  <DocumentUri>/CanvasApps/bacsa_pfecrmonlinetenantmanagementv2_84700_DocumentUri.msapp</DocumentUri>
+  <AdditionalUris>
+    <AdditionalUri>/CanvasApps/bacsa_pfecrmonlinetenantmanagementv2_84700_AdditionalUris0_identity.json</AdditionalUri>
+  </AdditionalUris>
+</CanvasApp>

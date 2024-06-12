@@ -1,0 +1,291 @@
+EMEATroubleshoot As screen:
+
+    ButtonCanvas8 As Button:
+        BasePaletteColor: =
+        DisplayMode: =DisplayMode.Edit
+        Font: =""
+        FontColor: =
+        FontItalic: =false
+        FontStrikethrough: =false
+        FontUnderline: =false
+        FontWeight: =""
+        Height: =32
+        OnSelect: |+
+            =ClearCollect(emeaTest, allUsers_table_filtered);
+            ClearCollect(emaTest_extended, Blank());
+            ForAll(emeaTest,
+                With({userRecord: Office365Users.UserProfileV2(First(ThisRecord.otherMails)), userManager: Office365Users.ManagerV2(First(ThisRecord.otherMails))}, 
+                    Collect(emaTest_extended, 
+                        {
+                            displayName: userRecord.displayName,
+                            email: userRecord.userPrincipalName,
+                            role: userRecord.jobTitle,
+                            location: userRecord.department,
+                            managerName: userManager.displayName,
+                            managerEmail: userManager.userPrincipalName,
+                            managerTitle: userManager.jobTitle,
+                            managerDepartment: userManager.department
+                        }
+                    );
+                )
+            );
+            
+        Width: =96
+        X: =40
+        Y: =65
+        ZIndex: =2
+
+    Button2 As button:
+        OnSelect: |-
+            =Set(testUserRecord, Office365Users.UserProfileV2(First(DataTable5.Selected.otherMails)));
+            Set(testManagerRecord, Office365Users.ManagerV2(First(DataTable5.Selected.otherMails)));
+        Text: ="Button"
+        X: =275
+        Y: =54
+        ZIndex: =3
+
+    TextCanvas15 As Text:
+        DisplayMode: =DisplayMode.Edit
+        Font: =""
+        FontColor: =
+        FontItalic: =false
+        FontStrikethrough: =false
+        FontUnderline: =false
+        Height: =32
+        Text: |-
+            ="User Name: " & testUserRecord.displayName
+        Width: =341
+        X: =487
+        Y: =22
+        ZIndex: =4
+
+    TextCanvas15_1 As Text:
+        DisplayMode: =DisplayMode.Edit
+        Font: =""
+        FontColor: =
+        FontItalic: =false
+        FontStrikethrough: =false
+        FontUnderline: =false
+        Height: =32
+        Text: |-
+            ="Title : " & testUserRecord.jobTitle
+        Width: =341
+        X: =487
+        Y: =50
+        ZIndex: =5
+
+    TextCanvas15_2 As Text:
+        DisplayMode: =DisplayMode.Edit
+        Font: =""
+        FontColor: =
+        FontItalic: =false
+        FontStrikethrough: =false
+        FontUnderline: =false
+        Height: =32
+        Text: |-
+            ="Department: " & testUserRecord.department
+        Width: =341
+        X: =487
+        Y: =82
+        ZIndex: =6
+
+    TextCanvas15_3 As Text:
+        DisplayMode: =DisplayMode.Edit
+        Font: =""
+        FontColor: =
+        FontItalic: =false
+        FontStrikethrough: =false
+        FontUnderline: =false
+        Height: =34
+        Text: |-
+            ="Manager Name: " & testManagerRecord.displayName
+        Width: =434
+        X: =902
+        Y: =20
+        ZIndex: =7
+
+    TextCanvas15_4 As Text:
+        DisplayMode: =DisplayMode.Edit
+        Font: =""
+        FontColor: =
+        FontItalic: =false
+        FontStrikethrough: =false
+        FontUnderline: =false
+        Height: =34
+        Text: |-
+            ="Title: " & testManagerRecord.jobTitle
+        Width: =434
+        X: =902
+        Y: =48
+        ZIndex: =8
+
+    TextCanvas15_5 As Text:
+        DisplayMode: =DisplayMode.Edit
+        Font: =""
+        FontColor: =
+        FontItalic: =false
+        FontStrikethrough: =false
+        FontUnderline: =false
+        Height: =34
+        Text: |-
+            ="Manager Deparment: " & testManagerRecord.department
+        Width: =434
+        X: =902
+        Y: =80
+        ZIndex: =9
+
+    DataTable4 As dataTable.datatable:
+        BorderStyle: =BorderStyle.Solid
+        DisplayMode: =DisplayMode.Edit
+        Fill: =RGBA(0, 0, 0, 0)
+        Height: =503
+        Items: =Sort(Filter(emaTest_extended, IsError(ThisRecord.displayName) = false ),managerName)  //And Not(("US" in location And Not("Aust" in location))))
+        Width: =1333
+        X: =20
+        Y: =200
+        ZIndex: =10
+
+        displayName_Column2 As dataTableColumn.textualColumn:
+            DisplayMode: =DisplayMode.Edit
+            FieldDisplayName: ="displayName"
+            FieldName: ="displayName"
+            FieldVariantName: ="textualColumn"
+            Height: =Parent.Height
+            LayoutHeight: =Parent.Height
+            Order: =1
+            Text: =ThisItem.displayName
+            Width: =100
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+        email_Column1 As dataTableColumn.textualColumn:
+            DisplayMode: =DisplayMode.Edit
+            FieldDisplayName: ="email"
+            FieldName: ="email"
+            FieldVariantName: ="textualColumn"
+            Height: =Parent.Height
+            LayoutHeight: =Parent.Height
+            Order: =2
+            Text: =ThisItem.email
+            Width: =100
+            X: =0
+            Y: =0
+            ZIndex: =2
+
+        role_Column1 As dataTableColumn.textualColumn:
+            DisplayMode: =DisplayMode.Edit
+            FieldDisplayName: ="role"
+            FieldName: ="role"
+            FieldVariantName: ="textualColumn"
+            Height: =Parent.Height
+            LayoutHeight: =Parent.Height
+            Order: =3
+            Text: =ThisItem.role
+            Width: =100
+            X: =0
+            Y: =0
+            ZIndex: =3
+
+        location_Column1 As dataTableColumn.textualColumn:
+            AutoWidth: =false
+            DisplayMode: =DisplayMode.Edit
+            FieldDisplayName: ="location"
+            FieldName: ="location"
+            FieldVariantName: ="textualColumn"
+            Height: =Parent.Height
+            LayoutHeight: =Parent.Height
+            Order: =4
+            Text: =ThisItem.location
+            Width: =212
+            X: =0
+            Y: =0
+            ZIndex: =4
+
+        managerName_Column1 As dataTableColumn.textualColumn:
+            DisplayMode: =DisplayMode.Edit
+            FieldDisplayName: ="managerName"
+            FieldName: ="managerName"
+            FieldVariantName: ="textualColumn"
+            Height: =Parent.Height
+            LayoutHeight: =Parent.Height
+            Order: =5
+            Text: =ThisItem.managerName
+            Width: =100
+            X: =0
+            Y: =0
+            ZIndex: =5
+
+        managerEmail_Column1 As dataTableColumn.textualColumn:
+            DisplayMode: =DisplayMode.Edit
+            FieldDisplayName: ="managerEmail"
+            FieldName: ="managerEmail"
+            FieldVariantName: ="textualColumn"
+            Height: =Parent.Height
+            LayoutHeight: =Parent.Height
+            Order: =6
+            Text: =ThisItem.managerEmail
+            Width: =100
+            X: =0
+            Y: =0
+            ZIndex: =6
+
+        managerDepartment_Column1 As dataTableColumn.textualColumn:
+            DisplayMode: =DisplayMode.Edit
+            FieldDisplayName: ="managerDepartment"
+            FieldName: ="managerDepartment"
+            FieldVariantName: ="textualColumn"
+            Height: =Parent.Height
+            LayoutHeight: =Parent.Height
+            Order: =7
+            Text: =ThisItem.managerDepartment
+            Width: =100
+            X: =0
+            Y: =0
+            ZIndex: =7
+
+        managerTitle_Column1 As dataTableColumn.textualColumn:
+            DisplayMode: =DisplayMode.Edit
+            FieldDisplayName: ="managerTitle"
+            FieldName: ="managerTitle"
+            FieldVariantName: ="textualColumn"
+            Height: =Parent.Height
+            LayoutHeight: =Parent.Height
+            Order: =8
+            Text: =ThisItem.managerTitle
+            Width: =100
+            X: =0
+            Y: =0
+            ZIndex: =8
+
+    TextCanvas18 As Text:
+        DisplayMode: =DisplayMode.Edit
+        Font: =""
+        FontColor: =
+        FontItalic: =false
+        FontStrikethrough: =false
+        FontUnderline: =false
+        Height: =32
+        Text: |-
+            ="test: " & IsError(DataTable4.Selected.displayName)
+        Width: =96
+        X: =367
+        Y: =131
+        ZIndex: =11
+
+    Export1 As export:
+        Data: =Sort(Filter(emaTest_extended, IsError(ThisRecord.displayName) = false ),managerName)  //And Not(("US" in location And Not("Aust" in location))))
+        Text: ="Export Data"
+        X: =602
+        Y: =137
+        ZIndex: =12
+
+    Button4 As button:
+        OnSelect: |-
+            =Set(testString,Concat(Sort(Filter(emaTest_extended, IsError(ThisRecord.displayName) = false ),managerName), $"{displayName},{email},{role},{location},{managerName},{managerEmail},{managerDepartment}", "
+            ") ) //And Not(("US" in location And Not("Aust" in location)))), d
+        Text: ="Button"
+        X: =115
+        Y: =131
+        ZIndex: =13
+

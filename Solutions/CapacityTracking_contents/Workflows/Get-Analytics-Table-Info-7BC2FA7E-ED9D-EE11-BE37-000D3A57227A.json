@@ -1,0 +1,296 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "msftcsa_CapacityDataverse"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "58f8d41d-6eb1-4e36-a3ad-3d294e0d95d2"
+          },
+          "type": "Request",
+          "kind": "PowerAppV2",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "analyticsTableName",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "please enter analytics table name",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_1": {
+                  "title": "environmentUrl",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please Enter EnvironmentUrl",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text",
+                "text_1"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Respond_to_a_PowerApp_or_flow": {
+          "runAfter": {
+            "Compose": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "e124a14e-a4f5-41d3-9230-144b000f7a86"
+          },
+          "type": "Response",
+          "kind": "PowerApp",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "result": "{\"records\":@{outputs('Compose')}}",
+              "entityconfigid": "@variables('initConfigId')",
+              "issuccesful": "@{variables('isSuccesful')}"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "title": "result",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                },
+                "entityconfigid": {
+                  "title": "entityConfigId",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                },
+                "issuccesful": {
+                  "title": "isSuccesful",
+                  "x-ms-dynamically-added": true,
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "Init_Array": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "e174ede7-6223-4145-b984-2875d07a9be6"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "initArray",
+                "type": "array"
+              }
+            ]
+          }
+        },
+        "Compose": {
+          "runAfter": {
+            "Set_as_failed": [
+              "Succeeded",
+              "Skipped"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "e4a72d38-b483-4ce5-9582-bbb25953dd9d"
+          },
+          "type": "Compose",
+          "inputs": "@variables('initArray')"
+        },
+        "Initialize_variable": {
+          "runAfter": {
+            "Init_Variable_-_IsSuccesful": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "86dca42a-fc4d-43cb-bada-09763a959c7e"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "initConfigId",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Try": {
+          "actions": {
+            "Get_Entity_Analytics__Config": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "1719044b-85a7-418a-b788-c9f99087a6a0"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps",
+                  "operationId": "ListRecordsWithOrganization",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "organization": "@triggerBody()['text_1']",
+                  "entityName": "entityanalyticsconfigs",
+                  "$select": "parententitylogicalname",
+                  "$filter": "parententitylogicalname eq '@{triggerBody()['text']}'"
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            },
+            "If_Table_Config_Is_Found": {
+              "actions": {
+                "Get_Component_Layers": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "13026179-6872-4471-b8d1-7d6ca1cfa1ac"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_commondataserviceforapps",
+                      "operationId": "ListRecordsWithOrganization",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                    },
+                    "parameters": {
+                      "organization": "@triggerBody()['text_1']",
+                      "entityName": "msdyn_componentlayers",
+                      "$select": "msdyn_solutionname,msdyn_publishername,msdyn_order",
+                      "$filter": "msdyn_componentid eq @{first(outputs('Get_Entity_Analytics__Config')?['body/value'])?['entityanalyticsconfigid']} and msdyn_solutioncomponentname eq 'EntityAnalyticsConfig'"
+                    },
+                    "authentication": "@parameters('$authentication')"
+                  }
+                },
+                "Set_variable": {
+                  "runAfter": {
+                    "Get_Component_Layers": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "1d9719e3-9c15-47b3-8e70-ff2a1133e4ec"
+                  },
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "initArray",
+                    "value": "@outputs('Get_Component_Layers')?['body/value']"
+                  }
+                },
+                "Set_variable_1": {
+                  "runAfter": {
+                    "Set_variable": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "a44c5261-73f0-43a8-8891-97c19375f0b6"
+                  },
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "initConfigId",
+                    "value": "@{first(outputs('Get_Entity_Analytics__Config')?['body/value'])?['entityanalyticsconfigid']}"
+                  }
+                }
+              },
+              "runAfter": {
+                "Get_Entity_Analytics__Config": [
+                  "Succeeded"
+                ]
+              },
+              "expression": {
+                "not": {
+                  "equals": [
+                    "@length(outputs('Get_Entity_Analytics__Config')?['body/value'])",
+                    0
+                  ]
+                }
+              },
+              "metadata": {
+                "operationMetadataId": "f5512d6c-6bbe-4ee9-8792-509ae2c0e72a"
+              },
+              "type": "If"
+            }
+          },
+          "runAfter": {
+            "Initialize_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "e04fb3ca-cfa8-44d6-ba9a-e3fbe104e4aa"
+          },
+          "type": "Scope"
+        },
+        "Init_Variable_-_IsSuccesful": {
+          "runAfter": {
+            "Init_Array": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "5e00ef12-edd6-4b82-9a4b-0d81c2cba94a"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "isSuccesful",
+                "type": "boolean",
+                "value": true
+              }
+            ]
+          }
+        },
+        "Set_as_failed": {
+          "runAfter": {
+            "Try": [
+              "Failed",
+              "TimedOut"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "6110b349-7ca0-4586-8f34-e9ae45f8e76f"
+          },
+          "type": "SetVariable",
+          "inputs": {
+            "name": "isSuccesful",
+            "value": false
+          }
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

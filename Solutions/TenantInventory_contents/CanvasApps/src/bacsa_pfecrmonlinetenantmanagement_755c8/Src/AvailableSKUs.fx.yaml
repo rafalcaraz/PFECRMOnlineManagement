@@ -1,0 +1,137 @@
+AvailableSKUs As screen:
+
+    Button3 As button:
+        OnSelect: =Set(availableSKUs_JSON, ParseJSON(GraphCustomConnectorAPIWrapper.Run("AvailableSKUs", "{}").result))
+        Text: ="Get All SKUs"
+        X: =40
+        Y: =40
+        ZIndex: =1
+
+    DataTable2 As dataTable.datatable:
+        BorderStyle: =BorderStyle.Solid
+        DisplayMode: =DisplayMode.Edit
+        Fill: =RGBA(0, 0, 0, 0)
+        Height: =481
+        Items: |-
+            =
+            //ForAll( Table( ParseJSON( "[ { ""id"": 1, ""name"": ""one"" }, { ""id"": 2, ""name"": ""two"" } ]" ) ), { id: Value(ThisRecord.Value.id), name: Text(ThisRecord.Value.name) } )
+            
+            //ForAll(Table(availableSKUs_JSON.value), { capabilityStatus: Text(ThisRecord.Value.capabilityStatus), consumedUnits: Value(ThisRecord.Value.consumedUnits),
+             //skuId: Text(ThisRecord.Value.skuId), skuPartNumber: Text(ThisRecord.Value.skuPartNumber), enabledPrepaidUnits: Value(ThisRecord.Value.prepaidUnits.enabled)})
+            
+             //allAvailableSKUs
+             //availableSKUs_table
+             //Sort(Filter(availableSKUs_table_2, appliesTo = "User"), FriendlyName)
+            Filter(availableSKUs_table_2, appliesTo = "User")
+        Width: =908
+        X: =432
+        Y: =196
+        ZIndex: =2
+
+        capabilityStatus_Column1 As dataTableColumn.textualColumn:
+            AutoWidth: =false
+            DisplayMode: =DisplayMode.Edit
+            FieldDisplayName: ="capabilityStatus"
+            FieldName: ="capabilityStatus"
+            FieldVariantName: ="textualColumn"
+            Height: =Parent.Height
+            LayoutHeight: =Parent.Height
+            Order: =1
+            Text: =ThisItem.capabilityStatus
+            Width: =124
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+        skuPartNumber_Column1 As dataTableColumn.textualColumn:
+            AutoWidth: =false
+            DisplayMode: =DisplayMode.Edit
+            FieldDisplayName: ="skuPartNumber"
+            FieldName: ="skuPartNumber"
+            FieldVariantName: ="textualColumn"
+            Height: =Parent.Height
+            LayoutHeight: =Parent.Height
+            Order: =3
+            Text: =LookUp(productsFriendly, skuId = ThisItem.skuId).FriendlyName
+            Width: =379
+            X: =0
+            Y: =0
+            ZIndex: =3
+
+        enabledPrepaidUnits_Column1 As dataTableColumn.textualColumn:
+            AutoWidth: =false
+            DisplayMode: =DisplayMode.Edit
+            FieldDisplayName: ="enabledPrepaidUnits"
+            FieldName: ="enabledPrepaidUnits"
+            FieldVariantName: ="textualColumn"
+            Height: =Parent.Height
+            LayoutHeight: =Parent.Height
+            Order: =4
+            Text: =ThisItem.enabledPrepaidUnits
+            Width: =188
+            X: =995
+            Y: =0
+            ZIndex: =4
+
+        consumedUnits_Column1 As dataTableColumn.textualColumn:
+            AutoWidth: =false
+            DisplayMode: =DisplayMode.Edit
+            FieldDisplayName: ="consumedUnits"
+            FieldName: ="consumedUnits"
+            FieldVariantName: ="textualColumn"
+            Height: =Parent.Height
+            LayoutHeight: =Parent.Height
+            Order: =5
+            Text: =ThisItem.consumedUnits
+            Width: =116
+            X: =1182
+            Y: =0
+            ZIndex: =5
+
+    Label5 As label:
+        Height: =27
+        Text: |-
+            ="{""msftUserEmail"":""" & User().Email & """ }"
+        Width: =438
+        X: =912
+        ZIndex: =3
+
+    Button4 As button:
+        OnSelect: |-
+            =Set(mainUserAccount, GraphCustomConnectorAPIWrapper.Run("GetUserDetails", "{""msftUserEmail"":""" & User().Email & """ }"));
+            Set(mainUserAccount_json, ParseJSON(mainUserAccount.result))
+        Text: ="Get User Details"
+        Width: =208
+        X: =245
+        Y: =40
+        ZIndex: =4
+
+    Label6 As label:
+        Text: =
+        X: =623
+        Y: =40
+        ZIndex: =5
+
+    Label7 As label:
+        Height: =42
+        Text: |-
+            ="Text: " & userMainRecord.userPrincipalName
+        Width: =392
+        X: =935
+        Y: =41
+        ZIndex: =6
+
+    Label8 As label:
+        Text: =DataTable2.Selected.skuId
+        Width: =385
+        X: =303
+        ZIndex: =8
+
+    Label9 As label:
+        Height: =57
+        Text: =DataTable2.Selected.skuPartNumber
+        Width: =378
+        X: =514
+        Y: =40
+        ZIndex: =9
+

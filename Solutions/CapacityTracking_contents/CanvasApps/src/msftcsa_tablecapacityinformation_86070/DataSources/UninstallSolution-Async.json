@@ -1,0 +1,10 @@
+[
+  {
+    "ApiId": "/providers/microsoft.powerapps/apis/shared_logicflows",
+    "FlowNameId": "d0858231-5ee9-4d9e-adc9-3370f60f7492",
+    "Name": "UninstallSolution-Async",
+    "ServiceKind": "ConnectedWadl",
+    "Type": "ServiceInfo",
+    "WorkflowEntityId": "2649a100-939e-ee11-be37-000d3a57227a"
+  }
+]

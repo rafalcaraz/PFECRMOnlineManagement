@@ -1,0 +1,384 @@
+LandingScreen As screen:
+    Fill: =RGBA(232, 232, 232, 1)
+
+    Button22 As button:
+        Height: =53
+        OnSelect: |+
+            =Set(showAzureResourceGroupPopup, true); // Replace this with the a new variable close new poup 
+            
+            
+            
+            
+            
+        Text: ="Azure Resources"
+        Visible: =msUserExists And azureResourcesFeature
+        Width: =207
+        X: =1118
+        Y: =257
+        ZIndex: =1
+
+    currentUserLabel As label:
+        Height: =31
+        Text: |-
+            ="Welcome: " & User().FullName
+        Width: =373
+        X: =40
+        Y: =40
+        ZIndex: =2
+
+    pfeCRMONLINEUserEmailLabel As label:
+        Height: =42
+        Text: |-
+            ="PFECRMOnline Email: " & userMainRecord.userPrincipalName
+        Visible: =msUserExists
+        Width: =672
+        X: =40
+        Y: =71
+        ZIndex: =3
+
+    myAdminRoleAssigmentsLabel As label:
+        Height: =32
+        Text: |-
+            ="My Admin Role Assignments: "
+        Visible: =msUserExists
+        Width: =392
+        X: =40
+        Y: =173
+        ZIndex: =4
+
+    myAdminRoleAssignmentsTable As dataTable.datatable:
+        BorderStyle: =BorderStyle.Solid
+        DisplayMode: =DisplayMode.Edit
+        Fill: =RGBA(0, 0, 0, 0)
+        Height: =191
+        Items: =userAssignments_Table
+        Visible: =msUserExists
+        Width: =491
+        X: =40
+        Y: =220
+        ZIndex: =5
+
+        roleDisplayName_Column1 As dataTableColumn.textualColumn:
+            DisplayMode: =DisplayMode.Edit
+            FieldDisplayName: ="roleDisplayName"
+            FieldName: ="roleDisplayName"
+            FieldVariantName: ="textualColumn"
+            Height: =Parent.Height
+            LayoutHeight: =Parent.Height
+            Order: =1
+            Text: =ThisItem.roleDisplayName
+            Width: =100
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+    myLicensesLabel As label:
+        Text: |-
+            ="My Licenses:"
+        Visible: =msUserExists
+        X: =40
+        Y: =442
+        ZIndex: =6
+
+    requestLicenseButton As button:
+        Height: =53
+        OnSelect: |-
+            =ClearCollect(licensesSelected, Blank());
+            Set(showPopup, true)
+        Text: ="Request License"
+        Visible: =msUserExists
+        Width: =205
+        X: =1120
+        Y: =90
+        ZIndex: =7
+
+    myLicensesTable As dataTable.datatable:
+        BorderStyle: =BorderStyle.Solid
+        DisplayMode: =DisplayMode.Edit
+        Fill: =RGBA(0, 0, 0, 0)
+        Height: =258
+        Items: =userLicences_Table
+        Visible: =msUserExists
+        Width: =801
+        X: =40
+        Y: =509
+        ZIndex: =8
+
+        friendlyName_Column4 As dataTableColumn.textualColumn:
+            DisplayMode: =DisplayMode.Edit
+            FieldDisplayName: ="friendlyName"
+            FieldName: ="friendlyName"
+            FieldVariantName: ="textualColumn"
+            Height: =Parent.Height
+            LayoutHeight: =Parent.Height
+            Order: =1
+            Text: =ThisItem.friendlyName
+            Width: =100
+            X: =0
+            Y: =0
+            ZIndex: =5
+
+        timeAssignment_Column3 As dataTableColumn.textualColumn:
+            DisplayMode: =DisplayMode.Edit
+            FieldDisplayName: ="timeAssignment"
+            FieldName: ="timeAssignment"
+            FieldVariantName: ="textualColumn"
+            Height: =Parent.Height
+            LayoutHeight: =Parent.Height
+            Order: =2
+            Text: |-
+                =//ThisItem.timeAssignment
+                //**** CLEAR EXAMPLE ON WHEN USING 'With' ****
+                 //If(IsBlank(LookUp(userTimedRequests_Table, requestLicenseSkuId = ThisItem.licenseSkuId)) = false, If(IsBlank(LookUp(userTimedRequests_Table, requestLicenseSkuId = ThisItem.licenseSkuId).requestEndDate), "No Expiry",  LookUp(userTimedRequests_Table, requestLicenseSkuId = ThisItem.licenseSkuId).requestEndDate ));
+                //LookUp(userTimedRequests_Table, requestLicenseSkuId = ThisItem.licenseSkuId).requestEndDate
+                
+                //Text( DateTimeValue( ThisItem.requestStartDate ), "mm/dd/yyyy hh:mm AM/PM")
+                With( LookUp(userTimedRequests_Table, requestLicenseSkuId = ThisItem.licenseSkuId) As indexRecord, 
+                    If( IsBlank(indexRecord) = false, 
+                        If( IsBlank(indexRecord.requestEndDate), 
+                            "No Expiry", 
+                            Text( DateTimeValue( indexRecord.requestEndDate ), "mm/dd/yyyy hh:mm AM/PM")
+                        )
+                    )
+                )
+            Width: =100
+            X: =0
+            Y: =0
+            ZIndex: =6
+
+    refreshLicensesIcon As icon.Reload:
+        Height: =32
+        Icon: =Icon.Reload
+        OnSelect: |+
+            =//GetUserLicenses
+            Set(userLicences_json, ParseJSON('Temp-TestingNewFlowForIncomingRequests'.Run("GetUserLicenses", "{""userId"":""" & userMainRecord.id & """ }").result));
+            Set(userLicences_Table, 
+                ForAll(Table(userLicences_json.value) As _items,
+                    {
+                        licenseAssignmentId: Text(_items.Value.id),
+                        licenseSkuId: Text(_items.Value.skuId),
+                        licenseSkuPartNumber: Text(_items.Value.skuPartNumber),
+                        timeAssignment: "N/A",
+                        friendlyName: LookUp(productsFriendly, skuId = Text(_items.Value.skuId)).FriendlyName
+                    }
+                )
+            );
+            
+            Set(userTimedRequests_json, ParseJSON('Temp-TestingNewFlowForIncomingRequests'.Run("GetAccessRequests", "{""userId"":""" & userMainRecord.id & """ }").result));
+            Set(userTimedRequests_Table, 
+                ForAll(Table(userTimedRequests_json.value),
+                    {
+                        requestName: Text(ThisRecord.Value.msftce_name),
+                        requestType: Value(ThisRecord.Value.msftce_requesttype),
+                        requestLicenseSkuId: Text(ThisRecord.Value.msftce_licenseskuid),
+                        requestStartDate: Text(ThisRecord.Value.msftce_startdate),
+                        requestLength: Value(ThisRecord.Value.msftce_length),
+                        requestEndDate: Text(ThisRecord.Value.msftce_enddate),
+                        requestStateCode: Value(ThisRecord.Value.statecode)
+                    }
+                )
+            );
+            
+            
+            
+        Visible: =msUserExists
+        Width: =46
+        X: =794
+        Y: =451
+        ZIndex: =9
+
+    refreshRoleAssignmentsIcon As icon.Reload:
+        Height: =32
+        Icon: =Icon.Reload
+        OnSelect: |+
+            =//GetRoleAssignmentOfUser
+            Set(userAssignments_json, ParseJSON('Temp-TestingNewFlowForIncomingRequests'.Run("GetRoleAssignmentOfUser", "{""userId"":""" & userMainRecord.id & """ }").result));
+            Set(userAssignments_Table, 
+                ForAll(Table(userAssignments_json.value),
+                    {
+                        roleAssignmentId: Text(ThisRecord.Value.id),
+                        principalId: Text(ThisRecord.Value.principalId),
+                        roleDefinitionId: Text(ThisRecord.Value.roleDefinitionId),
+                        roleDisplayName: Text(ThisRecord.Value.roleDefinition.displayName),
+                        timeAssignment: "false"
+                    }
+                )
+            );
+            
+        Visible: =msUserExists
+        Width: =46
+        X: =485
+        Y: =171
+        ZIndex: =10
+
+    onboardNewUserButton As button:
+        Height: =60
+        OnSelect: |
+            =Set(showNewUserPopup, true);
+        Text: ="Onboard New User"
+        Width: =205
+        X: =1118
+        Y: =173
+        ZIndex: =11
+
+    noAccountFoundLabel As label:
+        Height: =44
+        Text: |-
+            ="No account on PFECRMOnline Tenant was found tied to your account: " & User().Email
+        Visible: =!msUserExists
+        Width: =503
+        X: =53
+        Y: =129
+        ZIndex: =12
+
+    ifAlreadyHaveAccountLabel As label:
+        Height: =52
+        Text: |-
+            ="If you already have an account in PFECMROnline, use 'Link Account' button: "
+        Visible: =!msUserExists
+        Width: =583
+        X: =53
+        Y: =205
+        ZIndex: =13
+
+    onBoardNewUserLabel As label:
+        Height: =37
+        Text: ="If Not, Click Onboard 'New User' button"
+        Visible: =!msUserExists
+        Width: =430
+        X: =53
+        Y: =262
+        ZIndex: =14
+
+    LinkAccountButton As button:
+        Height: =51
+        OnSelect: =Set(showLinkAccountPopup, true);
+        Text: ="Link Account"
+        Visible: =!msUserExists
+        Width: =205
+        X: =1120
+        Y: =192
+        ZIndex: =15
+
+    adminOnlyButton As button:
+        Height: =55
+        OnSelect: |-
+            =Set(azureResourcesFeature, true);
+            Set(manageUsers, true)
+        Text: ="Admin only button"
+        Visible: =If(User().Email = "ralop@microsoft.com", true, false)
+        Width: =183
+        X: =1142
+        Y: =673
+        ZIndex: =16
+
+    feedbackButton As icon.Message:
+        Height: =49
+        Icon: =Icon.Message
+        OnSelect: =Set(showFeedbackPopup, true)
+        Tooltip: ="Provide Some Feedback"
+        Width: =47
+        X: =1278
+        Y: =11
+        ZIndex: =17
+
+    AzureResourcePopup_1 As AzureResourcePopup:
+        Visible: =showAzureResourceGroupPopup
+        ZIndex: =21
+
+    LinkAccount_1 As LinkAccount:
+        Visible: =showLinkAccountPopup
+        ZIndex: =22
+
+    requestLicensePopup As LicensePopup:
+        Visible: =showPopup
+        ZIndex: =23
+
+    NewUserPopup_1 As NewUserPopup:
+        Visible: =showNewUserPopup
+        ZIndex: =24
+
+    FeedbackPopup_1 As FeedbackPopup:
+        Visible: =showFeedbackPopup
+        ZIndex: =25
+
+    Button25 As button:
+        Text: ="Manage users"
+        Visible: =manageUsers
+        X: =1142
+        Y: =605
+        ZIndex: =26
+
+    azureResources As group:
+        Height: =5
+        Width: =5
+        X: =60
+        Y: =60
+        ZIndex: =26
+
+        myAvailableGroups As dataTable.datatable:
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =161
+            Items: =userResourceGroups
+            Visible: =msUserExists And azureResourcesFeature
+            Width: =494
+            X: =553
+            Y: =220
+            ZIndex: =18
+
+            groupName_Column1 As dataTableColumn.textualColumn:
+                DisplayMode: =DisplayMode.Edit
+                FieldDisplayName: ="groupName"
+                FieldName: ="groupName"
+                FieldVariantName: ="textualColumn"
+                Height: =Parent.Height
+                LayoutHeight: =Parent.Height
+                Order: =1
+                Text: =ThisItem.groupName
+                Width: =100
+                X: =0
+                Y: =0
+                ZIndex: =7
+
+        azureRbacRolesLabel As label:
+            Height: =44
+            Text: |-
+                ="My available Azure Resource Groups:"
+            Visible: =msUserExists And azureResourcesFeature
+            Width: =331
+            X: =553
+            Y: =176
+            ZIndex: =19
+
+        refreshAzRbacRoles As icon.Reload:
+            Height: =32
+            Icon: =Icon.Reload
+            OnSelect: |-
+                =ClearCollect(userResourceGroups, Blank());
+                       ForAll(allAzureSubscriptions_json As _subscriptions,
+                    Collect(userResourceGroups,
+                        ForAll(
+                            Table(
+                                ParseJSON('Temp-TestingNewFlowForIncomingRequests'.Run("GetAzureRBACRolesOfUser", "{""subscriptionId"":""" & _subscriptions.id & ""","
+                    & """principalId"":""" & userMainRecord.id & """}").result).value
+                            ) As _roles, If ("resourceGroups" in Text(_roles.Value.properties.scope) And "b24988ac-6180-42a0-ab88-20f7382dd24c" in Text(_roles.Value.properties.roleDefinitionId),
+                            {
+                                id: Text(_roles.Value.id),
+                                groupName: Substitute(Text(_roles.Value.properties.scope), "/subscriptions/" & _subscriptions.id &  "/resourceGroups/" , "")
+                                //id : Text(_groups.Value.id),
+                                //name: Text(_groups.Value.name),
+                                //susbcriptionId: Text(_subscriptions.id),
+                                //subscriptionName: Text(_subscriptions.displayName)
+                            })
+                        )
+                    )
+                );
+                    
+            Visible: =msUserExists And azureResourcesFeature
+            Width: =46
+            X: =1001
+            Y: =177
+            ZIndex: =20
+
