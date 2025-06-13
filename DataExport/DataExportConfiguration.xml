@@ -1,0 +1,24 @@
+<entities >
+  <entity name="msftce_pfecrmonlinerequest" displayname="PFECRMOnline Request" etc="10880" primaryidfield="msftce_pfecrmonlinerequestid" primarynamefield="msftce_name" disableplugins="false">
+    <fields>
+      <field displayname="Name" name="msftce_name" type="string" customfield="true" />
+      <field displayname="AD User Id" name="msftce_aduserid" type="string" customfield="true" />
+      <field displayname="Created On" name="createdon" type="datetime" />
+      <field displayname="Justification" name="msftce_justification" type="string" customfield="true" />
+      <field displayname="Length" name="msftce_length" type="number" customfield="true" />
+      <field displayname="Reason Category" name="msftce_reasoncategory" type="string" customfield="true" />
+      <field displayname="Request Type" name="msftce_requesttype" type="optionsetvalue" customfield="true" />
+      <field displayname="Start Date" name="msftce_startdate" type="datetime" customfield="true" />
+    </fields>
+  </entity>
+  <entity name="msftce_useraccounts" displayname="User Accounts" etc="10488" primaryidfield="msftce_useraccountsid" primarynamefield="msftce_name" disableplugins="false">
+    <fields>
+      <field displayname="Created On" name="createdon" type="datetime" />
+      <field displayname="Creator User Email" name="msftce_creatoruseremail" type="string" customfield="true" />
+      <field displayname="Creator User Id" name="msftce_creatoruserid" type="string" customfield="true" />
+      <field displayname="Name" name="msftce_name" type="string" customfield="true" />
+      <field displayname="User Accounts" name="msftce_useraccountsid" type="guid" primaryKey="true" />
+      <field displayname="User Id" name="msftce_userid" type="string" customfield="true" />
+    </fields>
+  </entity>
+</entities>
