@@ -1,9 +1,0 @@
-{
-  "environmentvariablevalues": {
-    "environmentvariablevalue": {
-      "@environmentvariablevalueid": "9c813a44-f34c-ee11-be6f-000d3a5640fd",
-      "iscustomizable": "1",
-      "value": "{\"automaticallyAssignGlobalAdmin\":false,\"licenseDurationInDays\":true,\"roleDurationInHours\":true}"
-    }
-  }
-}

@@ -1,1 +1,0 @@
-msftce_enddate: =If(msftce_length > 0, DateAdd(msftce_startdate, msftce_length))

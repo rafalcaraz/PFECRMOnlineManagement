@@ -1,9 +1,0 @@
-[
-  {
-    "IsComponentScoped": false,
-    "IsSampleData": false,
-    "IsWritable": true,
-    "Name": "D365Analytics_Insights_FeatureMapping",
-    "Type": "CollectionDataSourceInfo"
-  }
-]

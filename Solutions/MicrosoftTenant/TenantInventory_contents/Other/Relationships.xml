@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<EntityRelationships xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <EntityRelationship Name="bacsa_approvedmanagers_AADLookup_aaduser" />
+  <EntityRelationship Name="business_unit_bacsa_approvedmanagers" />
+  <EntityRelationship Name="lk_bacsa_approvedmanagers_createdby" />
+  <EntityRelationship Name="lk_bacsa_approvedmanagers_modifiedby" />
+  <EntityRelationship Name="owner_bacsa_approvedmanagers" />
+  <EntityRelationship Name="team_bacsa_approvedmanagers" />
+  <EntityRelationship Name="user_bacsa_approvedmanagers" />
+</EntityRelationships>
