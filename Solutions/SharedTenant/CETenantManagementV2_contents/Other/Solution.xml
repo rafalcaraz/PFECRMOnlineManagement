@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ImportExportXml version="9.2.25051.192" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" OrganizationVersion="9.2.25051.192" OrganizationSchemaType="Standard" CRMServerServiceabilityVersion="9.2.25051.00192">
+  <SolutionManifest>
+    <UniqueName>CETenantManagementV2</UniqueName>
+    <LocalizedNames>
+      <LocalizedName description="CE Tenant Management V2" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions />
+    <Version>1.0.0.4</Version>
+    <Managed>0</Managed>
+    <Publisher>
+      <UniqueName>MicrosoftCE</UniqueName>
+      <LocalizedNames>
+        <LocalizedName description="Microsoft CE" languagecode="1033" />
+      </LocalizedNames>
+      <Descriptions />
+      <EMailAddress xsi:nil="true"></EMailAddress>
+      <SupportingWebsiteUrl xsi:nil="true"></SupportingWebsiteUrl>
+      <CustomizationPrefix>msftce</CustomizationPrefix>
+      <CustomizationOptionValuePrefix>32186</CustomizationOptionValuePrefix>
+      <Addresses>
+        <Address>
+          <AddressNumber>1</AddressNumber>
+          <AddressTypeCode>1</AddressTypeCode>
+          <City xsi:nil="true"></City>
+          <County xsi:nil="true"></County>
+          <Country xsi:nil="true"></Country>
+          <Fax xsi:nil="true"></Fax>
+          <FreightTermsCode xsi:nil="true"></FreightTermsCode>
+          <ImportSequenceNumber xsi:nil="true"></ImportSequenceNumber>
+          <Latitude xsi:nil="true"></Latitude>
+          <Line1 xsi:nil="true"></Line1>
+          <Line2 xsi:nil="true"></Line2>
+          <Line3 xsi:nil="true"></Line3>
+          <Longitude xsi:nil="true"></Longitude>
+          <Name xsi:nil="true"></Name>
+          <PostalCode xsi:nil="true"></PostalCode>
+          <PostOfficeBox xsi:nil="true"></PostOfficeBox>
+          <PrimaryContactName xsi:nil="true"></PrimaryContactName>
+          <ShippingMethodCode>1</ShippingMethodCode>
+          <StateOrProvince xsi:nil="true"></StateOrProvince>
+          <Telephone1 xsi:nil="true"></Telephone1>
+          <Telephone2 xsi:nil="true"></Telephone2>
+          <Telephone3 xsi:nil="true"></Telephone3>
+          <TimeZoneRuleVersionNumber xsi:nil="true"></TimeZoneRuleVersionNumber>
+          <UPSZone xsi:nil="true"></UPSZone>
+          <UTCOffset xsi:nil="true"></UTCOffset>
+          <UTCConversionTimeZoneCode xsi:nil="true"></UTCConversionTimeZoneCode>
+        </Address>
+        <Address>
+          <AddressNumber>2</AddressNumber>
+          <AddressTypeCode>1</AddressTypeCode>
+          <City xsi:nil="true"></City>
+          <County xsi:nil="true"></County>
+          <Country xsi:nil="true"></Country>
+          <Fax xsi:nil="true"></Fax>
+          <FreightTermsCode xsi:nil="true"></FreightTermsCode>
+          <ImportSequenceNumber xsi:nil="true"></ImportSequenceNumber>
+          <Latitude xsi:nil="true"></Latitude>
+          <Line1 xsi:nil="true"></Line1>
+          <Line2 xsi:nil="true"></Line2>
+          <Line3 xsi:nil="true"></Line3>
+          <Longitude xsi:nil="true"></Longitude>
+          <Name xsi:nil="true"></Name>
+          <PostalCode xsi:nil="true"></PostalCode>
+          <PostOfficeBox xsi:nil="true"></PostOfficeBox>
+          <PrimaryContactName xsi:nil="true"></PrimaryContactName>
+          <ShippingMethodCode>1</ShippingMethodCode>
+          <StateOrProvince xsi:nil="true"></StateOrProvince>
+          <Telephone1 xsi:nil="true"></Telephone1>
+          <Telephone2 xsi:nil="true"></Telephone2>
+          <Telephone3 xsi:nil="true"></Telephone3>
+          <TimeZoneRuleVersionNumber xsi:nil="true"></TimeZoneRuleVersionNumber>
+          <UPSZone xsi:nil="true"></UPSZone>
+          <UTCOffset xsi:nil="true"></UTCOffset>
+          <UTCConversionTimeZoneCode xsi:nil="true"></UTCConversionTimeZoneCode>
+        </Address>
+      </Addresses>
+    </Publisher>
+    <RootComponents>
+      <RootComponent type="1" schemaName="msftce_engineerfeedback" behavior="0" />
+      <RootComponent type="1" schemaName="msftce_pfecrmonlinerequest" behavior="0" />
+      <RootComponent type="1" schemaName="msftce_useraccounts" behavior="0" />
+      <RootComponent type="29" id="{1d59e9c5-a50b-ee11-8f6e-000d3a114986}" behavior="0" />
+      <RootComponent type="29" id="{30a13b23-969a-ee11-be37-0022482a4826}" behavior="0" />
+      <RootComponent type="29" id="{39d5d100-d474-ed11-81aa-6045bdedf3b9}" behavior="0" />
+      <RootComponent type="29" id="{3b97353c-e430-f011-8c4d-000d3a9d2057}" behavior="0" />
+      <RootComponent type="29" id="{78e24ea1-ed7f-ee11-8179-0022482a4826}" behavior="0" />
+      <RootComponent type="29" id="{d6de957f-4a83-ee11-8179-000d3a1df766}" behavior="0" />
+      <RootComponent type="29" id="{dfc2707f-e37f-ee11-8179-0022482a4826}" behavior="0" />
+      <RootComponent type="29" id="{f3c17e4e-4d82-ee11-8179-000d3a1df766}" behavior="0" />
+      <RootComponent type="29" id="{f76ff453-e87f-ee11-8179-0022482a4826}" behavior="0" />
+      <RootComponent type="300" schemaName="msftce_latestfailedruns_010b2" behavior="0" />
+      <RootComponent type="372" id="{9e2dc2c0-26eb-4c57-9441-2c3ed6970cd8}" schemaName="msftce_5Fgraph-20api-20custom-20connector" behavior="0" />
+      <RootComponent type="62" schemaName="msftce_PFECRMOnlineManagement" behavior="0" />
+      <RootComponent type="62" schemaName="msftce_PFECRMOnlineMonitoringMDA" behavior="0" />
+      <RootComponent type="80" schemaName="msftce_PFECRMOnlineManagement" behavior="0" />
+      <RootComponent type="80" schemaName="msftce_PFECRMOnlineMonitoringMDA" behavior="0" />
+    </RootComponents>
+    <MissingDependencies>
+      <MissingDependency>
+        <Required type="1" schemaName="admin_environment" displayName="Environment" solution="CenterofExcellenceCoreComponents (4.45)" />
+        <Dependent type="62" schemaName="msftce_PFECRMOnlineManagement" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="admin_environment" displayName="Environment" solution="CenterofExcellenceCoreComponents (4.45)" />
+        <Dependent type="80" schemaName="msftce_PFECRMOnlineManagement" displayName="PFECRMOnlineManagement" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="flowlog" displayName="Flow Log" solution="MicrosoftFlowExtensionsOnline (1.9.10.0)">
+          <package appName="MicrosoftFlowExtensionsCore" version="1.9.10.0">MicrosoftFlowExtensionsAnchor (1.9.10.0)</package>
+        </Required>
+        <Dependent type="300" schemaName="msftce_latestfailedruns_010b2" displayName="Latest Failed Runs" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="flowrun" displayName="Flow Run" solution="MicrosoftFlowExtensionsOnline (1.9.10.0)">
+          <package appName="MicrosoftFlowExtensionsCore" version="1.9.10.0">MicrosoftFlowExtensionsAnchor (1.9.10.0)</package>
+        </Required>
+        <Dependent type="300" schemaName="msftce_latestfailedruns_010b2" displayName="Latest Failed Runs" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="372" schemaName="msftce_5Fazure-20management-20-2D-20rbac" displayName="Azure Management - RBAC" solution="Active" id="{036d54ed-097d-4faa-a769-4f9062644506}" />
+        <Dependent type="29" displayName="Incoming Requests From Msft Tenant" id="{1d59e9c5-a50b-ee11-8f6e-000d3a114986}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="372" schemaName="msftce_5Fazure-20management-20-2D-20rbac" displayName="Azure Management - RBAC" solution="Active" id="{036d54ed-097d-4faa-a769-4f9062644506}" />
+        <Dependent type="connectionreference" displayName="msftce_CEMSAzureManagementCustomConnectorRef" id.connectionreferencelogicalname="msftce_CEMSAzureManagementCustomConnectorRef" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="372" schemaName="msftce_5Fazure-20management-20-2D-20rbac" displayName="Azure Management - RBAC" solution="Active" id="{036d54ed-097d-4faa-a769-4f9062644506}" />
+        <Dependent type="connectionreference" displayName="msftce_sharedmsftce5fazure20management202d20rbac5fcaf1f3b1e9f2d23e_2b00e" id.connectionreferencelogicalname="msftce_sharedmsftce5fazure20management202d20rbac5fcaf1f3b1e9f2d23e_2b00e" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="61" schemaName="msdyn_/Images/AppModule_Default_Icon.png" displayName="msdyn_/Images/AppModule_Default_Icon.png" solution="AppModuleWebResources (2.5)" />
+        <Dependent type="80" schemaName="msftce_PFECRMOnlineManagement" displayName="PFECRMOnlineManagement" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="61" schemaName="msdyn_/Images/AppModule_Default_Icon.png" displayName="msdyn_/Images/AppModule_Default_Icon.png" solution="AppModuleWebResources (2.5)" />
+        <Dependent type="80" schemaName="msftce_PFECRMOnlineMonitoringMDA" displayName="PFECRMOnline Monitoring MDA" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="msftce_EnvControlSettingsDataverse" solution="Active" id.connectionreferencelogicalname="msftce_EnvControlSettingsDataverse" />
+        <Dependent type="29" displayName="testing 1233" id="{3b97353c-e430-f011-8c4d-000d3a9d2057}" />
+      </MissingDependency>
+    </MissingDependencies>
+  </SolutionManifest>
+</ImportExportXml>

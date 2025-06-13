@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{fc87765f-fbdd-4f2a-a685-e0f99c729648}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="msftce_name" select="1" icon="1" preview="1">
+        <row name="result" id="msftce_pfecrmonlinerequestid">
+          <cell name="msftce_name" width="300" />
+          <cell name="msftce_aduserid" width="106" />
+          <cell name="createdon" width="125" />
+          <cell name="msftce_requesttype" width="117" />
+          <cell name="msftce_length" width="100" />
+          <cell name="msftce_reasoncategory" width="137" />
+          <cell name="msftce_justification" width="109" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="msftce_pfecrmonlinerequest">
+          <attribute name="msftce_pfecrmonlinerequestid" />
+          <attribute name="msftce_name" />
+          <attribute name="createdon" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="msftce_aduserid" />
+          <attribute name="msftce_justification" />
+          <attribute name="msftce_length" />
+          <attribute name="msftce_requesttype" />
+          <order attribute="createdon" descending="true" />
+          <attribute name="msftce_reasoncategory" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active PFECRMOnline Requests" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

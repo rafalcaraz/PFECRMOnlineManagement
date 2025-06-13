@@ -1,0 +1,3286 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_msftce-5fgraph-20api-20custom-20connector-5fb93168823abdb0d8": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "msftce_CEMSGraphCustomConnectorRef"
+        },
+        "api": {
+          "name": "shared_msftce-5fgraph-20api-20custom-20connector-5fcaf1f3b1e9f2d23e",
+          "logicalName": "msftce_5Fgraph-20api-20custom-20connector"
+        }
+      },
+      "shared_webcontents": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "msftce_HttpWithAzureADGraph"
+        },
+        "api": {
+          "name": "shared_webcontents"
+        }
+      },
+      "shared_commondataserviceforapps_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "msftce_CETenantManagementDataverse"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_sharepointonline": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "msftce_sharedsharepointonline_756f6"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      },
+      "shared_azuread_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "msftce_CETenantManagementAzureAd"
+        },
+        "api": {
+          "name": "shared_azuread"
+        }
+      },
+      "shared_office365": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "msftce_CETenantManagementO365Outlook"
+        },
+        "api": {
+          "name": "shared_office365"
+        }
+      },
+      "shared_msftce-5fazure-20management-20-2d-20rbac-5fb93168823abdb0d8": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "msftce_sharedmsftce5fazure20management202d20rbac5fcaf1f3b1e9f2d23e_2b00e"
+        },
+        "api": {
+          "name": "shared_msftce-5fazure-20management-20-2d-20rbac-5fcaf1f3b1e9f2d23e",
+          "logicalName": "msftce_5Fazure-20management-20-2D-20rbac"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "fe9716ff-42e6-4618-b395-aef427bd2661"
+          },
+          "type": "Request",
+          "kind": "Http",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "User": {
+                  "type": "string"
+                },
+                "Operation": {
+                  "type": "string"
+                },
+                "Parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "triggerAuthenticationType": "All"
+          }
+        }
+      },
+      "actions": {
+        "Init_-_Account_Exists_in_PFECRMOnline": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "f54d0612-56e0-44c6-a4ae-b5e837f742f1"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "pfeAccountExistsInPFECRMOnline",
+                "type": "boolean",
+                "value": false
+              }
+            ]
+          }
+        },
+        "Init_-_Corresponding_Account_in_PFECRMOnline": {
+          "runAfter": {
+            "Init_-_Account_Exists_in_PFECRMOnline": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "91177e79-d4df-4f0d-9900-dbdf6ed42528"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "pfeAccount",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Init_-_Variables_Object": {
+          "runAfter": {
+            "Init_-_Corresponding_Account_in_PFECRMOnline": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "d64dd4d3-c942-4a63-9cdb-a2a22b7be997"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "variablesObject",
+                "type": "object",
+                "value": {
+                  "emptyArray": [],
+                  "JSONRequestVar": "@triggerBody()",
+                  "temporaryLicensesGUIDs": []
+                }
+              }
+            ]
+          }
+        },
+        "Empty_Array": {
+          "runAfter": {
+            "Init_-_Variables_Object": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "c4498d28-7b64-442b-83e6-ff59c06eb057"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "emptyArray",
+                "type": "array"
+              }
+            ]
+          }
+        },
+        "JSON_Request_Var": {
+          "runAfter": {
+            "Empty_Array": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "ea990f40-9bdd-4ec6-80c9-025eca362694"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "JSONRequestVar",
+                "type": "object",
+                "value": "@triggerBody()"
+              }
+            ]
+          }
+        },
+        "Init_-_Temporary_Licenses_GUIDs": {
+          "runAfter": {
+            "JSON_Request_Var": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "1aaef604-5dfa-4bff-b9cc-0c8914224ef4"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "temporaryLicensesGUIDs",
+                "type": "array"
+              }
+            ]
+          }
+        },
+        "Compose": {
+          "runAfter": {
+            "Init_-_Helper_Blank_Object": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "d5bdc959-74b5-4f1f-91af-b97ed93fe969"
+          },
+          "type": "Compose",
+          "inputs": "@variables('JSONRequestVar')"
+        },
+        "Init_Next_Link_URL": {
+          "runAfter": {
+            "Init_-_Temporary_Licenses_GUIDs": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "628dbef0-8fbb-44f0-972f-79d666a1d02d"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "nextLinkURL",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Init_-_Helper_Array": {
+          "runAfter": {
+            "Init_-_Has_Next_Link": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "57b0fa98-2ed5-4cd0-ae80-25b56168080f"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "helperArray",
+                "type": "array"
+              }
+            ]
+          }
+        },
+        "Init_-_Has_Next_Link": {
+          "runAfter": {
+            "Init_Next_Link_URL": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "22c436ab-6ebd-49cb-9f4e-2fc882b48a3c"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "hasNextLink",
+                "type": "boolean",
+                "value": false
+              }
+            ]
+          }
+        },
+        "Init_-_Helper_Blank_Object": {
+          "runAfter": {
+            "Init_-_Helper_Array": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "09a42431-a030-4baf-8333-a47c306888e5"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "helperBlankObject",
+                "type": "object"
+              }
+            ]
+          }
+        },
+        "Switch_On_Area": {
+          "runAfter": {
+            "Compose": [
+              "Succeeded"
+            ]
+          },
+          "cases": {
+            "Licenses": {
+              "case": "Licenses",
+              "actions": {
+                "License_Operation_Swich": {
+                  "runAfter": {},
+                  "cases": {
+                    "GetLicenseUsage": {
+                      "case": "GetLicenseUsage",
+                      "actions": {
+                        "Get_Users_With_Corresponding_License": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "0ea2c4e4-9644-44a5-8210-28df21f5ecf4"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fgraph-20api-20custom-20connector-5fb93168823abdb0d8",
+                              "operationId": "FindMSUserInPFEOnline",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fgraph-20api-20custom-20connector-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "$select": "id,displayName,userPrincipalName,otherMails,signInActivity",
+                              "$filter": "assignedLicenses/any(u:u/skuId eq @{variables('JSONRequestVar')?['Parameters/licenseSkuId']})"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Response": {
+                          "runAfter": {
+                            "Get_Users_With_Corresponding_License": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "662d0178-1b36-4285-99f7-00752e7b7c63"
+                          },
+                          "type": "Response",
+                          "kind": "Http",
+                          "inputs": {
+                            "statusCode": 200,
+                            "body": "@body('Get_Users_With_Corresponding_License')"
+                          }
+                        }
+                      }
+                    },
+                    "GetUserLicenses": {
+                      "case": "GetUserLicenses",
+                      "actions": {
+                        "Get_Licenses_Assigned_To_User": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "832272ec-c106-461a-9ec9-802787885d21"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_webcontents",
+                              "operationId": "InvokeHttp",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_webcontents"
+                            },
+                            "parameters": {
+                              "request/method": "GET",
+                              "request/url": "https://graph.microsoft.com/v1.0/users/@{variables('JSONRequestVar')?['Parameters/userId']}/licenseDetails"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Respons_User_Assigned_Licenses": {
+                          "runAfter": {
+                            "Get_Licenses_Assigned_To_User": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "e3aad99d-dcb9-4402-8c60-48a6f65783be"
+                          },
+                          "type": "Response",
+                          "kind": "Http",
+                          "inputs": {
+                            "statusCode": 200,
+                            "body": "@body('Get_Licenses_Assigned_To_User')"
+                          }
+                        }
+                      }
+                    },
+                    "GetAccessRequests": {
+                      "case": "GetAccessRequests",
+                      "actions": {
+                        "Get_Active_Access_Requests": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "ff46b3f6-4a10-477d-8bc0-b9dbec91dce5"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps_1",
+                              "operationId": "ListRecords",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "msftce_pfecrmonlinerequests",
+                              "$select": "statecode,msftce_startdate,msftce_length,msftce_requesttype,msftce_enddate,msftce_name,msftce_aduserid,msftce_licenseskuid",
+                              "$filter": "(msftce_aduserid eq '@{variables('JSONRequestVar')?['Parameters/userId']}' and statecode eq 0)"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Respond_With_Active_Access_Requests": {
+                          "runAfter": {
+                            "Get_Active_Access_Requests": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "37a3b452-fb1f-44a5-98b9-4f29fe890383"
+                          },
+                          "type": "Response",
+                          "kind": "Http",
+                          "inputs": {
+                            "statusCode": 200,
+                            "body": "@body('Get_Active_Access_Requests')"
+                          }
+                        }
+                      }
+                    },
+                    "SKUsFriendlyNames": {
+                      "case": "SKUsFriendlyNames",
+                      "actions": {
+                        "Get_Relevant_Skus": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "be90b229-32ae-4abd-af18-a6b3a84fe0bc"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_sharepointonline",
+                              "operationId": "GetItems",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                            },
+                            "parameters": {
+                              "dataset": "https://pfecrmonline-my.sharepoint.com/personal/pfecrmonlineserviceaccount_pfecrmonline_onmicrosoft_com",
+                              "table": "b792c27f-ec3d-4bd3-9b86-886cce99666e"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Response_16": {
+                          "runAfter": {
+                            "Get_Relevant_Skus": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "9ee793e3-8362-4f49-be78-00b70b3d7a4b"
+                          },
+                          "type": "Response",
+                          "kind": "Http",
+                          "inputs": {
+                            "statusCode": 200,
+                            "body": "@outputs('Get_Relevant_Skus')?['body/value']"
+                          }
+                        }
+                      }
+                    },
+                    "GetRoleAssignmentOfUser-1": {
+                      "case": "GetRoleAssignmentOfUser",
+                      "actions": {
+                        "GetRoleAssignmentOfUser": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "d580493a-d0de-4269-b553-932edcf13849"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fgraph-20api-20custom-20connector-5fb93168823abdb0d8",
+                              "operationId": "GetRoleAssignmentOfUser",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fgraph-20api-20custom-20connector-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "$filter": "principalId eq '@{variables('JSONRequestVar')?['Parameters/userId']}'",
+                              "$expand": "roleDefinition"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Respond_With_User_Role_Assignments": {
+                          "runAfter": {
+                            "GetRoleAssignmentOfUser": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "99582fb3-7bd8-496a-8c4c-d776bb8c87e6"
+                          },
+                          "type": "Response",
+                          "kind": "Http",
+                          "inputs": {
+                            "statusCode": 200,
+                            "body": "@body('GetRoleAssignmentOfUser')"
+                          }
+                        }
+                      }
+                    },
+                    "AvailableSKUs-1": {
+                      "case": "AvailableSKUs",
+                      "actions": {
+                        "AvailableSKUs": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "a440c24d-b211-48b3-8d96-7c57b0afbd0b"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fgraph-20api-20custom-20connector-5fb93168823abdb0d8",
+                              "operationId": "AvailableSKUs",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fgraph-20api-20custom-20connector-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {},
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Respond_with_Available_SKUs": {
+                          "runAfter": {
+                            "AvailableSKUs": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "2477d394-ce9c-4c11-b7fe-ff3f20aa294d"
+                          },
+                          "type": "Response",
+                          "kind": "Http",
+                          "inputs": {
+                            "statusCode": 200,
+                            "body": "@body('AvailableSKUs')"
+                          }
+                        }
+                      }
+                    },
+                    "AddRemoveLicense-1": {
+                      "case": "AddRemoveLicense",
+                      "actions": {
+                        "AddRemoveLicense": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "253b1ea6-3bec-4ca3-a9b2-0d6a838032ab"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fgraph-20api-20custom-20connector-5fb93168823abdb0d8",
+                              "operationId": "AddRemoveLicense",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fgraph-20api-20custom-20connector-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "userId": "@variables('JSONRequestVar')?['Parameters/userId']",
+                              "Content-Type": "application/json",
+                              "body/addLicenses": "@variables('JSONRequestVar')?['Parameters/addLicenses']",
+                              "body/removeLicenses": "@variables('JSONRequestVar')?['Parameters/removeLicenses']"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Respond_With_result_of_adding_or_removing_license": {
+                          "runAfter": {
+                            "AddRemoveLicense": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "6648eeb2-c532-4ba8-97ce-1d62b9c683c4"
+                          },
+                          "type": "Response",
+                          "kind": "Http",
+                          "inputs": {
+                            "statusCode": 200,
+                            "body": "@body('AddRemoveLicense')"
+                          }
+                        },
+                        "Create_Access_Request_For_Each_License": {
+                          "foreach": "@variables('JSONRequestVar')?['Parameters/addLicenses']",
+                          "actions": {
+                            "Create_Access_Request": {
+                              "runAfter": {},
+                              "metadata": {
+                                "operationMetadataId": "468b90a9-b0da-42d3-91dd-88ebe31a9f16"
+                              },
+                              "type": "OpenApiConnection",
+                              "inputs": {
+                                "host": {
+                                  "connectionName": "shared_commondataserviceforapps_1",
+                                  "operationId": "CreateRecord",
+                                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                                },
+                                "parameters": {
+                                  "entityName": "msftce_pfecrmonlinerequests",
+                                  "item/msftce_name": "License Request",
+                                  "item/msftce_aduserid": "@variables('JSONRequestVar')?['Parameters/userId']",
+                                  "item/msftce_length": "@if(equals(variables('JSONRequestVar')?['Parameters/expirationLength'], 'No Expiration'), -1, variables('JSONRequestVar')?['Parameters/expirationLength'])",
+                                  "item/msftce_licenseskuid": "@items('Create_Access_Request_For_Each_License')?['skuId']",
+                                  "item/msftce_startdate": "@utcNow()"
+                                },
+                                "authentication": "@parameters('$authentication')"
+                              }
+                            },
+                            "Append_to_array_variable": {
+                              "runAfter": {
+                                "Create_Access_Request": [
+                                  "Succeeded"
+                                ]
+                              },
+                              "metadata": {
+                                "operationMetadataId": "8c93da15-1832-488d-862e-023eb9c9f90d"
+                              },
+                              "type": "AppendToArrayVariable",
+                              "inputs": {
+                                "name": "temporaryLicensesGUIDs",
+                                "value": "@outputs('Create_Access_Request')?['body/msftce_pfecrmonlinerequestid']"
+                              }
+                            }
+                          },
+                          "runAfter": {
+                            "Respond_With_result_of_adding_or_removing_license": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "c0faa4da-b33c-457d-981d-d0190015bc7d"
+                          },
+                          "type": "Foreach"
+                        },
+                        "Condition": {
+                          "actions": {
+                            "Delay_X_amount_of_Days": {
+                              "runAfter": {},
+                              "metadata": {
+                                "operationMetadataId": "12441bad-1d5c-420e-b338-7331df815a0a"
+                              },
+                              "type": "Wait",
+                              "inputs": {
+                                "interval": {
+                                  "count": "@variables('JSONRequestVar')?['Parameters/expirationLength']",
+                                  "unit": "@{If(equals(variables('JSONRequestVar')?['Parameters/expirationLengthUnitInDays'], true), 'Minute','Hour')}"
+                                }
+                              }
+                            },
+                            "Split_Array_To_Remove_Licenses": {
+                              "runAfter": {
+                                "Delay_X_amount_of_Days": [
+                                  "Succeeded"
+                                ]
+                              },
+                              "metadata": {
+                                "operationMetadataId": "430ba426-426d-4d4c-822a-8190ec3a6ff8"
+                              },
+                              "type": "Compose",
+                              "inputs": "@split(replace(replace(join(variables('JSONRequestVar')?['Parameters/addLicenses'],','),'{\"skuId\":\"', ''),'\"}',''),',')"
+                            },
+                            "Remove_Licenses_After_Expiry": {
+                              "runAfter": {
+                                "Split_Array_To_Remove_Licenses": [
+                                  "Succeeded"
+                                ]
+                              },
+                              "metadata": {
+                                "operationMetadataId": "e8d3ba3b-fdcd-453c-a859-74cbe064a41d"
+                              },
+                              "type": "OpenApiConnection",
+                              "inputs": {
+                                "host": {
+                                  "connectionName": "shared_msftce-5fgraph-20api-20custom-20connector-5fb93168823abdb0d8",
+                                  "operationId": "AddRemoveLicense",
+                                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fgraph-20api-20custom-20connector-5fcaf1f3b1e9f2d23e"
+                                },
+                                "parameters": {
+                                  "userId": "@variables('JSONRequestVar')?['Parameters/userId']",
+                                  "Content-Type": "application/json",
+                                  "body/addLicenses": "@variables('emptyArray')",
+                                  "body/removeLicenses": "@outputs('Split_Array_To_Remove_Licenses')"
+                                },
+                                "authentication": "@parameters('$authentication')"
+                              }
+                            },
+                            "Deactivate_Each_License_Request": {
+                              "foreach": "@variables('temporaryLicensesGUIDs')",
+                              "actions": {
+                                "Deactivate_the_license_request": {
+                                  "runAfter": {},
+                                  "metadata": {
+                                    "operationMetadataId": "a5f95b21-b3de-4626-a541-b8986c5b33d7"
+                                  },
+                                  "type": "OpenApiConnection",
+                                  "inputs": {
+                                    "host": {
+                                      "connectionName": "shared_commondataserviceforapps_1",
+                                      "operationId": "UpdateRecord",
+                                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                                    },
+                                    "parameters": {
+                                      "entityName": "msftce_pfecrmonlinerequests",
+                                      "recordId": "@item()",
+                                      "item/statecode": 1
+                                    },
+                                    "authentication": "@parameters('$authentication')"
+                                  }
+                                }
+                              },
+                              "runAfter": {
+                                "Remove_Licenses_After_Expiry": [
+                                  "Succeeded"
+                                ]
+                              },
+                              "metadata": {
+                                "operationMetadataId": "a021ae7a-6511-4b36-af18-b80cd3b6c32a"
+                              },
+                              "type": "Foreach"
+                            }
+                          },
+                          "runAfter": {
+                            "Create_Access_Request_For_Each_License": [
+                              "Succeeded"
+                            ]
+                          },
+                          "expression": {
+                            "equals": [
+                              "@variables('JSONRequestVar')?['Parameters/expirationRequired']",
+                              true
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "693778d3-a84e-4646-a7d6-609e2f03cb6c"
+                          },
+                          "type": "If"
+                        }
+                      }
+                    },
+                    "GetRoleAssignmentOfUserV2-1": {
+                      "case": "GetRoleAssignmentOfUserV2",
+                      "actions": {
+                        "GetRoleAssignmentOfUserV2": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "f17acae9-a135-4ac2-98d1-ea538247c437"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fgraph-20api-20custom-20connector-5fb93168823abdb0d8",
+                              "operationId": "GetRoleAssignmentOfUserV2",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fgraph-20api-20custom-20connector-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "$filter": "principalId eq '@{variables('JSONRequestVar')?['Parameters/userId']}'"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Response_21": {
+                          "runAfter": {
+                            "GoThroughEachAssignment": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "2697133d-3c33-4ed2-853a-0cc216e8fb79"
+                          },
+                          "type": "Response",
+                          "kind": "Http",
+                          "inputs": {
+                            "statusCode": 200,
+                            "body": "@variables('helperArray')"
+                          }
+                        },
+                        "GoThroughEachAssignment": {
+                          "foreach": "@outputs('GetRoleAssignmentOfUserV2')?['body/value']",
+                          "actions": {
+                            "GetAdminRoleInfo": {
+                              "runAfter": {},
+                              "metadata": {
+                                "operationMetadataId": "cc20e9cd-0c73-4e7b-8aa7-27a0729a03fd"
+                              },
+                              "type": "OpenApiConnection",
+                              "inputs": {
+                                "host": {
+                                  "connectionName": "shared_msftce-5fgraph-20api-20custom-20connector-5fb93168823abdb0d8",
+                                  "operationId": "GetAdminRoleInfo",
+                                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fgraph-20api-20custom-20connector-5fcaf1f3b1e9f2d23e"
+                                },
+                                "parameters": {
+                                  "roleDefinitionId": "@item()?['roleDefinitionId']",
+                                  "$select": "id,displayName,description"
+                                },
+                                "authentication": "@parameters('$authentication')"
+                              }
+                            },
+                            "Append_to_array_variable_2": {
+                              "runAfter": {
+                                "GetAdminRoleInfo": [
+                                  "Succeeded"
+                                ]
+                              },
+                              "metadata": {
+                                "operationMetadataId": "9f7d4e61-051a-4d59-8139-97d8240aebd2"
+                              },
+                              "type": "AppendToArrayVariable",
+                              "inputs": {
+                                "name": "helperArray",
+                                "value": {
+                                  "roleName": "@{outputs('GetAdminRoleInfo')?['body']?['displayName']}",
+                                  "roleDefinitionId": "@{item()?['roleDefinitionId']}"
+                                }
+                              }
+                            }
+                          },
+                          "runAfter": {
+                            "GetRoleAssignmentOfUserV2": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "c8c960a2-d05d-4c8c-825b-4a0bec2ea52d"
+                          },
+                          "type": "Foreach"
+                        }
+                      }
+                    }
+                  },
+                  "default": {
+                    "actions": {}
+                  },
+                  "expression": "@triggerBody()?['Operation']",
+                  "metadata": {
+                    "operationMetadataId": "f771dd2b-30fb-4e4f-bc86-1bdcf332a66f"
+                  },
+                  "type": "Switch"
+                }
+              }
+            },
+            "UserMaintenance": {
+              "case": "UserMaintenance",
+              "actions": {
+                "Switch_On_User_Maintenance_Operation": {
+                  "runAfter": {},
+                  "cases": {
+                    "GetAllUsers": {
+                      "case": "GetAllUsers",
+                      "actions": {
+                        "Get_All_Users": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "480a8626-85de-4e32-bb87-8dec37f7ec01"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fgraph-20api-20custom-20connector-5fb93168823abdb0d8",
+                              "operationId": "GetAllUsers",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fgraph-20api-20custom-20connector-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "$select": "id,displayName,userPrincipalName,otherMails,signInActivity,createdDateTime,customSecurityAttributes,accountEnabled",
+                              "$expand": "manager($select=id,userPrincipalName)"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Set_Next_Link_URL": {
+                          "runAfter": {
+                            "Get_All_Users": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "5e69fa89-c756-4c6e-bcac-f7adf47b52a6"
+                          },
+                          "type": "SetVariable",
+                          "inputs": {
+                            "name": "nextLinkURL",
+                            "value": "@{body('Get_All_Users')?['@odata.nextLink']}"
+                          }
+                        },
+                        "Set_If_First_request_has_next_link": {
+                          "runAfter": {
+                            "Set_Next_Link_URL": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "227b54d0-4b06-48af-8753-11e707738353"
+                          },
+                          "type": "SetVariable",
+                          "inputs": {
+                            "name": "hasNextLink",
+                            "value": "@contains(body('Get_All_Users'),'@odata.nextLink')"
+                          }
+                        },
+                        "Set_array_to_inital_value": {
+                          "runAfter": {
+                            "Set_If_First_request_has_next_link": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "e45e385c-6f0f-4ca4-bc0c-02870c0a4506"
+                          },
+                          "type": "SetVariable",
+                          "inputs": {
+                            "name": "helperArray",
+                            "value": "@body('Get_All_Users')?['value']"
+                          }
+                        },
+                        "Keep_Querying": {
+                          "actions": {
+                            "Get_Skip_Token": {
+                              "runAfter": {},
+                              "metadata": {
+                                "operationMetadataId": "2744b7ee-994e-4b9c-a7d8-1686f7270e94"
+                              },
+                              "type": "Compose",
+                              "inputs": "@if( equals(indexOf(variables('nextLinkURL'), 'skipToken='), -1), '' , substring(variables('nextLinkURL'), add(indexOf(variables('nextLinkURL'), 'skipToken=') , length('skipToken=')), sub(sub(length(variables('nextLinkURL')), indexOf(variables('nextLinkURL'), 'skipToken=')), length('skiptoken=')) ) )",
+                              "description": "indexOf = indexOf(<fullSTRING>, <token>) tokenLength = length(<token>) totalLength = length(<FULLSTRING>)  substring = substring(<fullSTRING>, {indexOf}, sub(sub({totalLength}, {indexOf}), {tokenLength}) )   if( equals({indexOf}, -1), '' , {substring"
+                            },
+                            "GetAllUsers_-_Paging": {
+                              "runAfter": {
+                                "Get_Skip_Token": [
+                                  "Succeeded"
+                                ]
+                              },
+                              "metadata": {
+                                "operationMetadataId": "a71a89e4-4db5-47dd-8249-f2a72d73f745"
+                              },
+                              "type": "OpenApiConnection",
+                              "inputs": {
+                                "host": {
+                                  "connectionName": "shared_msftce-5fgraph-20api-20custom-20connector-5fb93168823abdb0d8",
+                                  "operationId": "GetAllUsers",
+                                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fgraph-20api-20custom-20connector-5fcaf1f3b1e9f2d23e"
+                                },
+                                "parameters": {
+                                  "$select": "id,displayName,userPrincipalName,otherMails,signInActivity,createdDateTime,customSecurityAttributes,accountEnabled",
+                                  "$expand": "manager($select=id,userPrincipalName)",
+                                  "$skiptoken": "@outputs('Get_Skip_Token')"
+                                },
+                                "authentication": "@parameters('$authentication')"
+                              }
+                            },
+                            "Set_Next_Link": {
+                              "runAfter": {
+                                "Set_variable_2": [
+                                  "Succeeded"
+                                ]
+                              },
+                              "metadata": {
+                                "operationMetadataId": "4ddeda63-27c1-4362-a1aa-76723a3b6946"
+                              },
+                              "type": "SetVariable",
+                              "inputs": {
+                                "name": "nextLinkURL",
+                                "value": "@{body('GetAllUsers_-_Paging')?['@odata.nextLink']}"
+                              }
+                            },
+                            "Compose_4": {
+                              "runAfter": {
+                                "Set_Next_Link": [
+                                  "Succeeded"
+                                ]
+                              },
+                              "metadata": {
+                                "operationMetadataId": "a4df446d-e8ad-4751-a521-5e7ace170a40"
+                              },
+                              "type": "Compose",
+                              "inputs": "@union(variables('helperArray'), body('GetAllUsers_-_Paging')?['value'])"
+                            },
+                            "Set_variable": {
+                              "runAfter": {
+                                "Compose_4": [
+                                  "Succeeded"
+                                ]
+                              },
+                              "metadata": {
+                                "operationMetadataId": "28fff850-2960-4cc8-bf3c-6bee83aa0774"
+                              },
+                              "type": "SetVariable",
+                              "inputs": {
+                                "name": "helperArray",
+                                "value": "@outputs('Compose_4')"
+                              }
+                            },
+                            "Set_variable_2": {
+                              "runAfter": {
+                                "GetAllUsers_-_Paging": [
+                                  "Succeeded"
+                                ]
+                              },
+                              "metadata": {
+                                "operationMetadataId": "5e7704d3-e9bd-4adf-b6be-c0cde2d1f66b"
+                              },
+                              "type": "SetVariable",
+                              "inputs": {
+                                "name": "hasNextLink",
+                                "value": "@contains(body('GetAllUsers_-_Paging'), '@odata.nextLink')"
+                              }
+                            }
+                          },
+                          "runAfter": {
+                            "Set_array_to_inital_value": [
+                              "Succeeded"
+                            ]
+                          },
+                          "expression": "@equals(variables('hasNextLink'), false)",
+                          "limit": {
+                            "count": 60,
+                            "timeout": "PT1H"
+                          },
+                          "metadata": {
+                            "operationMetadataId": "2752a4c0-92a1-4123-8e6a-0ce5edbf8cfa"
+                          },
+                          "type": "Until"
+                        },
+                        "Response_2": {
+                          "runAfter": {
+                            "Compose_2": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "d617dcc3-3bae-4572-b32e-198c1134414b"
+                          },
+                          "type": "Response",
+                          "kind": "Http",
+                          "inputs": {
+                            "statusCode": 200,
+                            "body": "@variables('helperArray')"
+                          }
+                        },
+                        "Compose_2": {
+                          "runAfter": {
+                            "Keep_Querying": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "5f97fba8-3fd7-49b1-b606-12dc132ea4ce"
+                          },
+                          "type": "Compose",
+                          "inputs": "@variables('helperArray')"
+                        }
+                      }
+                    },
+                    "LinkUser": {
+                      "case": "LinkUser",
+                      "actions": {
+                        "Respond_with_result_of_the_change": {
+                          "runAfter": {
+                            "Link_User_To_Msft_EMails": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "8265cb54-1acf-4163-bae7-ffa1e0faeecd"
+                          },
+                          "type": "Response",
+                          "kind": "Http",
+                          "inputs": {
+                            "statusCode": 200,
+                            "body": "@body('Link_User_To_Msft_EMails')"
+                          }
+                        },
+                        "Compose_11": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "fcde9775-cc59-48d6-ade3-27c2fddd1655"
+                          },
+                          "type": "Compose",
+                          "inputs": {
+                            "@@odata.type": "#Microsoft.DirectoryServices.CustomSecurityAttributeValue",
+                            "microsoftEmails": "@variables('JSONRequestVar')?['Parameters/microsoftEmails']"
+                          }
+                        },
+                        "Link_User_To_Msft_EMails": {
+                          "runAfter": {
+                            "Compose_11": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "7c0b52eb-4b0d-434c-9f0d-49e165faf0ec"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fgraph-20api-20custom-20connector-5fb93168823abdb0d8",
+                              "operationId": "UpdateUser",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fgraph-20api-20custom-20connector-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "userObjectId": "@variables('JSONRequestVar')?['Parameters/pfeCrmOnlineUserId']",
+                              "body/customSecurityAttributes/PFECRMOnlineExtensions": "@outputs('Compose_11')"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        }
+                      }
+                    },
+                    "GetUserDetails": {
+                      "case": "GetUserDetails",
+                      "actions": {
+                        "Try_-_Get_User_Details": {
+                          "actions": {
+                            "Respond_With_User_Details": {
+                              "runAfter": {},
+                              "metadata": {
+                                "operationMetadataId": "ad574742-f873-4a87-aee5-d7535afdf6c9"
+                              },
+                              "type": "Response",
+                              "kind": "Http",
+                              "inputs": {
+                                "statusCode": 200,
+                                "body": "@body('Gets_User_Details')"
+                              }
+                            }
+                          },
+                          "runAfter": {
+                            "Gets_User_Details": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "b596cace-dc4e-46c4-b047-742b60939acf"
+                          },
+                          "type": "Scope"
+                        },
+                        "Scope_2": {
+                          "actions": {
+                            "Response_5": {
+                              "runAfter": {},
+                              "metadata": {
+                                "operationMetadataId": "5fcd543b-00ed-4767-bf6f-b4d80cd66472"
+                              },
+                              "type": "Response",
+                              "kind": "Http",
+                              "inputs": {
+                                "statusCode": 200,
+                                "body": {
+                                  "message": "userNotFound"
+                                }
+                              }
+                            }
+                          },
+                          "runAfter": {
+                            "Try_-_Get_User_Details": [
+                              "Failed"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "e4f22066-0d10-4288-a4ae-9cc1d21acb26"
+                          },
+                          "type": "Scope"
+                        },
+                        "Gets_User_Details": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "f4da1d86-2410-41b0-9870-819d22931d84"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fgraph-20api-20custom-20connector-5fb93168823abdb0d8",
+                              "operationId": "GetUserDetailsV2",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fgraph-20api-20custom-20connector-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "userId": "@variables('JSONRequestVar')?['Parameters/pfeCrmOnlineEmail']",
+                              "$select": "id,displayName,userPrincipalName,otherMails,customSecurityAttributes",
+                              "$expand": "manager($select=id,userPrincipalName)"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        }
+                      }
+                    },
+                    "ValidateUser": {
+                      "case": "ValidateUser",
+                      "actions": {
+                        "If_EMAIL_holds_a_match": {
+                          "actions": {
+                            "Set_Account_Found_-_1": {
+                              "runAfter": {},
+                              "metadata": {
+                                "operationMetadataId": "cd2f8b83-15fa-462e-9fac-c08f121e55fd"
+                              },
+                              "type": "SetVariable",
+                              "inputs": {
+                                "name": "pfeAccountExistsInPFECRMOnline",
+                                "value": true
+                              }
+                            },
+                            "Set_Account_Mail_-_1": {
+                              "runAfter": {
+                                "Set_Account_Found_-_1": [
+                                  "Succeeded"
+                                ]
+                              },
+                              "metadata": {
+                                "operationMetadataId": "017d463a-bbb7-41af-8594-80388ae18dc9"
+                              },
+                              "type": "SetVariable",
+                              "inputs": {
+                                "name": "pfeAccount",
+                                "value": "@first(outputs('Find_MS_User_In_PFE_Tenant_-_Check_Email')?['body/value'])?['userPrincipalName']"
+                              }
+                            }
+                          },
+                          "runAfter": {
+                            "Find_MS_User_In_PFE_Tenant_-_Check_UPN": [
+                              "Succeeded"
+                            ]
+                          },
+                          "else": {
+                            "actions": {
+                              "Condition_3": {
+                                "actions": {
+                                  "Set_variable_3": {
+                                    "runAfter": {},
+                                    "metadata": {
+                                      "operationMetadataId": "e2fc0762-74e7-4470-a0be-2dd7a4892d81"
+                                    },
+                                    "type": "SetVariable",
+                                    "inputs": {
+                                      "name": "pfeAccountExistsInPFECRMOnline",
+                                      "value": true
+                                    }
+                                  },
+                                  "Set_variable_4": {
+                                    "runAfter": {
+                                      "Set_variable_3": [
+                                        "Succeeded"
+                                      ]
+                                    },
+                                    "metadata": {
+                                      "operationMetadataId": "9d85438a-ea29-4729-b038-cedd1c70a981"
+                                    },
+                                    "type": "SetVariable",
+                                    "inputs": {
+                                      "name": "pfeAccount",
+                                      "value": "@first(outputs('Find_MS_User_In_PFE_Tenant_-_Check_UPN')?['body/value'])?['userPrincipalName']"
+                                    }
+                                  }
+                                },
+                                "runAfter": {},
+                                "expression": {
+                                  "and": [
+                                    {
+                                      "greater": [
+                                        "@length(outputs('Find_MS_User_In_PFE_Tenant_-_Check_UPN')?['body/value'])",
+                                        0
+                                      ]
+                                    }
+                                  ]
+                                },
+                                "metadata": {
+                                  "operationMetadataId": "7968877c-150b-404b-bd1b-cc3e4ff67a52"
+                                },
+                                "type": "If"
+                              }
+                            }
+                          },
+                          "expression": {
+                            "and": [
+                              {
+                                "greater": [
+                                  "@length(outputs('Find_MS_User_In_PFE_Tenant_-_Check_UPN')?['body/value'])",
+                                  0
+                                ]
+                              }
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "c1401bc0-533d-4fc2-9bb4-38a32908cf3b"
+                          },
+                          "type": "If"
+                        },
+                        "Respond_if_Account_Exists": {
+                          "runAfter": {
+                            "If_EMAIL_holds_a_match": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "976f1207-8e6a-4730-bcbb-4010840f3790"
+                          },
+                          "type": "Response",
+                          "kind": "Http",
+                          "inputs": {
+                            "statusCode": 200,
+                            "body": {
+                              "accountInPFECRMOnlineFound": "@variables('pfeAccountExistsInPFECRMOnline')",
+                              "accountInPFECRMOnline": "@variables('pfeAccount')"
+                            }
+                          }
+                        },
+                        "Find_MS_User_In_PFE_Tenant_-_Check_Email": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "c3e6cfd5-3c36-46b1-a665-c88b22a2c392"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fgraph-20api-20custom-20connector-5fb93168823abdb0d8",
+                              "operationId": "FindMSUserInPFEOnline",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fgraph-20api-20custom-20connector-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "$count": true,
+                              "$select": "id,displayName,userPrincipalName,otherMails,customSecurityAttributes",
+                              "$filter": "customSecurityAttributes/PFECRMOnlineExtensions/microsoftEmails eq '@{variables('JSONRequestVar')?['Parameters/userEmail']}'",
+                              "ConsistencyLevel": "eventual"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Find_MS_User_In_PFE_Tenant_-_Check_UPN": {
+                          "runAfter": {
+                            "Find_MS_User_In_PFE_Tenant_-_Check_Email": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "2d1b6a6a-e8f6-4f14-b658-2e8be71b4ccb"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fgraph-20api-20custom-20connector-5fb93168823abdb0d8",
+                              "operationId": "FindMSUserInPFEOnline",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fgraph-20api-20custom-20connector-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "$count": true,
+                              "$select": "id,displayName,userPrincipalName,otherMails,customSecurityAttributes",
+                              "$filter": "customSecurityAttributes/PFECRMOnlineExtensions/microsoftEmails eq '@{variables('JSONRequestVar')?['Parameters/userUPN']}'",
+                              "ConsistencyLevel": "eventual"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        }
+                      }
+                    },
+                    "ResetPassword": {
+                      "case": "ResetPassword",
+                      "actions": {
+                        "Reset_Password_For_User": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "88015354-9ed4-40f3-90fc-6272f877d9f9"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fgraph-20api-20custom-20connector-5fb93168823abdb0d8",
+                              "operationId": "UpdateUser",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fgraph-20api-20custom-20connector-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "userObjectId": "@variables('JSONRequestVar')?['Parameters/pfeCrmOnlineUserId']",
+                              "body/passwordProfile/forceChangePasswordNextSignIn": true,
+                              "body/passwordProfile/password": "@variables('JSONRequestVar')?['Parameters/tempPassword']"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Respond_as_Succesful": {
+                          "runAfter": {
+                            "Reset_Password_For_User": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "140bc3f3-bfb2-4994-8db5-b087789c8bd9"
+                          },
+                          "type": "Response",
+                          "kind": "Http",
+                          "inputs": {
+                            "statusCode": 200,
+                            "body": "@body('Reset_Password_For_User')"
+                          }
+                        }
+                      }
+                    },
+                    "UpdateUser": {
+                      "case": "UpdateUser",
+                      "actions": {
+                        "Update_User": {
+                          "runAfter": {
+                            "Go_Through_Each_CustomProperty": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "4a28301f-ce09-4c12-b796-ea648be344bb"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fgraph-20api-20custom-20connector-5fb93168823abdb0d8",
+                              "operationId": "UpdateUser",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fgraph-20api-20custom-20connector-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "userObjectId": "@variables('JSONRequestVar')?['Parameters/userObjectId']",
+                              "body/customSecurityAttributes/PFECRMOnlineExtensions": "@if(greater(length(variables('JSONRequestVar')?['Parameters/customSecurityAttributes']),0),variables('helperBlankObject'),null)"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Response_19": {
+                          "runAfter": {
+                            "Update_User": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "f138a055-f658-448d-9819-5836801ca801"
+                          },
+                          "type": "Response",
+                          "kind": "Http",
+                          "inputs": {
+                            "statusCode": 200,
+                            "body": "@body('Update_User')"
+                          }
+                        },
+                        "Go_Through_Each_CustomProperty": {
+                          "foreach": "@variables('JSONRequestVar')?['Parameters/customSecurityAttributes']",
+                          "actions": {
+                            "Temp_Add_New_Property": {
+                              "runAfter": {},
+                              "metadata": {
+                                "operationMetadataId": "3973176b-8d01-42f6-bab3-54e498205a8d"
+                              },
+                              "type": "Compose",
+                              "inputs": "@addProperty(variables('helperBlankObject'),item()?['customSecurityAttributeName'],item()?['customSecurityAttributeValue'])"
+                            },
+                            "Set_New_Value": {
+                              "runAfter": {
+                                "Temp_Add_New_Property": [
+                                  "Succeeded"
+                                ]
+                              },
+                              "metadata": {
+                                "operationMetadataId": "8135090d-8179-4285-9a1e-3a49a425db1e"
+                              },
+                              "type": "SetVariable",
+                              "inputs": {
+                                "name": "helperBlankObject",
+                                "value": "@outputs('Temp_Add_New_Property')"
+                              }
+                            }
+                          },
+                          "runAfter": {
+                            "First_Init_Of_Blank_Object": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "141a38b6-6c42-4c91-b91d-d090fc16d9e1"
+                          },
+                          "type": "Foreach"
+                        },
+                        "First_Init_Of_Blank_Object": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "f5e015b0-7b25-45d9-8e00-eb6bf5092a23"
+                          },
+                          "type": "SetVariable",
+                          "inputs": {
+                            "name": "helperBlankObject",
+                            "value": {
+                              "@@odata.type": "#Microsoft.DirectoryServices.CustomSecurityAttributeValue"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "FindUser": {
+                      "case": "FindUser",
+                      "actions": {
+                        "Get_user": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "1e64bc34-d4dc-4c45-86aa-b57e156184d5"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_azuread_1",
+                              "operationId": "GetUser",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_azuread"
+                            },
+                            "parameters": {
+                              "id": "@variables('JSONRequestVar')?['Parameters/userEmail']"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Respond_With_User_Found_Profile": {
+                          "runAfter": {
+                            "Get_user": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "0f7d7841-2f5c-4032-b6e7-dde7c625c83e"
+                          },
+                          "type": "Response",
+                          "kind": "Http",
+                          "inputs": {
+                            "statusCode": 200,
+                            "body": "@body('Get_user')"
+                          }
+                        },
+                        "Response_As_Empty": {
+                          "runAfter": {
+                            "Get_user": [
+                              "Failed",
+                              "Skipped",
+                              "TimedOut"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "b5eaf44b-5f60-4ba7-933b-db1e34e1b280"
+                          },
+                          "type": "Response",
+                          "kind": "Http",
+                          "inputs": {
+                            "statusCode": 200,
+                            "body": {}
+                          }
+                        }
+                      }
+                    },
+                    "UpdateManager": {
+                      "case": "UpdateManager",
+                      "actions": {
+                        "Response_3": {
+                          "runAfter": {
+                            "Update_User_2": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "ab0f2fa7-465a-41bd-9b03-96fc092505a5"
+                          },
+                          "type": "Response",
+                          "kind": "Http",
+                          "inputs": {
+                            "statusCode": 200
+                          }
+                        },
+                        "Update_User_2": {
+                          "runAfter": {
+                            "Compose_10": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "613ae004-9134-4582-bc6e-84de51d33a6d"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fgraph-20api-20custom-20connector-5fb93168823abdb0d8",
+                              "operationId": "UpdateUser",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fgraph-20api-20custom-20connector-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "userObjectId": "@variables('JSONRequestVar')?['Parameters/userObjectId']",
+                              "body/customSecurityAttributes/PFECRMOnlineExtensions": "@outputs('Compose_10')"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Compose_10": {
+                          "runAfter": {
+                            "GetManagerAccount": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "d0ec6bde-2497-472a-9a39-99a793979a7f"
+                          },
+                          "type": "Compose",
+                          "inputs": {
+                            "@@odata.type": "#Microsoft.DirectoryServices.CustomSecurityAttributeValue",
+                            "parentAccountEmail": "@{outputs('GetManagerAccount')?['body/userPrincipalName']}"
+                          }
+                        },
+                        "GetManagerAccount": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "6e909050-f1ea-427a-b2cf-99f1e913902d"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_azuread_1",
+                              "operationId": "GetUser",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_azuread"
+                            },
+                            "parameters": {
+                              "id": "@variables('JSONRequestVar')?['Parameters/managerObjectId']"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        }
+                      }
+                    },
+                    "FindUserCreator": {
+                      "case": "FindUserCreator",
+                      "actions": {
+                        "Get_User_Created_Info": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "60200b8d-9b6b-4d7d-87a4-f028b073f9b4"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fgraph-20api-20custom-20connector-5fb93168823abdb0d8",
+                              "operationId": "Get-User-Creation-Info",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fgraph-20api-20custom-20connector-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "$filter": "activityDisplayName eq 'Add user' and targetResources/any(r:r/userPrincipalName eq '@{variables('JSONRequestVar')?['Parameters/userEmail']}')"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Respond_With_Creator_Info": {
+                          "runAfter": {
+                            "Get_User_Created_Info": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "2e0e4672-23ed-4501-ab41-14ccdb87b2c2"
+                          },
+                          "type": "Response",
+                          "kind": "Http",
+                          "inputs": {
+                            "statusCode": 200,
+                            "body": "@body('Get_User_Created_Info')"
+                          }
+                        }
+                      }
+                    },
+                    "DeactivateUser": {
+                      "case": "DeactivateUser",
+                      "actions": {
+                        "Deactive_PFECRMOnline_User": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "c87bf3bb-fd70-474f-99ed-e42c3b4a3bd0"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fgraph-20api-20custom-20connector-5fb93168823abdb0d8",
+                              "operationId": "UpdateUser",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fgraph-20api-20custom-20connector-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "userObjectId": "@variables('JSONRequestVar')?['Parameters/pfeCrmOnlineUserId']",
+                              "body/accountEnabled": false
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Respond_With_Deactivated_User": {
+                          "runAfter": {
+                            "Deactive_PFECRMOnline_User": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "a3bf8dcb-eb2f-409b-ba79-f985668c98b9"
+                          },
+                          "type": "Response",
+                          "kind": "Http",
+                          "inputs": {
+                            "statusCode": 200,
+                            "body": "@body('Deactive_PFECRMOnline_User')"
+                          }
+                        }
+                      }
+                    },
+                    "DeleteUser": {
+                      "case": "DeleteUser",
+                      "actions": {
+                        "Delete_User": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "5335dc08-73a1-4720-89fe-bdab605f9c0e"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fgraph-20api-20custom-20connector-5fb93168823abdb0d8",
+                              "operationId": "Delete-User",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fgraph-20api-20custom-20connector-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "user-id": "@variables('JSONRequestVar')?['Parameters/pfeCrmOnlineUserId']"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Respond_With_Deleted__User": {
+                          "runAfter": {
+                            "Delete_User": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "6845d4ff-1896-4468-b311-eb46493cbc7e"
+                          },
+                          "type": "Response",
+                          "kind": "Http",
+                          "inputs": {
+                            "statusCode": 200,
+                            "body": "@body('Delete_User')"
+                          }
+                        }
+                      }
+                    },
+                    "FindMSUserInPFETenant": {
+                      "case": "FindMSUserInPFETenant",
+                      "actions": {
+                        "Respond_If_User_Already_Exists": {
+                          "runAfter": {
+                            "Find_MS_User_In_PFE_Tenant_3": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "4ef83be1-1195-4dee-8ab9-c0aa99be1665"
+                          },
+                          "type": "Response",
+                          "kind": "Http",
+                          "inputs": {
+                            "statusCode": 200,
+                            "body": "@body('Find_MS_User_In_PFE_Tenant_3')"
+                          }
+                        },
+                        "Find_MS_User_In_PFE_Tenant_3": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "20a87117-8fc9-4648-bae7-e9df16090e5b"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fgraph-20api-20custom-20connector-5fb93168823abdb0d8",
+                              "operationId": "FindMSUserInPFEOnline",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fgraph-20api-20custom-20connector-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "$count": true,
+                              "$select": "id,displayName,userPrincipalName,otherMails,customSecurityAttributes",
+                              "$filter": "customSecurityAttributes/PFECRMOnlineExtensions/microsoftEmails eq '@{variables('JSONRequestVar')?['Parameters/msftUserEmail']}'",
+                              "ConsistencyLevel": "eventual"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        }
+                      }
+                    },
+                    "GetAllUsersCreator": {
+                      "case": "GetAllUsersCreator",
+                      "actions": {
+                        "creator_-_Set_If_First_request_has_next_link": {
+                          "runAfter": {
+                            "creator_-_Set_Next_Link_URL": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "f679d5ee-ad30-4874-a0b7-63503a7438ee"
+                          },
+                          "type": "SetVariable",
+                          "inputs": {
+                            "name": "hasNextLink",
+                            "value": "@contains(body('Get_User_Created_Info_2'),'@odata.nextLink')"
+                          }
+                        },
+                        "creator_-_Set_array_to_initial_value": {
+                          "runAfter": {
+                            "creator_-_Set_If_First_request_has_next_link": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "cdb34fbc-e6be-499d-8cd4-32cd88be5ca8"
+                          },
+                          "type": "SetVariable",
+                          "inputs": {
+                            "name": "helperArray",
+                            "value": "@body('Get_User_Created_Info_2')?['value']"
+                          }
+                        },
+                        "Get_User_Created_Info_2": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "00434c79-2abb-472d-8640-642f8bdd553a"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fgraph-20api-20custom-20connector-5fb93168823abdb0d8",
+                              "operationId": "Get-User-Creation-Info",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fgraph-20api-20custom-20connector-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "$filter": "activityDisplayName eq 'Add user'"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "creator_-_Set_Next_Link_URL": {
+                          "runAfter": {
+                            "Get_User_Created_Info_2": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "f9ddb290-e163-4c07-a822-1c1c9417990c"
+                          },
+                          "type": "SetVariable",
+                          "inputs": {
+                            "name": "nextLinkURL",
+                            "value": "@{body('Get_User_Created_Info_2')?['@odata.nextLink']}"
+                          }
+                        },
+                        "Compose_9": {
+                          "runAfter": {
+                            "Condition_5": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "aba9ff2e-db03-4d60-bfb7-26496571fd59"
+                          },
+                          "type": "Compose",
+                          "inputs": "@variables('helperArray')"
+                        },
+                        "Response_17": {
+                          "runAfter": {
+                            "Compose_9": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "c7a53f72-6243-4d90-952d-aa0eb4de5f32"
+                          },
+                          "type": "Response",
+                          "kind": "Http",
+                          "inputs": {
+                            "statusCode": 200,
+                            "body": "@variables('helperArray')"
+                          }
+                        },
+                        "Condition_5": {
+                          "actions": {
+                            "creator_-_Keep_Querying": {
+                              "actions": {
+                                "Compose_7": {
+                                  "runAfter": {},
+                                  "metadata": {
+                                    "operationMetadataId": "9d00c6ed-85b7-445f-91e3-221ce0ff7819"
+                                  },
+                                  "type": "Compose",
+                                  "inputs": "@if( equals(indexOf(variables('nextLinkURL'), 'skipToken='), -1), '' , substring(variables('nextLinkURL'), add(indexOf(variables('nextLinkURL'), 'skipToken=') , length('skipToken=')), sub(sub(length(variables('nextLinkURL')), indexOf(variables('nextLinkURL'), 'skipToken=')), length('skiptoken=')) ) )"
+                                },
+                                "Get_User_Created_Info_3": {
+                                  "runAfter": {
+                                    "Compose_7": [
+                                      "Succeeded"
+                                    ]
+                                  },
+                                  "metadata": {
+                                    "operationMetadataId": "43f6f125-45c4-4d5d-b6cf-ad42758bb98b"
+                                  },
+                                  "type": "OpenApiConnection",
+                                  "inputs": {
+                                    "host": {
+                                      "connectionName": "shared_msftce-5fgraph-20api-20custom-20connector-5fb93168823abdb0d8",
+                                      "operationId": "Get-User-Creation-Info",
+                                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fgraph-20api-20custom-20connector-5fcaf1f3b1e9f2d23e"
+                                    },
+                                    "parameters": {
+                                      "$filter": "activityDisplayName eq 'Add user'",
+                                      "$skiptoken": "@outputs('Compose_7')"
+                                    },
+                                    "authentication": "@parameters('$authentication')"
+                                  }
+                                },
+                                "Set_variable_5": {
+                                  "runAfter": {
+                                    "Get_User_Created_Info_3": [
+                                      "Succeeded"
+                                    ]
+                                  },
+                                  "metadata": {
+                                    "operationMetadataId": "712d4a12-a7ac-41db-91b6-18aa26a5d496"
+                                  },
+                                  "type": "SetVariable",
+                                  "inputs": {
+                                    "name": "hasNextLink",
+                                    "value": "@contains(body('Get_User_Created_Info_3'), '@odata.nextLink')"
+                                  }
+                                },
+                                "Set_variable_6": {
+                                  "runAfter": {
+                                    "Set_variable_5": [
+                                      "Succeeded"
+                                    ]
+                                  },
+                                  "metadata": {
+                                    "operationMetadataId": "dafd1a27-46b1-4d72-bd42-2344a585dad3"
+                                  },
+                                  "type": "SetVariable",
+                                  "inputs": {
+                                    "name": "nextLinkURL",
+                                    "value": "@{body('Get_User_Created_Info_3')?['@odata.nextLink']}"
+                                  }
+                                },
+                                "Compose_8": {
+                                  "runAfter": {
+                                    "Set_variable_6": [
+                                      "Succeeded"
+                                    ]
+                                  },
+                                  "metadata": {
+                                    "operationMetadataId": "d208508a-ab94-471a-8065-3ae91d8467f1"
+                                  },
+                                  "type": "Compose",
+                                  "inputs": "@union(variables('helperArray'), body('Get_User_Created_Info_3')?['value'])"
+                                },
+                                "Set_variable_7": {
+                                  "runAfter": {
+                                    "Compose_8": [
+                                      "Succeeded"
+                                    ]
+                                  },
+                                  "metadata": {
+                                    "operationMetadataId": "d3c5c1f6-f438-4470-9fa4-ebc2c3fd458f"
+                                  },
+                                  "type": "SetVariable",
+                                  "inputs": {
+                                    "name": "helperArray",
+                                    "value": "@outputs('Compose_8')"
+                                  }
+                                }
+                              },
+                              "runAfter": {},
+                              "expression": "@equals(variables('hasNextLink'), false)",
+                              "limit": {
+                                "count": 60,
+                                "timeout": "PT1H"
+                              },
+                              "metadata": {
+                                "operationMetadataId": "b59f9152-5e3c-461f-93f3-945e8d02b44a"
+                              },
+                              "type": "Until"
+                            }
+                          },
+                          "runAfter": {
+                            "creator_-_Set_array_to_initial_value": [
+                              "Succeeded"
+                            ]
+                          },
+                          "expression": {
+                            "equals": [
+                              "@variables('hasNextLink')",
+                              "@true"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "348f33d6-261b-425e-a863-051727a83226"
+                          },
+                          "type": "If"
+                        }
+                      }
+                    },
+                    "GetAllUsersCreatorV2": {
+                      "case": "GetAllUsersCreatorV2",
+                      "actions": {
+                        "Get_Records": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "fdf3797e-3e17-4803-9813-2e7dec5595b7"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps_1",
+                              "operationId": "ListRecords",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "msftce_useraccountses",
+                              "$select": "msftce_name,msftce_userid,msftce_creatoruserid,msftce_creatoruseremail"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Response_18": {
+                          "runAfter": {
+                            "Get_Records": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "6827e95d-e0c3-4366-b573-487c5b596136"
+                          },
+                          "type": "Response",
+                          "kind": "Http",
+                          "inputs": {
+                            "statusCode": 200,
+                            "body": "@outputs('Get_Records')?['body/value']"
+                          }
+                        }
+                      }
+                    },
+                    "CreateUser-1": {
+                      "case": "CreateUser",
+                      "actions": {
+                        "Respond_With_Newly_Created_Details": {
+                          "runAfter": {
+                            "CreateUser": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "a055e02b-ec4f-4f4b-930d-cfd6ff2bf1f7"
+                          },
+                          "type": "Response",
+                          "kind": "Http",
+                          "inputs": {
+                            "statusCode": 200,
+                            "body": "@body('CreateUser')"
+                          }
+                        },
+                        "Add_Standard_Licenses_To_User": {
+                          "runAfter": {
+                            "Respond_With_Newly_Created_Details": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "7c870b69-cb9e-45cf-89ff-f06d8988a941"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fgraph-20api-20custom-20connector-5fb93168823abdb0d8",
+                              "operationId": "AddRemoveLicense",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fgraph-20api-20custom-20connector-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "userId": "@body('CreateUser')?['id']",
+                              "Content-Type": "application/json",
+                              "body/addLicenses": "@variables('JSONRequestVar')?['Parameters/licensesToAdd']",
+                              "body/removeLicenses": "@variables('emptyArray')"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "AddAdminRoleToUser": {
+                          "runAfter": {
+                            "Add_Standard_Licenses_To_User": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "91cbdd07-7a8c-4a52-8422-35926aa805b0"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fgraph-20api-20custom-20connector-5fb93168823abdb0d8",
+                              "operationId": "AddAdminRoleToUser",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fgraph-20api-20custom-20connector-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "Content-Type": "application/json",
+                              "body/@odata.type": "#microsoft.graph.unifiedRoleAssignment",
+                              "body/principalId": "@body('CreateUser')?['id']",
+                              "body/roleDefinitionId": "@variables('JSONRequestVar')?['Parameters/roleToAdd']",
+                              "body/directoryScopeId": "/"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Send_an_email_(V2)": {
+                          "runAfter": {
+                            "AddAdminRoleToUser": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "b65ae3e6-a1ea-4b08-9fe3-4bc645c304c7"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_office365",
+                              "operationId": "SendEmailV2",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365"
+                            },
+                            "parameters": {
+                              "emailMessage/To": "@variables('JSONRequestVar')?['Parameters/msftEmailForNotification']",
+                              "emailMessage/Subject": "PFECRMOnline Onboard Email",
+                              "emailMessage/Body": "<p>Hello @{variables('JSONRequestVar')?['Parameters/displayName']},<br>\n<br>\nWelcome to the PFECRMOnline Test Tenant.<br>\n<br>\nYour account email is: @{variables('JSONRequestVar')?['Parameters/userName']}@pfecrmonline.onmicrosoft.com<br>\nYour temporary p.w. is: @{variables('JSONRequestVar')?['Parameters/password']}<br>\n<br>\nYou will be prompted to change your password upon your first succesful login.<br>\n<br>\nYour account has been configured with Power Platform Adminstrator and Dynamics 365 Administrator role privileges. Because of this, be mindful of your work on this shared tenant as it could impact the work of others. If you need to perform tenant breaking changes, it is advised to perform these at a seperate test tenant. Such could be crated via https://cdx.transform.microsoft.com/<br>\n<br>\nAdditionaly your account was set up with the following licenses:<br>\n-D365 Customer Service Enterprise<br>\n-Microsoft Office 365 E5<br>\n<br>\nIf you need to procure additional licences, please do so through: https://aka.ms/pfecrmonline<br>\n<br>\nAs an additional tip, you can leverage Microsoft Edge Profiles to ease the process of accesssing the PFECRMOnline tenant, without having to constantly sign-out / sign-in. &nbsp;https://blogs.windows.com/msedgedev/2020/04/30/automatic-profile-switching/<br>\n<br>\nIf there are any issues please feel free to contact: ralop@microsoft.com, chriscarley@microsoft.com, or tehagman@microsoft.com</p>",
+                              "emailMessage/Importance": "Normal"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Compose_12": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "30927b86-93cf-44df-88ec-32db64dfd2e1"
+                          },
+                          "type": "Compose",
+                          "inputs": {
+                            "@@odata.type": "#Microsoft.DirectoryServices.CustomSecurityAttributeValue",
+                            "microsoftEmails": "@split(variables('JSONRequestVar')?['Parameters/microsoftEmails'] ,',')"
+                          }
+                        },
+                        "CreateUser": {
+                          "runAfter": {
+                            "Compose_12": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "ce31dc39-fd1a-484e-9875-188f20b94e08"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fgraph-20api-20custom-20connector-5fb93168823abdb0d8",
+                              "operationId": "CreateUser",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fgraph-20api-20custom-20connector-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "Content-Type": "application/json",
+                              "body/accountEnabled": true,
+                              "body/displayName": "@variables('JSONRequestVar')?['Parameters/displayName']",
+                              "body/mailNickname": "@variables('JSONRequestVar')?['Parameters/userName']",
+                              "body/userPrincipalName": "@{variables('JSONRequestVar')?['Parameters/userName']}@pfecrmonline.onmicrosoft.com",
+                              "body/usageLocation": "US",
+                              "body/passwordProfile/forceChangePasswordNextSignIn": true,
+                              "body/passwordProfile/password": "@variables('JSONRequestVar')?['Parameters/password']",
+                              "body/customSecurityAttributes/PFECRMOnlineExtensions": "@outputs('Compose_12')"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        }
+                      }
+                    },
+                    "ResetMFA": {
+                      "case": "ResetMFA",
+                      "actions": {
+                        "List-Auth-Methods": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "9a36562c-6b00-4676-a19b-6999d105f784"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fgraph-20api-20custom-20connector-5fb93168823abdb0d8",
+                              "operationId": "List-Auth-Methods",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fgraph-20api-20custom-20connector-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "userId": "@variables('JSONRequestVar')?['Parameters/userId']"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Delete-Auth-Method": {
+                          "runAfter": {
+                            "List-Auth-Methods": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "2945f26e-8ce5-4216-b519-0ff2da1f5144"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fgraph-20api-20custom-20connector-5fb93168823abdb0d8",
+                              "operationId": "Delete-Auth-Method",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fgraph-20api-20custom-20connector-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "userId": "@variables('JSONRequestVar')?['Parameters/userId']",
+                              "methodId": "@first(body('List-Auth-Methods')?['value'])?['id']"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Respond_With_Resetted_MFA": {
+                          "runAfter": {
+                            "Delete-Auth-Method": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "6f9a808e-7d3b-4fb5-acf7-a31477031f2f"
+                          },
+                          "type": "Response",
+                          "kind": "Http",
+                          "inputs": {
+                            "statusCode": 200
+                          }
+                        }
+                      }
+                    },
+                    "LinkTestAccount": {
+                      "case": "LinkTestAccount",
+                      "actions": {
+                        "Compose_13": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "cfd597c2-f635-42f0-af18-13f7aa2198c4"
+                          },
+                          "type": "Compose",
+                          "inputs": {
+                            "@@odata.type": "#Microsoft.DirectoryServices.CustomSecurityAttributeValue",
+                            "parentAccountEmail": "@variables('JSONRequestVar')?['Parameters/parentAccountEmail']"
+                          }
+                        },
+                        "Update_User_3": {
+                          "runAfter": {
+                            "Compose_13": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "4e792d38-c1a1-4bfc-b4e1-d34e80628bb7"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fgraph-20api-20custom-20connector-5fb93168823abdb0d8",
+                              "operationId": "UpdateUser",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fgraph-20api-20custom-20connector-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "userObjectId": "@variables('JSONRequestVar')?['Parameters/pfeCrmOnlineUserId']",
+                              "body/customSecurityAttributes/PFECRMOnlineExtensions": "@outputs('Compose_13')"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Response_22": {
+                          "runAfter": {
+                            "Update_User_3": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "e783cc56-4b2a-464a-8e51-203ba63407b3"
+                          },
+                          "type": "Response",
+                          "kind": "Http",
+                          "inputs": {
+                            "statusCode": 200,
+                            "body": "@body('Update_User_3')"
+                          }
+                        }
+                      }
+                    },
+                    "GetUserTestAccounts": {
+                      "case": "GetUserTestAccounts",
+                      "actions": {
+                        "Get-Test-Accounts-Of-User": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "8d46764f-16f6-47a8-abcd-9370c7016d0a"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fgraph-20api-20custom-20connector-5fb93168823abdb0d8",
+                              "operationId": "FindMSUserInPFEOnline",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fgraph-20api-20custom-20connector-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "$count": true,
+                              "$select": "id,displayName,userPrincipalName,otherMails,customSecurityAttributes",
+                              "$filter": "customSecurityAttributes/PFECRMOnlineExtensions/parentAccountEmail eq '@{variables('JSONRequestVar')?['Parameters/pfeCrmOnlineUserEmail']}'",
+                              "ConsistencyLevel": "eventual"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Response_1": {
+                          "runAfter": {
+                            "Get-Test-Accounts-Of-User": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "561f55a8-6575-406b-971d-c6c52723ed2f"
+                          },
+                          "type": "Response",
+                          "kind": "Http",
+                          "inputs": {
+                            "statusCode": 200,
+                            "body": "@body('Get-Test-Accounts-Of-User')"
+                          }
+                        }
+                      }
+                    },
+                    "GetRoleDefinitions": {
+                      "case": "GetRoleDefinitions",
+                      "actions": {
+                        "GetRoleDefinitions_1": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "3d496203-3373-4d69-9133-af2a1b3f127c"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fgraph-20api-20custom-20connector-5fb93168823abdb0d8",
+                              "operationId": "GetRoleDefinitions",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fgraph-20api-20custom-20connector-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "$select": "id,displayName"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Response_10": {
+                          "runAfter": {
+                            "GetRoleDefinitions_1": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "409726cd-f5aa-4524-bd73-90dc481a13c4"
+                          },
+                          "type": "Response",
+                          "kind": "Http",
+                          "inputs": {
+                            "statusCode": 200,
+                            "body": "@body('GetRoleDefinitions_1')"
+                          }
+                        }
+                      }
+                    },
+                    "GetUserActiveRolesWithExpiration": {
+                      "case": "GetUserActiveRolesWithExpiration",
+                      "actions": {
+                        "GetActiveRolesExpiration": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "26644d9e-1235-4f9f-9e2c-14eb464e4592"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fgraph-20api-20custom-20connector-5fb93168823abdb0d8",
+                              "operationId": "GetActiveRolesExpiration",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fgraph-20api-20custom-20connector-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "$filter": "principalId eq '@{variables('JSONRequestVar')?['Parameters/pfeCrmOnlineUserId']}'"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Response_11": {
+                          "runAfter": {
+                            "GetActiveRolesExpiration": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "0e975ab5-7b89-4d2b-a3f6-55b55147c68a"
+                          },
+                          "type": "Response",
+                          "kind": "Http",
+                          "inputs": {
+                            "statusCode": 200,
+                            "body": "@body('GetActiveRolesExpiration')"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "default": {
+                    "actions": {}
+                  },
+                  "expression": "@triggerBody()?['Operation']",
+                  "metadata": {
+                    "operationMetadataId": "9ecccdaa-874a-44a8-8139-72480d392e9c"
+                  },
+                  "type": "Switch"
+                }
+              }
+            },
+            "Azure": {
+              "case": "Azure",
+              "actions": {
+                "Switch_On_Azure_Operation": {
+                  "runAfter": {},
+                  "cases": {
+                    "GetAllAzureSubscriptions": {
+                      "case": "GetAllAzureSubscriptions",
+                      "actions": {
+                        "Gets_all_susbcriptions": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "bb0304c0-466f-4bef-b7c2-d2f27652b126"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fazure-20management-20-2d-20rbac-5fb93168823abdb0d8",
+                              "operationId": "Get-All-Subscriptions",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fazure-20management-20-2d-20rbac-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "api-version": "2021-04-01"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Respond_With_All_subscriptions": {
+                          "runAfter": {
+                            "Gets_all_susbcriptions": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "18ea1d16-b9ad-45e5-a411-86c46524e9b7"
+                          },
+                          "type": "Response",
+                          "kind": "Http",
+                          "inputs": {
+                            "statusCode": 200,
+                            "body": "@body('Gets_all_susbcriptions')"
+                          }
+                        }
+                      }
+                    },
+                    "GetAllResourceGroupsInSubscription": {
+                      "case": "GetAllResourceGroupsInSubscription",
+                      "actions": {
+                        "Gets_the_current_resource_groups_in_subscription": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "3163dd77-992f-45db-86c3-1ef90ec61cfd"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fazure-20management-20-2d-20rbac-5fb93168823abdb0d8",
+                              "operationId": "Get-Resource-Groups-In-Subscription",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fazure-20management-20-2d-20rbac-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "subscriptionId": "@variables('JSONRequestVar')?['Parameters/subscriptionId']",
+                              "api-version": "2022-06-01"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Respond_With_Resource_Groups_In_Susbcription": {
+                          "runAfter": {
+                            "Gets_the_current_resource_groups_in_subscription": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "f14543de-5943-4b22-b37f-36aa6a426466"
+                          },
+                          "type": "Response",
+                          "kind": "Http",
+                          "inputs": {
+                            "statusCode": 200,
+                            "body": "@body('Gets_the_current_resource_groups_in_subscription')"
+                          }
+                        }
+                      }
+                    },
+                    "GetAzureRBACRolesOfUser": {
+                      "case": "GetAzureRBACRolesOfUser",
+                      "actions": {
+                        "Get_RBAC_Roles_in_Subscription_For_User": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "bb21954b-7bec-448d-a8b1-85f8df913a00"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fazure-20management-20-2d-20rbac-5fb93168823abdb0d8",
+                              "operationId": "Get-RBAC-Roles-In-Subscription",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fazure-20management-20-2d-20rbac-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "subscriptionId": "@variables('JSONRequestVar')?['Parameters/subscriptionId']",
+                              "$filter": "principalId eq '@{variables('JSONRequestVar')?['Parameters/principalId']}'",
+                              "api-version": "2022-04-01"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Respond_With_RBAC_Roles_of_User": {
+                          "runAfter": {
+                            "Get_RBAC_Roles_in_Subscription_For_User": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "676459a5-74e1-40ef-b95f-47627dd9a878"
+                          },
+                          "type": "Response",
+                          "kind": "Http",
+                          "inputs": {
+                            "statusCode": 200,
+                            "body": "@body('Get_RBAC_Roles_in_Subscription_For_User')"
+                          }
+                        }
+                      }
+                    },
+                    "CreateResourceGroupForUser": {
+                      "case": "CreateResourceGroupForUser",
+                      "actions": {
+                        "Creates_Resource_Group_in_a_Subscription": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "2520b77f-74b2-4b7c-ae87-2ab69f7972d8"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fazure-20management-20-2d-20rbac-5fb93168823abdb0d8",
+                              "operationId": "Create-Resource-Group",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fazure-20management-20-2d-20rbac-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "subscriptionId": "@variables('JSONRequestVar')?['Parameters/subscriptionId']",
+                              "resourceGroupName": "@{replace(variables('JSONRequestVar')?['Parameters/msftUserEmail'],'@microsoft.com','')}-resource-group",
+                              "api-version": "2022-06-01",
+                              "body/location": "eastus"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Add_Sepending_Limit": {
+                          "runAfter": {
+                            "Creates_Resource_Group_in_a_Subscription": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "18dfa0c6-a7f4-4760-95f4-3d0489b4585f"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fazure-20management-20-2d-20rbac-5fb93168823abdb0d8",
+                              "operationId": "Add-SpendLimit-To-ResourceGroup",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fazure-20management-20-2d-20rbac-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "subscriptionId": "@variables('JSONRequestVar')?['Parameters/subscriptionId']",
+                              "resourceGroupName": "@{replace(variables('JSONRequestVar')?['Parameters/msftUserEmail'],'@microsoft.com','')}-resource-group",
+                              "api-version": "2023-05-01",
+                              "body/id": "/subscriptions/@{variables('JSONRequestVar')?['Parameters/subscriptionId']}/resourceGroups/@{replace(variables('JSONRequestVar')?['Parameters/msftUserEmail'],'@microsoft.com','')}-resource-group/providers/Microsoft.Consumption/budgets/@{replace(variables('JSONRequestVar')?['Parameters/msftUserEmail'],'@microsoft.com','')}-resource-group-budget",
+                              "body/name": "@{replace(variables('JSONRequestVar')?['Parameters/msftUserEmail'],'@microsoft.com','')}-resource-group-budget",
+                              "body/type": "Microsoft.Consumption/budgets",
+                              "body/properties/timePeriod/startDate": "@startOfMonth(utcNow())",
+                              "body/properties/timeGrain": "Monthly",
+                              "body/properties/amount": 500,
+                              "body/properties/category": "Cost",
+                              "body/properties/notifications/actual_GreaterThan_80_Percent/enabled": true,
+                              "body/properties/notifications/actual_GreaterThan_80_Percent/operator": "GreaterThan",
+                              "body/properties/notifications/actual_GreaterThan_80_Percent/threshold": 80,
+                              "body/properties/notifications/actual_GreaterThan_80_Percent/contactEmails": [
+                                "ralop@microsoft.com",
+                                "@variables('JSONRequestVar')?['Parameters/msftUserEmail']",
+                                "tehagman@microsoft.com",
+                                "chriscarley@microsoft.com",
+                                "henningp@microsoft.com"
+                              ],
+                              "body/properties/notifications/actual_GreaterThan_80_Percent/contactRoles": [
+                                "Owner",
+                                "Contributor"
+                              ]
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Adds_RBAC_role_to_user_to_access_resrouce_group": {
+                          "runAfter": {
+                            "Add_Sepending_Limit": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "8f91fcc5-899c-47ea-a470-a701a4e8656f"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fazure-20management-20-2d-20rbac-5fb93168823abdb0d8",
+                              "operationId": "Add-RBAC-User-To-ResourceGroup",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fazure-20management-20-2d-20rbac-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "subscriptionId": "@variables('JSONRequestVar')?['Parameters/subscriptionId']",
+                              "resourceGroupName": "@{replace(variables('JSONRequestVar')?['Parameters/msftUserEmail'],'@microsoft.com','')}-resource-group",
+                              "randomRoleAssignmentId": "@guid()",
+                              "api-version": "2022-04-01",
+                              "body/properties/roleDefinitionId": "/subscriptions/@{variables('JSONRequestVar')?['Parameters/subscriptionId']}/providers/Microsoft.Authorization/roleDefinitions/8e3af657-a8ff-443c-a75c-2fe8c4bcb635",
+                              "body/properties/principalId": "@variables('JSONRequestVar')?['Parameters/pfeCrmOnlineUserId']",
+                              "body/properties/principalType": "User"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "TODO_-_Add_logic_in_addin": {
+                          "runAfter": {
+                            "Adds_RBAC_role_to_user_to_access_resrouce_group": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "8ee02093-4abc-47de-800b-7a86e05a1807"
+                          },
+                          "type": "Compose",
+                          "inputs": "test"
+                        },
+                        "Respond_With_Output_of_Resource_Group": {
+                          "runAfter": {
+                            "TODO_-_Add_logic_in_addin": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "9afbb0c3-94c0-4caf-a81b-d6ce86e12922"
+                          },
+                          "type": "Response",
+                          "kind": "Http",
+                          "inputs": {
+                            "statusCode": 200,
+                            "body": "@body('Creates_Resource_Group_in_a_Subscription')"
+                          }
+                        }
+                      }
+                    },
+                    "AssignOwnerRBACRole": {
+                      "case": "AssignOwnerRBACRole",
+                      "actions": {
+                        "Adds_RBAC_role_to_user_to_access_resrouce_group_2": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "857f928c-4f85-471d-814a-4b71457f3aa5"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fazure-20management-20-2d-20rbac-5fb93168823abdb0d8",
+                              "operationId": "Add-RBAC-User-To-ResourceGroup",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fazure-20management-20-2d-20rbac-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "subscriptionId": "@variables('JSONRequestVar')?['Parameters/subscriptionId']",
+                              "resourceGroupName": "@variables('JSONRequestVar')?['Parameters/resourceGroupName']",
+                              "randomRoleAssignmentId": "@guid()",
+                              "api-version": "2022-04-01",
+                              "body/properties/roleDefinitionId": "/subscriptions/@{variables('JSONRequestVar')?['Parameters/subscriptionId']}/providers/Microsoft.Authorization/roleDefinitions/8e3af657-a8ff-443c-a75c-2fe8c4bcb635",
+                              "body/properties/principalId": "@variables('JSONRequestVar')?['Parameters/principalId']",
+                              "body/properties/principalType": "User"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Respond_with_result_of_addding_rbac_role": {
+                          "runAfter": {
+                            "Adds_RBAC_role_to_user_to_access_resrouce_group_2": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "824713da-cd46-4142-95bd-f94f3022bd59"
+                          },
+                          "type": "Response",
+                          "kind": "Http",
+                          "inputs": {
+                            "statusCode": 200,
+                            "body": "@body('Adds_RBAC_role_to_user_to_access_resrouce_group_2')"
+                          }
+                        }
+                      }
+                    },
+                    "CommonResourceGroup": {
+                      "case": "CommonResourceGroup",
+                      "actions": {
+                        "Creates_Resource_Group_in_a_Subscription_2": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "93bd8c0b-15df-466d-a1ff-c59c327e667d"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fazure-20management-20-2d-20rbac-5fb93168823abdb0d8",
+                              "operationId": "Create-Resource-Group",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fazure-20management-20-2d-20rbac-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "subscriptionId": "@variables('JSONRequestVar')?['Parameters/subscriptionId']",
+                              "resourceGroupName": "@variables('JSONRequestVar')?['Parameters/resourceGroupName']",
+                              "api-version": "2022-06-01",
+                              "body/location": "eastus"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Add_Sepending_Limit_2": {
+                          "runAfter": {
+                            "Creates_Resource_Group_in_a_Subscription_2": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "2745374d-c612-4843-b247-7a56530fc79d"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fazure-20management-20-2d-20rbac-5fb93168823abdb0d8",
+                              "operationId": "Add-SpendLimit-To-ResourceGroup",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fazure-20management-20-2d-20rbac-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "subscriptionId": "@variables('JSONRequestVar')?['Parameters/subscriptionId']",
+                              "resourceGroupName": "@variables('JSONRequestVar')?['Parameters/resourceGroupName']",
+                              "api-version": "2023-05-01",
+                              "body/id": "/subscriptions/@{variables('JSONRequestVar')?['Parameters/subscriptionId']}/resourceGroups/@{variables('JSONRequestVar')?['Parameters/resourceGroupName']}/providers/Microsoft.Consumption/budgets/mybudget",
+                              "body/name": "mybudget",
+                              "body/type": "Microsoft.Consumption/budgets",
+                              "body/properties/timePeriod/startDate": "2023-06-01T00:00:00Z",
+                              "body/properties/timeGrain": "Monthly",
+                              "body/properties/amount": 50,
+                              "body/properties/category": "Cost",
+                              "body/properties/notifications/actual_GreaterThan_80_Percent/enabled": true,
+                              "body/properties/notifications/actual_GreaterThan_80_Percent/operator": "GreaterThan",
+                              "body/properties/notifications/actual_GreaterThan_80_Percent/threshold": 80,
+                              "body/properties/notifications/actual_GreaterThan_80_Percent/contactEmails": [
+                                "ralop@microsoft.com",
+                                "@variables('JSONRequestVar')?['Parameters/msftUserEmail']"
+                              ],
+                              "body/properties/notifications/actual_GreaterThan_80_Percent/contactRoles": [
+                                "Owner",
+                                "Contributor"
+                              ]
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Adds_RBAC_role_to_user_to_access_resrouce_group_3": {
+                          "runAfter": {
+                            "Add_Sepending_Limit_2": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "79e49f61-8dae-4d2e-a184-fe89afa615a4"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fazure-20management-20-2d-20rbac-5fb93168823abdb0d8",
+                              "operationId": "Add-RBAC-User-To-ResourceGroup",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fazure-20management-20-2d-20rbac-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "subscriptionId": "@variables('JSONRequestVar')?['Parameters/subscriptionId']",
+                              "resourceGroupName": "@variables('JSONRequestVar')?['Parameters/resourceGroupName']",
+                              "randomRoleAssignmentId": "@guid()",
+                              "api-version": "2022-04-01",
+                              "body/properties/roleDefinitionId": "/subscriptions/@{variables('JSONRequestVar')?['Parameters/subscriptionId']}/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c",
+                              "body/properties/principalId": "@variables('JSONRequestVar')?['Parameters/pfeCrmOnlineUserId']",
+                              "body/properties/principalType": "User"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Response_4": {
+                          "runAfter": {
+                            "Adds_RBAC_role_to_user_to_access_resrouce_group_3": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "fc0000ca-9a0b-4418-97f3-776f23e6ec6a"
+                          },
+                          "type": "Response",
+                          "kind": "Http",
+                          "inputs": {
+                            "statusCode": 200,
+                            "body": "@body('Creates_Resource_Group_in_a_Subscription_2')"
+                          }
+                        }
+                      }
+                    },
+                    "AddAdminRoleExpiration": {
+                      "case": "AddAdminRoleExpiration",
+                      "actions": {
+                        "Add_Admin_Role_With_Expiration": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "351c5c76-ea94-4085-966d-65d2f86b0e00"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fgraph-20api-20custom-20connector-5fb93168823abdb0d8",
+                              "operationId": "AddAdminRoleWithExpiration",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fgraph-20api-20custom-20connector-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "body/action": "AdminAssign",
+                              "body/justification": "@variables('JSONRequestVar')?['Parameters/justification']",
+                              "body/directoryScopeId": "/",
+                              "body/principalId": "@variables('JSONRequestVar')?['Parameters/pfeCrmOnlineUserId']",
+                              "body/roleDefinitionId": "@variables('JSONRequestVar')?['Parameters/roleToAdd']",
+                              "body/scheduleInfo/startDateTime": "@utcNow()",
+                              "body/scheduleInfo/expiration/type": "AfterDuration",
+                              "body/scheduleInfo/expiration/duration": "PT@{variables('JSONRequestVar')?['Parameters/duration']}@{variables('JSONRequestVar')?['Parameters/durationUnit']}"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Response_6": {
+                          "runAfter": {
+                            "Create_Request": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "fae18338-819b-4a84-a790-bc8ca0b98c5c"
+                          },
+                          "type": "Response",
+                          "kind": "Http",
+                          "inputs": {
+                            "statusCode": 200,
+                            "body": "@body('Add_Admin_Role_With_Expiration')"
+                          }
+                        },
+                        "Create_Request": {
+                          "runAfter": {
+                            "Add_Admin_Role_With_Expiration": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "f05fb7da-f4ef-4347-ba6d-c3398c414df6"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps_1",
+                              "operationId": "CreateRecord",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "msftce_pfecrmonlinerequests",
+                              "item/msftce_name": "@{variables('JSONRequestVar')?['Parameters/adminRoleDisplayName']} -  @{variables('JSONRequestVar')?['Parameters/msftUserEmail']} - @{variables('JSONRequestVar')?['Parameters/duration']}@{variables('JSONRequestVar')?['Parameters/durationUnit']}",
+                              "item/msftce_aduserid": "@variables('JSONRequestVar')?['Parameters/msftUserEmail']",
+                              "item/msftce_justification": "@variables('JSONRequestVar')?['Parameters/justification']",
+                              "item/msftce_length": "@variables('JSONRequestVar')?['Parameters/duration']",
+                              "item/msftce_reasoncategory": "@variables('JSONRequestVar')?['Parameters/reasonCategory']",
+                              "item/msftce_requesttype": 321860001,
+                              "item/msftce_startdate": "@utcNow()"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        }
+                      }
+                    },
+                    "GetRoleExpiration": {
+                      "case": "GetRoleExpiration",
+                      "actions": {
+                        "Response_7": {
+                          "runAfter": {
+                            "GetAssignmentsExpiry": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "f9e07912-6a56-4934-b14a-9a035587f990"
+                          },
+                          "type": "Response",
+                          "kind": "Http",
+                          "inputs": {
+                            "statusCode": 200,
+                            "body": "@body('GetAssignmentsExpiry')"
+                          }
+                        },
+                        "GetAssignmentsExpiry": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "13974d63-da6e-4f09-b73f-47c7bc2861bc"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fgraph-20api-20custom-20connector-5fb93168823abdb0d8",
+                              "operationId": "GetAssignmentsExpiry",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fgraph-20api-20custom-20connector-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "$filter": "principalId eq '@{variables('JSONRequestVar')?['Parameters/pfeCrmOnlineUserId']}' and status eq 'Provisioned' and roleDefinitionId eq '@{variables('JSONRequestVar')?['Parameters/roleId']}'"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        }
+                      }
+                    },
+                    "CreateCustomResourceGroup": {
+                      "case": "CreateCustomResourceGroup",
+                      "actions": {
+                        "Creates_Resource_Group_in_a_Subscription_3": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "f1487024-ce74-49e1-b44b-c88e56ca4baf"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fazure-20management-20-2d-20rbac-5fb93168823abdb0d8",
+                              "operationId": "Create-Resource-Group",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fazure-20management-20-2d-20rbac-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "subscriptionId": "@variables('JSONRequestVar')?['Parameters/subscriptionId']",
+                              "resourceGroupName": "@{variables('JSONRequestVar')?['Parameters/resourceGroupName']}-rg-custom",
+                              "api-version": "2022-06-01",
+                              "body/location": "@variables('JSONRequestVar')?['Parameters/azRegion']"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Add_Sepending_Limit_3": {
+                          "runAfter": {
+                            "Creates_Resource_Group_in_a_Subscription_3": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "1b1e70b4-f002-42f0-bf70-de5be38297fb"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fazure-20management-20-2d-20rbac-5fb93168823abdb0d8",
+                              "operationId": "Add-SpendLimit-To-ResourceGroup",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fazure-20management-20-2d-20rbac-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "subscriptionId": "@variables('JSONRequestVar')?['Parameters/subscriptionId']",
+                              "resourceGroupName": "@{variables('JSONRequestVar')?['Parameters/resourceGroupName']}-rg-custom",
+                              "api-version": "2023-05-01",
+                              "body/id": "/subscriptions/@{variables('JSONRequestVar')?['Parameters/subscriptionId']}/resourceGroups/@{variables('JSONRequestVar')?['Parameters/resourceGroupName']}-rg-custom/providers/Microsoft.Consumption/budgets/customBudget",
+                              "body/name": "customBudget",
+                              "body/type": "Microsoft.Consumption/budgets",
+                              "body/properties/timePeriod/startDate": "@startOfMonth(utcNow())",
+                              "body/properties/timeGrain": "Monthly",
+                              "body/properties/amount": 500,
+                              "body/properties/category": "Cost",
+                              "body/properties/notifications/actual_GreaterThan_80_Percent/enabled": true,
+                              "body/properties/notifications/actual_GreaterThan_80_Percent/operator": "GreaterThan",
+                              "body/properties/notifications/actual_GreaterThan_80_Percent/threshold": 95,
+                              "body/properties/notifications/actual_GreaterThan_80_Percent/contactEmails": [
+                                "ralop@microsoft.com",
+                                "tehagman@microsoft.com",
+                                "chriscarley@microsoft.com",
+                                "henningp@microsoft.com"
+                              ],
+                              "body/properties/notifications/actual_GreaterThan_80_Percent/contactRoles": [
+                                "Owner",
+                                "Contributor"
+                              ]
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Adds_RBAC_role_to_user_to_access_resrouce_group_4": {
+                          "runAfter": {
+                            "Add_Sepending_Limit_3": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "a2d72d35-06d7-46d8-8bfb-640363ffeab5"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fazure-20management-20-2d-20rbac-5fb93168823abdb0d8",
+                              "operationId": "Add-RBAC-User-To-ResourceGroup",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fazure-20management-20-2d-20rbac-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "subscriptionId": "@variables('JSONRequestVar')?['Parameters/subscriptionId']",
+                              "resourceGroupName": "@{variables('JSONRequestVar')?['Parameters/resourceGroupName']}-rg-custom",
+                              "randomRoleAssignmentId": "@guid()",
+                              "api-version": "2022-04-01",
+                              "body/properties/roleDefinitionId": "/subscriptions/@{variables('JSONRequestVar')?['Parameters/subscriptionId']}/providers/Microsoft.Authorization/roleDefinitions/8e3af657-a8ff-443c-a75c-2fe8c4bcb635",
+                              "body/properties/principalId": "@variables('JSONRequestVar')?['Parameters/pfeCrmOnlineUserId']",
+                              "body/properties/principalType": "User"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Respond_With_RG_Created": {
+                          "runAfter": {
+                            "Adds_RBAC_role_to_user_to_access_resrouce_group_4": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "83e19b6c-f3aa-40da-b638-2441f64bdef5"
+                          },
+                          "type": "Response",
+                          "kind": "Http",
+                          "inputs": {
+                            "statusCode": 200,
+                            "body": "@body('Creates_Resource_Group_in_a_Subscription_3')"
+                          }
+                        }
+                      }
+                    },
+                    "GetAzSubRoleDefinitions": {
+                      "case": "GetAzSubRoleDefinitions",
+                      "actions": {
+                        "Get-Role-Defs-In-Sub": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "0fc7307e-ff5b-445e-a3c7-9b5f35736e6e"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fazure-20management-20-2d-20rbac-5fb93168823abdb0d8",
+                              "operationId": "Get-Role-Defs-In-Sub",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fazure-20management-20-2d-20rbac-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "subscriptionId": "@variables('JSONRequestVar')?['Parameters/subscriptionId']"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Response_8": {
+                          "runAfter": {
+                            "Get-Role-Defs-In-Sub": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "9833ed6e-f859-4446-aab0-54f60456557d"
+                          },
+                          "type": "Response",
+                          "kind": "Http",
+                          "inputs": {
+                            "statusCode": 200,
+                            "body": "@body('Get-Role-Defs-In-Sub')"
+                          }
+                        }
+                      }
+                    },
+                    "AssignTimedAzSubRole": {
+                      "case": "AssignTimedAzSubRole",
+                      "actions": {
+                        "Response_9": {
+                          "runAfter": {
+                            "Add_a_new_row": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "d22ff1eb-711a-4882-ac96-e00ca88465e2"
+                          },
+                          "type": "Response",
+                          "kind": "Http",
+                          "inputs": {
+                            "statusCode": 200
+                          }
+                        },
+                        "Add-Timed-PIM-To-Role-In-AzSub-V2": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "a4360211-8a3e-486c-b3d7-f5dbcd721119"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_msftce-5fazure-20management-20-2d-20rbac-5fb93168823abdb0d8",
+                              "operationId": "Add-Timed-PIM-To-Role-In-AzSub-V2",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msftce-5fazure-20management-20-2d-20rbac-5fcaf1f3b1e9f2d23e"
+                            },
+                            "parameters": {
+                              "scope": "@variables('JSONRequestVar')?['Parameters/scope']",
+                              "requestId": "@guid()",
+                              "body/properties/principalId": "@variables('JSONRequestVar')?['Parameters/pfeCrmOnlineUserId']",
+                              "body/properties/roleDefinitionId": "@variables('JSONRequestVar')?['Parameters/roleId']",
+                              "body/properties/justification": "@variables('JSONRequestVar')?['Parameters/justification']",
+                              "body/properties/scheduleInfo/startDateTime": "@utcNow()",
+                              "body/properties/scheduleInfo/expiration/duration": "PT@{variables('JSONRequestVar')?['Parameters/durationHours']}H"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Add_a_new_row": {
+                          "runAfter": {
+                            "Add-Timed-PIM-To-Role-In-AzSub-V2": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "19a6fd2f-480f-41c0-9ded-a07c791726e8"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps_1",
+                              "operationId": "CreateRecord",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "msftce_pfecrmonlinerequests",
+                              "item/msftce_name": "@{variables('JSONRequestVar')?['Parameters/azRoleDisplayName']} - @{variables('JSONRequestVar')?['Parameters/msftUserEmail']} - @{variables('JSONRequestVar')?['Parameters/durationHours']}H",
+                              "item/msftce_aduserid": "@variables('JSONRequestVar')?['Parameters/msftUserEmail']",
+                              "item/msftce_justification": "@variables('JSONRequestVar')?['Parameters/justification']",
+                              "item/msftce_length": "@variables('JSONRequestVar')?['Parameters/durationHours']",
+                              "item/msftce_reasoncategory": "@variables('JSONRequestVar')?['Parameters/reasonCategory']",
+                              "item/msftce_requesttype": 321860002,
+                              "item/msftce_startdate": "@utcNow()"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "default": {
+                    "actions": {}
+                  },
+                  "expression": "@triggerBody()?['Operation']",
+                  "metadata": {
+                    "operationMetadataId": "5ed2e5a3-5e59-4273-96d1-4b55c260c53e"
+                  },
+                  "type": "Switch"
+                }
+              }
+            },
+            "Other": {
+              "case": "Other",
+              "actions": {
+                "SwitchOnOther": {
+                  "runAfter": {},
+                  "cases": {
+                    "Feedback": {
+                      "case": "Feedback",
+                      "actions": {
+                        "New_Feedback_Created": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "7ff55b06-c33a-4fa7-8806-b957a74a8254"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps_1",
+                              "operationId": "CreateRecord",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "msftce_engineerfeedbacks",
+                              "item/msftce_name": "@variables('JSONRequestVar')?['Parameters/feedbackType']",
+                              "item/msftce_comments": "@variables('JSONRequestVar')?['Parameters/feedbackComments']",
+                              "item/msftce_user": "@variables('JSONRequestVar')?['Parameters/microsoftEmail']"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Response_20": {
+                          "runAfter": {
+                            "New_Feedback_Created": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "294bd96d-259a-4a2b-a81a-7f0115669d9d"
+                          },
+                          "type": "Response",
+                          "kind": "Http",
+                          "inputs": {
+                            "statusCode": 200
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "default": {
+                    "actions": {}
+                  },
+                  "expression": "@triggerBody()?['Operation']",
+                  "metadata": {
+                    "operationMetadataId": "d1bc9c65-1952-4034-89b6-2eea7f54a1e7"
+                  },
+                  "type": "Switch"
+                }
+              }
+            }
+          },
+          "default": {
+            "actions": {}
+          },
+          "expression": "@triggerBody()?['Area']",
+          "metadata": {
+            "operationMetadataId": "9b52b165-7ac4-4000-b66d-c18e48ebe272"
+          },
+          "type": "Switch"
+        }
+      },
+      "outputs": {}
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

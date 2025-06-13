@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CanvasApp xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>msftce_latestfailedruns_010b2</Name>
+  <AppVersion>2025-05-19T17:02:36Z</AppVersion>
+  <Status>Ready</Status>
+  <CreatedByClientVersion>3.25044.10.0</CreatedByClientVersion>
+  <MinClientVersion>3.25044.10.0</MinClientVersion>
+  <Tags>{"primaryDeviceWidth":"1663","primaryDeviceHeight":"856","supportsPortrait":"true","supportsLandscape":"true","primaryFormFactor":"Tablet","showStatusBar":"false","publisherVersion":"3.25044.10","minimumRequiredApiVersion":"2.2.0","hasComponent":"false","hasUnlockedComponent":"false","isUnifiedRootApp":"false","sienaVersion":"20250519T170136Z-3.25044.10.0"}</Tags>
+  <IsCdsUpgraded>0</IsCdsUpgraded>
+  <GalleryItemId xsi:nil="true"></GalleryItemId>
+  <BackgroundColor>RGBA(0,176,240,1)</BackgroundColor>
+  <DisplayName>Latest Failed Runs</DisplayName>
+  <Description xsi:nil="true"></Description>
+  <CommitMessage xsi:nil="true"></CommitMessage>
+  <Publisher xsi:nil="true"></Publisher>
+  <AuthorizationReferences>[]</AuthorizationReferences>
+  <ConnectionReferences>{}</ConnectionReferences>
+  <DatabaseReferences>{"default.cds":{"databaseDetails":{"referenceType":"Environmental","environmentName":"default.cds","overrideValues":{"status":"NotSpecified","environmentVariableName":""}},"dataSources":{"Flow Runs":{"entitySetName":"flowruns","logicalName":"flowrun"},"Processes":{"entitySetName":"workflows","logicalName":"workflow"},"Users":{"entitySetName":"systemusers","logicalName":"systemuser"},"Flow Logs":{"entitySetName":"flowlogs","logicalName":"flowlog"}}}}</DatabaseReferences>
+  <AppComponents>[]</AppComponents>
+  <AppComponentDependencies>[]</AppComponentDependencies>
+  <CanConsumeAppPass>1</CanConsumeAppPass>
+  <CanvasAppType>2</CanvasAppType>
+  <BypassConsent>0</BypassConsent>
+  <AdminControlBypassConsent>0</AdminControlBypassConsent>
+  <EmbeddedApp xsi:nil="true"></EmbeddedApp>
+  <IntroducedVersion>1.0</IntroducedVersion>
+  <CdsDependencies>{"cdsdependencies":[{"logicalname":"flowrun","componenttype":1},{"logicalname":"workflow","componenttype":1},{"logicalname":"systemuser","componenttype":1},{"logicalname":"flowlog","componenttype":1}]}</CdsDependencies>
+  <IsCustomizable>1</IsCustomizable>
+  <BackgroundImageUri>/CanvasApps/msftce_latestfailedruns_010b2_BackgroundImageUri</BackgroundImageUri>
+  <DocumentUri>/CanvasApps/msftce_latestfailedruns_010b2_DocumentUri.msapp</DocumentUri>
+  <AdditionalUris>
+    <AdditionalUri>/CanvasApps/msftce_latestfailedruns_010b2_AdditionalUris0_identity.json</AdditionalUri>
+  </AdditionalUris>
+</CanvasApp>

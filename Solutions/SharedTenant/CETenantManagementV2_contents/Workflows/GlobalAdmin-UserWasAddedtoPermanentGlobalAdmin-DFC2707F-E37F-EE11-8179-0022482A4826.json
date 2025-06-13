@@ -1,0 +1,135 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_azuread": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "msftce_CETenantManagementAzureAd"
+        },
+        "api": {
+          "name": "shared_azuread"
+        }
+      },
+      "shared_office365": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "msftce_CETenantManagementO365Outlook"
+        },
+        "api": {
+          "name": "shared_office365"
+        }
+      },
+      "shared_office365groups": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "msftce_sharedoffice365groups_b471d"
+        },
+        "api": {
+          "name": "shared_office365groups"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "When_member_gets_added_to_global_admin_group": {
+          "recurrence": {
+            "interval": 1,
+            "frequency": "Minute"
+          },
+          "splitOn": "@triggerOutputs()?['body']",
+          "metadata": {
+            "operationMetadataId": "b389585f-29b4-443c-b3ae-55ba1328d6a2"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_office365groups",
+              "operationId": "OnGroupMembershipChange",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365groups"
+            },
+            "parameters": {
+              "groupId": "600d0f93-8965-43d2-b350-22a9120d818f"
+            },
+            "authentication": "@parameters('$authentication')"
+          },
+          "conditions": []
+        }
+      },
+      "actions": {
+        "Condition": {
+          "actions": {
+            "Get_user": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "a4b6c6ac-c7d9-4aee-8092-a1ebf360a695"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_azuread",
+                  "operationId": "GetUser",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_azuread"
+                },
+                "parameters": {
+                  "id": "@triggerOutputs()?['body/id']"
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            },
+            "Send_an_email_(V2)": {
+              "runAfter": {
+                "Get_user": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "e31c4018-a50c-49f5-9325-2b046411e313"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_office365",
+                  "operationId": "SendEmailV2",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365"
+                },
+                "parameters": {
+                  "emailMessage/To": "ralop@microsoft.com",
+                  "emailMessage/Subject": "@{outputs('Get_user')?['body/displayName']} Was Added To Approved Global Admins",
+                  "emailMessage/Body": "<p>@{outputs('Get_user')?['body/userPrincipalName']} was added to approved user</p>",
+                  "emailMessage/Importance": "Normal"
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            }
+          },
+          "runAfter": {},
+          "expression": {
+            "equals": [
+              "@not(contains(triggerOutputs()?['body'],'@removed'))",
+              true
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "0fd91fa8-5ede-4dc6-ab14-dcd31763fdd0"
+          },
+          "type": "If"
+        }
+      },
+      "outputs": {}
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}
